@@ -1,0 +1,34 @@
+{
+  "name": "@mediamonks/porter-react-tools",
+  "version": "0.0.1",
+  "author": "Paul <p.simkevi@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/mediamonks/porter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mediamonks/porter.git",
+    "directory": "packages/porter-react-tools"
+  },
+  "type": "module",
+  "files": [
+    "porter.ts",
+    "webpack.config.ts"
+  ],
+  "dependencies": {
+    "@babel/preset-react": "^7.12.10",
+    "@mediamonks/porter-webpack-tools": "workspace:packages/porter-webpack-tools",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "babel-plugin-named-asset-import": "^0.3.7",
+    "babel-plugin-styled-components": "^1.12.0",
+    "react-refresh": "^0.9.0",
+    "ts-node": "^9.1.1",
+    "webpack-merge": "^5.7.3"
+  },
+  "peerDependencies": {
+    "webpack": "4.46.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.46.0"
+  }
+}

@@ -1,0 +1,7 @@
+import { Styled{{name_pc}} } from './{{name_pc}}.styles';
+
+type {{name_pc}}Props = {};
+
+export default function {{name_pc}}(props: {{name_pc}}Props) {
+  return <Styled{{name_pc}} {...props}>{{name_pc}}</Styled{{name_pc}}>;
+}

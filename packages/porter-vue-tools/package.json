@@ -1,0 +1,32 @@
+{
+  "name": "@mediamonks/porter-vue-tools",
+  "version": "0.0.1",
+  "author": "Paul <p.simkevi@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/mediamonks/porter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mediamonks/porter.git",
+    "directory": "packages/porter-vue-tools"
+  },
+  "type": "module",
+  "files": [
+    "porter.ts",
+    "webpack.config.ts"
+  ],
+  "dependencies": {
+    "@mediamonks/porter-webpack-tools": "workspace:packages/porter-webpack-tools",
+    "@vue/compiler-sfc": "3.0.5",
+    "ts-node": "^9.1.1",
+    "vue-loader": "^16.1.2",
+    "vue-style-loader": "^4.1.2",
+    "webpack-merge": "^5.7.3"
+  },
+  "peerDependencies": {
+    "webpack": "4.46.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.46.0"
+  }
+}

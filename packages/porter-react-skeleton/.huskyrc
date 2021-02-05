@@ -1,0 +1,5 @@
+{
+  "hooks": {
+    "pre-commit": "yarn check-types && yarn lint-staged",
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "porter-project",
+  "private": true,
+  "version": "0.0.1",
+  "description": "💁 the build system to carry your projects",
+  "scripts": {
+    "publish": "yarn workspaces foreach npm publish --access=public --tolerate-republish"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

@@ -1,0 +1,39 @@
+image: node:12
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - yarn
+          - yarn check-types
+          - yarn lint
+          - yarn test -u
+# If the above pipelines start taking a considerable amount of time to finish
+# especially, if one the scripts is taking up most of the time. (likely `yarn check-types`)
+# It is recommended to switch to a parallel-step (see below) approach to speed up the process.
+#
+#     - parallel:
+#         - step:
+#             name: Type checking
+#             caches:
+#               - node
+#             script:
+#               - yarn
+#               - yarn check-types
+#         - step:
+#             name: Linting
+#             caches:
+#               - node
+#             script:
+#               - yarn
+#               - yarn lint
+#         - step:
+#             name: Tests
+#             caches:
+#               - node
+#             script:
+#               - yarn
+#               - yarn test -u
+
