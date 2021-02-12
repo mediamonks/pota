@@ -22,7 +22,9 @@ function getStyleLoaders(cssOptions: Record<any, unknown>, preProcessor?: any): 
     {
       loader: require.resolve("postcss-loader"),
       options: {
-        plugins: () => [require("autoprefixer")],
+        postcssOptions: {
+          plugins: () => [require("autoprefixer")],
+        },
       },
     },
   ].filter(Boolean);
