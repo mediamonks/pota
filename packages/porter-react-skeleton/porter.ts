@@ -55,6 +55,7 @@ export const syncFiles = createFileSynchronizer('react', [
   ],
   '.huskyrc',
   '.nvmrc',
+  '.stylelintrc',
   '.prettierrc',
   '.senggenerator',
   'bitbucket-pipelines.yml',
