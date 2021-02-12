@@ -39,5 +39,8 @@
     "@types/mkdirp": "^1.0.1",
     "@types/tar": "^4.0.4",
     "@types/validate-npm-package-name": "^3.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
