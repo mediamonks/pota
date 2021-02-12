@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/porter-vue-tools",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "author": "Paul <p.simkevi@gmail.com>",
   "bugs": {
     "url": "https://github.com/mediamonks/porter/issues"
@@ -21,8 +21,8 @@
     "ts-node": "^9.1.1",
     "vue-loader": "^16.1.2",
     "vue-style-loader": "^4.1.2",
-    "webpack-merge": "^5.7.3",
-    "webpack": "^4.46.0"
+    "webpack": "^4.46.0",
+    "webpack-merge": "^5.7.3"
   },
   "publishConfig": {
     "access": "public"

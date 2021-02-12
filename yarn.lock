@@ -1523,8 +1523,6 @@ __metadata:
     ts-node: ^9.1.1
     webpack: ^4.46.0
     webpack-merge: ^5.7.3
-  peerDependencies:
-    webpack: 4.46.0
   languageName: unknown
   linkType: soft
 
@@ -1562,8 +1560,6 @@ __metadata:
     vue-style-loader: ^4.1.2
     webpack: ^4.46.0
     webpack-merge: ^5.7.3
-  peerDependencies:
-    webpack: 4.46.0
   languageName: unknown
   linkType: soft
 
