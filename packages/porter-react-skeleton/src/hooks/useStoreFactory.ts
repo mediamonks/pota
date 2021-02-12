@@ -11,19 +11,19 @@ import { isPlainObject } from 'isntnt';
  *
  * @param storeFactory - a function that returns an object representing the store
  */
-const useStoreFactory = <TStore extends Record<string, unknown>>(
-  storeFactory: () => TStore,
-): TStore => {
+export default function useStoreFactory<T extends Record<string, unknown>>(
+  storeFactory: () => T,
+): T {
   const [store] = useState(() => {
     const local = observable(storeFactory());
     if (isPlainObject(local)) {
       runInAction(() => {
         for (const key of Object.keys(local)) {
-          const fn = local[key];
-          if (typeof fn === 'function') {
+          const callback = local[key];
+          if (typeof callback === 'function') {
             (local as Record<typeof key, unknown>)[key] = action(
-              fn.name,
-              (...args: Array<unknown>) => fn.apply(local, args),
+              callback.name,
+              (...args: Array<unknown>) => callback.apply(local, args),
             );
           }
         }
@@ -33,6 +33,4 @@ const useStoreFactory = <TStore extends Record<string, unknown>>(
   });
 
   return store;
-};
-
-export default useStoreFactory;
+}

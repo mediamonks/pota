@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+import { EffectCallback, useEffect } from 'react';
 
 /**
- * @param fn - function, which is triggered on unmount.
+ * @param destructor - function, which is triggered on unmount.
  */
-const useUnmount = (fn: () => void): void => {
-  useEffect(() => fn, []);
-};
-
-export default useUnmount;
+export default function useUnmount(destructor: EffectCallback): void {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => destructor, []);
+}
