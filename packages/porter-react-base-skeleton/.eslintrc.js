@@ -1,7 +1,7 @@
 module.exports = {
-  extends: ['@mediamonks'],
-  rules: {
-    // no longer needed with the new JSX transform
-    'react/react-in-jsx-scope': 'off',
+  extends: ['@mediamonks/eslint-config-react'],
+  parserOptions: {
+    project: ['tsconfig.json'],
   },
+  rules: {},
 };
