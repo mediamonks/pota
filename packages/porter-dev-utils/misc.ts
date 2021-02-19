@@ -1,5 +1,5 @@
 import crossSpawn from "cross-spawn";
-import { SkeletonType } from "./types";
+import { SkeletonTool, SkeletonType } from "./types";
 import { execSync, SpawnOptions } from "child_process";
 
 const PORTER_DEPENDENCY_REGEX = /porter-([a-zA-Z]+)-(skeleton|tools)/;
@@ -17,9 +17,9 @@ const PORTER_DEPENDENCY_REGEX = /porter-([a-zA-Z]+)-(skeleton|tools)/;
 export const isPorterDependency = (dependency: string) =>
   Boolean(dependency.match(PORTER_DEPENDENCY_REGEX));
 
-export function createPorterDependencyMatcher(skeletonType: SkeletonType) {
-  const expression = `porter-${skeletonType}-(skeleton|tools)`;
-  return (dependency: string) => Boolean(dependency.match(expression));
+export function createPorterDependencyMatcher() {
+  const expression = ``;
+  return;
 }
 
 export const parsePorterDependencyType = (dependency: string) =>

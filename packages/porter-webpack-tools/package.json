@@ -13,7 +13,8 @@
   "type": "module",
   "files": [
     "env.ts",
-    "porter.ts",
+    "porter",
+    "helpers.ts",
     "devServer.ts",
     "webpack.config.ts",
     "babel.config.ts"
@@ -27,6 +28,7 @@
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
+    "@mediamonks/porter": "workspace:packages/porter",
     "@types/mini-css-extract-plugin": "^1.2.2",
     "@types/react-dev-utils": "^9.0.4",
     "@types/webpack-dev-server": "3.11.1",

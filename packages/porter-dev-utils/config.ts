@@ -1,7 +1,7 @@
 import { SkeletonTool, SkeletonType } from "./types";
 
 export const AVAILABLE_SKELETONS = ["react", "react-base", "vue"] as const;
-export const AVAILABLE_TOOLS = ["react", "vue"] as const;
+export const AVAILABLE_TOOLS = ["webpack", "react", "vue"] as const;
 
 export const SKELETON_TOOL_MAP: Record<SkeletonType, SkeletonTool> = {
   react: "react",

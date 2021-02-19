@@ -1,34 +1,37 @@
 require("./register");
-import { AVAILABLE_TOOLS } from "@mediamonks/porter-dev-utils/config";
-import { program } from "commander";
+import yargs from "yargs/yargs";
+import * as fs from "fs";
+import * as path from "path";
 
-// version
-program
-  .enablePositionalOptions(true)
-  .version(`porter v0.0.1`)
-  .usage(`<command> [options]`)
-  .option("-d, --debug", "enable debug mode");
+const cli = yargs(process.argv.slice(2)).command(
+  "create [skeleton-type] [app]",
+  "create a new porter project",
+  {},
+  (argv) => require("./create").create(argv.skeletonType, argv.app)
+);
 
-// create
-program
-  .command(`create <skeleton-type> <app-name>`)
-  .description(`initialize a new porter project`)
-  .action((...args) => require("./create").create(...args));
+const localPackagePath = path.resolve(fs.realpathSync(process.cwd()), "package.json");
 
-// TODO: implement `upgrade` command
-// upgrade
-program
-  .command(`upgrade`)
-  .description(`upgrade an existing porter project`)
-  .action(() => require("./porter"));
+if (fs.existsSync(localPackagePath)) {
+  const { dependencies = {}, devDependencies = {} } = require(localPackagePath);
 
-// tool specific commands
-for (const tool of AVAILABLE_TOOLS) {
-  program
-    .command(`${tool} <skeleton-command>`)
-    .passThroughOptions()
-    .description(`${tool} command interface`)
-    .action((subCommand) => require("./applyModules").applyModules(tool, subCommand));
+  for (const dependency of Object.keys({ ...dependencies, ...devDependencies })) {
+    const packageJsonPath = require.resolve(path.join(dependency, "package.json"));
+
+    const dependencyCommandDir = path.resolve(path.dirname(packageJsonPath), "porter");
+
+    const [, name] = dependency.match(/porter-([a-zA-Z]+)-tools/) ?? [];
+
+    if (name && fs.existsSync(dependencyCommandDir)) {
+      cli.command({
+        command: name,
+        // @ts-ignore 'description' exists, TS is drunk
+        description: `The ${name} tool`,
+        builder: (yargs) => yargs.commandDir(dependencyCommandDir, { extensions: ["ts"] }),
+        handler: () => cli.showHelp("log"),
+      });
+    }
+  }
 }
 
-program.parse(process.argv);
+cli.demandCommand().help().argv;

@@ -12,7 +12,7 @@
   },
   "type": "module",
   "files": [
-    "porter.ts",
+    "porter",
     "webpack.config.ts"
   ],
   "dependencies": {

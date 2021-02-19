@@ -34,8 +34,6 @@ function validateProjectName(projectName: string) {
   }
 }
 
-function isGitRepository() {}
-
 export async function create(_skeletonType: string, projectPath: string) {
   // normalize the path
   projectPath = resolveUser(path.normalize(projectPath));
