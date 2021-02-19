@@ -13458,6 +13458,20 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"tools@workspace:kitchen-sink/tools":
+  version: 0.0.0-use.local
+  resolution: "tools@workspace:kitchen-sink/tools"
+  dependencies:
+    "@mediamonks/porter": "workspace:packages/porter"
+    "@mediamonks/porter-dev-utils": "workspace:packages/porter-dev-utils"
+    "@mediamonks/porter-react-tools": "workspace:packages/porter-react-tools"
+    "@mediamonks/porter-vue-tools": "workspace:packages/porter-vue-tools"
+    "@mediamonks/porter-webpack-tools": "workspace:packages/porter-webpack-tools"
+    ts-node: ^9.1.1
+    typescript: ^4.1.3
+  languageName: unknown
+  linkType: soft
+
 "tough-cookie@npm:~2.5.0":
   version: 2.5.0
   resolution: "tough-cookie@npm:2.5.0"
