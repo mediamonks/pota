@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/porter-vue-skeleton",
-  "version": "0.0.2-0",
+  "version": "0.0.2-1",
   "author": "Paul <p.simkevi@gmail.com>",
   "bugs": {
     "url": "https://github.com/mediamonks/porter/issues"
@@ -43,7 +43,6 @@
   ],
   "dependencies": {
     "@mediamonks/eslint-config-vue": "^1.0.0-alpha.2",
-    "@mediamonks/porter-dev-utils": "workspace:packages/porter-dev-utils",
     "cross-env": "^7.0.3",
     "eslint": "^7.19.0",
     "husky": "^4.3.0",

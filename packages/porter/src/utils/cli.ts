@@ -1,29 +1,14 @@
+import readline from "readline";
 import crossSpawn from "cross-spawn";
-import { SkeletonTool, SkeletonType } from "./types";
 import { execSync, SpawnOptions } from "child_process";
 
-const PORTER_DEPENDENCY_REGEX = /porter-([a-zA-Z]+)-(skeleton|tools)/;
-
-/**
- * will return `true` or `false` based if the passed dependency name
- * is a valid `porter` dependency
- * @param dependency - NPM dependency name
- * @example
- * 'porter-react-skeleton'
- * 'porter-react-tools'
- * 'porter-vue-skeleton'
- * 'porter-vue-tools'
- */
-export const isPorterDependency = (dependency: string) =>
-  Boolean(dependency.match(PORTER_DEPENDENCY_REGEX));
-
-export function createPorterDependencyMatcher() {
-  const expression = ``;
-  return;
+export function clear() {
+  if (process.stdout.isTTY) {
+    console.log("\n".repeat(process.stdout.rows));
+    readline.cursorTo(process.stdout, 0, 0);
+    readline.clearScreenDown(process.stdout);
+  }
 }
-
-export const parsePorterDependencyType = (dependency: string) =>
-  dependency.match(PORTER_DEPENDENCY_REGEX)?.[1] || undefined;
 
 const createSpawn = (options: SpawnOptions) =>
   async function spawn(command: string, ...args: string[]): Promise<void> {

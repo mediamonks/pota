@@ -1,73 +1,28 @@
-import jscodeshift from 'jscodeshift';
-import {
-  appendEslintRule,
-  createDependencySynchronizer,
-  createFileSynchronizer,
-  createScriptSynchronizer,
-} from '@mediamonks/porter-dev-utils/skeleton';
+import { PorterSkeleton } from '@mediamonks/porter/lib/authoring/skeleton';
 
-type LocalPackageJSON = typeof import('./package.json');
-type Script = keyof LocalPackageJSON['scripts'];
-type Dependency = keyof LocalPackageJSON['dependencies'];
+export default class PorterReactBaseSkeleton extends PorterSkeleton<
+  typeof import('./package.json')
+> {
+  tool = '@mediamonks/porter-react-tool';
 
-const SKELETON_DEPENDENCIES: Dependency[] = ['react', 'react-dom', 'web-vitals'];
+  dependencies = ['react', 'react-dom', 'web-vitals'] as const;
 
-export const syncFiles = createFileSynchronizer('react-base', [
-  'public',
-  'src',
-  '.editorconfig',
-  [
-    '.eslintrc.js',
-    (source) =>
-      appendEslintRule(
-        jscodeshift(source),
-        jscodeshift.property(
-          'init',
-          jscodeshift.stringLiteral('import/no-extraneous-dependencies'),
-          jscodeshift.arrayExpression([
-            jscodeshift.stringLiteral('error'),
-            jscodeshift.objectExpression([
-              jscodeshift.property(
-                'init',
-                jscodeshift.stringLiteral('packageDir'),
-                jscodeshift.stringLiteral('node_modules/@mediamonks/porter-react-base-skeleton'),
-              ),
-            ]),
-          ]),
+  devDependencies = [];
+
+  scripts = ['check-types', 'fix', 'fix:eslint', 'fix:prettier', 'lint', 'lint:eslint'] as const;
+
+  toolScripts = ['dev', 'build', 'serve'];
+
+  excludedFiles = ['.eslintignore'];
+
+  transformFiles = {
+    gitignore: { name: '.gitignore' },
+    'README.md': {
+      source: (source) =>
+        source.replace(
+          '<PORTER:dependencies>',
+          this.dependencies.map((dependency) => `- \`${dependency}\``).join('\n'),
         ),
-      ).toSource({ quote: 'single' }),
-  ],
-  '.huskyrc',
-  '.nvmrc',
-  '.prettierrc',
-  '.senggenerator',
-  'bitbucket-pipelines.yml',
-  'lint-staged.config.js',
-  'tsconfig.json',
-  ['gitignore', undefined, (name) => `.${name}`],
-  [
-    'README.md',
-    (source) =>
-      source.replace(
-        '<PORTER:dependencies>',
-        SKELETON_DEPENDENCIES.map((dependency) => `- \`${dependency}\``).join('\n'),
-      ),
-  ],
-]);
-
-export const syncDependencies = createDependencySynchronizer('react-base', SKELETON_DEPENDENCIES);
-
-export const syncScripts = createScriptSynchronizer(
-  'react-base',
-  [
-    'check-types',
-    'fix',
-    'fix:eslint',
-    'fix:prettier',
-    'fix:stylelint',
-    'lint',
-    'lint:eslint',
-    'lint:stylelint',
-  ] as Script[],
-  ['dev', 'build'],
-);
+    },
+  };
+}

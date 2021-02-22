@@ -2,12 +2,18 @@ require("./register");
 import yargs from "yargs/yargs";
 import * as fs from "fs";
 import * as path from "path";
+import { CLI_DEPENDENCY } from "./config";
 
 const cli = yargs(process.argv.slice(2)).command(
   "create [skeleton-type] [app]",
   "create a new porter project",
-  {},
-  (argv) => require("./create").create(argv.skeletonType, argv.app)
+  {
+    cli: {
+      description: "The CLI package that the project should use",
+      default: CLI_DEPENDENCY,
+    },
+  },
+  (argv) => require("./create").create(argv.skeletonType, argv.app, { porterPackage: argv.cli })
 );
 
 const localPackagePath = path.resolve(fs.realpathSync(process.cwd()), "package.json");

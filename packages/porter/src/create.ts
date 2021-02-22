@@ -1,26 +1,25 @@
-import path from "path";
+import * as path from "path";
+import * as fs from "fs";
 import mkdirp from "mkdirp";
 import validatePackageName from "validate-npm-package-name";
 import kleur from "kleur";
 
-import { spawn, command, spawnSilent } from "@mediamonks/porter-dev-utils/misc";
-import { clear } from "@mediamonks/porter-dev-utils/cli";
-import type { SkeletonType } from "@mediamonks/porter-dev-utils/types";
-import {
-  CLI_DEPENDENCY,
-  createSkeletonDependency,
-  createToolDependency,
-  AVAILABLE_SKELETONS,
-  SKELETON_TOOL_MAP,
-} from "@mediamonks/porter-dev-utils/config";
-import { resolveUser } from "@mediamonks/porter-dev-utils/fs";
+import { clear, command, spawn, spawnSilent } from "./utils/cli";
+import { CLI_DEPENDENCY, INVERTED_SKELETON_SHORTHANDS } from "./config";
+import { PorterSkeletonInterface } from "./authoring/skeleton";
+import { withSynchronizers } from "./utils/skeleton";
 
-function validateSkeleton(skeleton: string) {
-  if (!AVAILABLE_SKELETONS.includes(skeleton as SkeletonType)) {
-    console.error(kleur.red(`'${kleur.yellow}' is not a supported skeleton`));
-    process.exit(1);
-  }
-}
+type CreateOptions = {
+  porterPackage: string;
+};
+
+/**
+ * @returns absolute cwd (current working directory) path
+ */
+const getCWD = () => fs.realpathSync(process.cwd());
+
+const resolveUser: typeof path.resolve = (...pathSegments) =>
+  path.resolve(getCWD(), ...pathSegments);
 
 function validateProjectName(projectName: string) {
   const { validForNewPackages, errors, warnings } = validatePackageName(projectName);
@@ -34,15 +33,15 @@ function validateProjectName(projectName: string) {
   }
 }
 
-export async function create(_skeletonType: string, projectPath: string) {
+export async function create(
+  skeletonType: string,
+  projectPath: string,
+  { porterPackage }: CreateOptions
+) {
   // normalize the path
   projectPath = resolveUser(path.normalize(projectPath));
 
   const projectName = path.basename(projectPath);
-
-  // perform validation
-  validateSkeleton(_skeletonType);
-  const skeletonType = _skeletonType as SkeletonType;
 
   validateProjectName(projectName);
 
@@ -51,6 +50,9 @@ export async function create(_skeletonType: string, projectPath: string) {
   console.log(`🏭 Creating ${kleur.green(projectName)}`);
 
   console.log(`🌊 Using ${kleur.yellow(projectPath)} as the project path`);
+  if (porterPackage !== CLI_DEPENDENCY) {
+    console.log(`👷 Using ${kleur.cyan(porterPackage)} as the project's porter CLI`);
+  }
 
   // initialize git repo
 
@@ -63,25 +65,31 @@ export async function create(_skeletonType: string, projectPath: string) {
     process.exit(1);
   }
 
-  console.log(`📒 Initialized git repository.`);
+  // console.log(`📒 Initialized git repository.`);
 
   console.log();
-  console.log(
-    `🔋 Installing ${kleur.yellow(skeletonType)} skeleton dependencies. This might take a while...`
-  );
+  console.log(`🔋 Installing ${kleur.cyan(skeletonType)} skeleton's dependencies.`);
+  console.log("This might take a while...");
+  console.log();
 
-  const skeletonDependency = createSkeletonDependency(skeletonType);
-  const toolDependency = createToolDependency(SKELETON_TOOL_MAP[skeletonType]);
-
+  let skeletonDependency = (INVERTED_SKELETON_SHORTHANDS[skeletonType] as string) ?? skeletonType;
   // make sure the current working directory is the projects' path
   const commonArgs = ["--cwd", projectPath];
 
   try {
     // initialize project using `yarn`
-    await spawnSilent(`yarn`, ...commonArgs, "init", "-y", "-s");
+    await spawnSilent(
+      `yarn`,
+      ...commonArgs,
+      "init",
+      "-y",
+      "-s",
+      "--no-lockfile",
+      "--non-interactive"
+    );
 
     // add `skeleton` and `tools` dependencies
-    await spawn(`yarn`, ...commonArgs, "add", CLI_DEPENDENCY, skeletonDependency, toolDependency);
+    await spawn(`yarn`, ...commonArgs, "add", porterPackage, skeletonDependency);
   } catch (error) {
     console.error(error);
     return process.exit(1);
@@ -94,16 +102,29 @@ export async function create(_skeletonType: string, projectPath: string) {
   console.log();
 
   try {
-    const { syncFiles, syncDependencies, syncScripts } = await import(
-      path.join(projectPath, "node_modules", skeletonDependency, "porter.ts")
-    );
+    if (skeletonDependency.startsWith("file:")) {
+      const { dependencies = {} } = require(path.join(projectPath, "package.json"));
+      [skeletonDependency] = Object.entries(dependencies as Record<string, string>).find(
+        // if it's a local dependency, then it will be the `version` in the dependency list
+        ([, version]) => version === skeletonDependency
+      ) ?? [skeletonDependency];
+    }
+    const skeletonPath = path.join(projectPath, "node_modules", skeletonDependency);
 
-    syncFiles?.(projectPath);
-    syncDependencies?.(projectPath);
-    syncScripts?.(projectPath);
+    const BaseSkeleton = (await import(path.join(skeletonPath, "porter.ts")))?.default;
 
-    // run `yarn` once more to install the synced dependencies
-    await spawn(`yarn`, ...commonArgs);
+    const Skeleton = withSynchronizers(BaseSkeleton as { new (): PorterSkeletonInterface<any> });
+
+    const skeleton = new Skeleton(projectPath, skeletonPath);
+
+    skeleton.synchronizeDependencies();
+
+    await Promise.all([
+      // run `yarn` once more to install the synced dependencies and also the tool
+      spawn(`yarn`, ...commonArgs, "add", skeleton.tool),
+      // while yarn is running, synchronize the rest of the assets
+      Promise.resolve(skeleton.synchronizeFiles().synchronizeScripts()),
+    ]);
   } catch (error) {
     console.error(error);
     process.exit(1);
