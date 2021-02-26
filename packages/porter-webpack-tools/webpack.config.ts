@@ -68,7 +68,7 @@ export default {
   // instead of the default behavior of tolerating the error
   bail: IS_PROD,
   devtool: USE_SOURCE_MAP
-    ? CUSTOM_SOURCE_MAP || (IS_PROD ? "source-map" : IS_DEV && "cheap-eval-source-map")
+    ? CUSTOM_SOURCE_MAP || (IS_PROD ? "source-map" : IS_DEV && "cheap-source-map")
     : false,
 
   optimization: {
@@ -84,7 +84,7 @@ export default {
     // https://twitter.com/wSokra/status/969679223278505985
     // https://github.com/facebook/create-react-app/issues/5358
     runtimeChunk: {
-      name: (entrypoint) => `runtime-${entrypoint.name}`,
+      name: "runtime",
     },
   },
 
