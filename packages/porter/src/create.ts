@@ -47,6 +47,11 @@ export async function create(
 
   clear();
 
+  console.log(
+    `💁 ${kleur.bold().red("Porter")} ${kleur.cyan(`v${require("../package.json").version}`)}`
+  );
+  console.log();
+
   console.log(`🏭 Creating ${kleur.green(projectName)}`);
 
   console.log(`🌊 Using ${kleur.yellow(projectPath)} as the project path`);
