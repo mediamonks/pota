@@ -50,10 +50,12 @@ export const getStyleLoaders = (cssOptions: Record<any, unknown>, preProcessor?:
         },
       },
     },
-    ...(preProcessor && [
-      { loader: require.resolve("resolve-url-loader") },
-      { loader: require.resolve(preProcessor) },
-    ]),
+    ...(preProcessor
+      ? [
+          { loader: require.resolve("resolve-url-loader") },
+          { loader: require.resolve(preProcessor) },
+        ]
+      : []),
   ].filter(Boolean) as RuleSetUse;
 
 export default {
