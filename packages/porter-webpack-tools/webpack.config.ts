@@ -1,5 +1,5 @@
 import getEnv from "./env";
-import { Configuration, DefinePlugin, HotModuleReplacementPlugin } from "webpack";
+import { Configuration, DefinePlugin, HotModuleReplacementPlugin, RuleSetUse } from "webpack";
 import { cwd } from "process";
 import { resolve } from "path";
 import babelConfig from "./babel.config";
@@ -32,8 +32,8 @@ const env = getEnv();
 /**
  * UTILITIES
  */
-export function getStyleLoaders(cssOptions: Record<any, unknown>, preProcessor?: any) {
-  const loaders = [
+export const getStyleLoaders = (cssOptions: Record<any, unknown>, preProcessor?: any): RuleSetUse =>
+  [
     IS_DEV && require.resolve("style-loader"),
     IS_PROD && {
       loader: MiniCssExtractPlugin.loader,
@@ -50,15 +50,11 @@ export function getStyleLoaders(cssOptions: Record<any, unknown>, preProcessor?:
         },
       },
     },
-  ].filter(Boolean);
-  if (preProcessor) {
-    loaders.push(
+    ...(preProcessor && [
       { loader: require.resolve("resolve-url-loader") },
-      { loader: require.resolve(preProcessor) }
-    );
-  }
-  return loaders;
-}
+      { loader: require.resolve(preProcessor) },
+    ]),
+  ].filter(Boolean) as RuleSetUse;
 
 export default {
   // if an improper mode or environment is selected,
@@ -148,7 +144,7 @@ export default {
           // of CSS.
           {
             test: /\.css$/,
-            use: getStyleLoaders({ importLoaders: 2 }),
+            use: getStyleLoaders({ importLoaders: 1 }),
             // Don't consider CSS imports dead code even if the
             // containing package claims to have no side effects.
             // Remove this when webpack adds a warning or an error for this.

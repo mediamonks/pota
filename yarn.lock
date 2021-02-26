@@ -1453,7 +1453,6 @@ __metadata:
     "@vue/compiler-sfc": 3.0.6
     ts-node: ^9.1.1
     vue-loader: ^16.1.2
-    vue-style-loader: ^4.1.2
     webpack: ^5.24.2
     webpack-merge: ^5.7.3
   languageName: unknown
@@ -6789,13 +6788,6 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"hash-sum@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "hash-sum@npm:1.0.2"
-  checksum: 636a207fa9defbe9868a9ff6b1b2b0112b9f0a9e59c3b8d08065519e99588fd0b674746f2a27096618ce7cc644a3eb29261d2c55d2b98f4bf0310b04b7962042
-  languageName: node
-  linkType: hard
-
 "hash-sum@npm:^2.0.0":
   version: 2.0.0
   resolution: "hash-sum@npm:2.0.0"
@@ -8223,7 +8215,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^1.0.2, loader-utils@npm:^1.1.0, loader-utils@npm:^1.4.0":
+"loader-utils@npm:^1.1.0, loader-utils@npm:^1.4.0":
   version: 1.4.0
   resolution: "loader-utils@npm:1.4.0"
   dependencies:
@@ -12987,16 +12979,6 @@ typescript@^4.1.3:
   peerDependencies:
     vue: ^3.0.0
   checksum: 8d57cb6e50ff533b264ae25940562e5f75c60e14c2c74bfecaa5402723af246764c811c4f5489abbfff003b99bb81af3e8efa4bdc8c9c3aeb9da1b92482c5aca
-  languageName: node
-  linkType: hard
-
-"vue-style-loader@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "vue-style-loader@npm:4.1.2"
-  dependencies:
-    hash-sum: ^1.0.2
-    loader-utils: ^1.0.2
-  checksum: 5f6104300a53c88bc850399cdbd3fbb2e89b91e391f8bcd1de320ef9381812892e78849806295fa3ed24c5584456145fd3359a1c7c9b02dc7837d1a90653cb23
   languageName: node
   linkType: hard
 

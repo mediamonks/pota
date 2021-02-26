@@ -1,41 +1,9 @@
-import webpackConfig from "@mediamonks/porter-webpack-tools/webpack.config";
+import webpackConfig, { getStyleLoaders } from "@mediamonks/porter-webpack-tools/webpack.config";
 import babelConfig from "@mediamonks/porter-webpack-tools/babel.config";
-import { Configuration, RuleSetUse } from "webpack";
+import { Configuration } from "webpack";
 import merge from "webpack-merge";
 
 import { VueLoaderPlugin } from "vue-loader";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-
-const IS_DEV = (process.env.WEBPACK_MODE || process.env.NODE_ENV) === "development";
-const IS_PROD = (process.env.WEBPACK_MODE || process.env.NODE_ENV) === "production";
-
-function getStyleLoaders(cssOptions: Record<any, unknown>, preProcessor?: any): RuleSetUse {
-  const loaders = [
-    IS_DEV && require.resolve("vue-style-loader"),
-    IS_PROD && {
-      loader: MiniCssExtractPlugin.loader,
-    },
-    {
-      loader: require.resolve("css-loader"),
-      options: cssOptions,
-    },
-    {
-      loader: require.resolve("postcss-loader"),
-      options: {
-        postcssOptions: {
-          plugins: ["autoprefixer"],
-        },
-      },
-    },
-  ].filter(Boolean);
-  if (preProcessor) {
-    loaders.push(
-      { loader: require.resolve("resolve-url-loader") },
-      { loader: require.resolve(preProcessor) }
-    );
-  }
-  return loaders as RuleSetUse;
-}
 
 // TODO: because `vue-loader`'s plugin doesn't like the `oneOf` rule syntax
 // we have to fallback to the standard rules[]
