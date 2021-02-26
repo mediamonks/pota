@@ -3,6 +3,9 @@ import yargs from "yargs/yargs";
 import * as fs from "fs";
 import * as path from "path";
 import { CLI_DEPENDENCY } from "./config";
+import kleur from "kleur";
+import { banner, clear } from "./utils/cli";
+import { prependHandler } from "./utils/yargs";
 
 const cli = yargs(process.argv.slice(2)).command(
   "create [skeleton-type] [app]",
@@ -21,7 +24,7 @@ const localPackagePath = path.resolve(fs.realpathSync(process.cwd()), "package.j
 if (fs.existsSync(localPackagePath)) {
   const { dependencies = {}, devDependencies = {} } = require(localPackagePath);
 
-  for (const dependency of Object.keys({ ...dependencies, ...devDependencies })) {
+  for (const [dependency, version] of Object.entries({ ...dependencies, ...devDependencies })) {
     const packageJsonPath = require.resolve(path.join(dependency, "package.json"));
 
     const dependencyCommandDir = path.resolve(path.dirname(packageJsonPath), "porter");
@@ -33,7 +36,14 @@ if (fs.existsSync(localPackagePath)) {
         command: name,
         // @ts-ignore 'description' exists, TS is drunk
         description: `The ${name} tool`,
-        builder: (yargs) => yargs.commandDir(dependencyCommandDir, { extensions: ["ts"] }),
+        builder: (yargs) =>
+          yargs.commandDir(dependencyCommandDir, {
+            extensions: ["ts"],
+            visit: prependHandler(() => {
+              clear();
+              banner(dependency, String(version));
+            }),
+          }),
         handler: () => cli.showHelp("log"),
       });
     }

@@ -4,7 +4,7 @@ import mkdirp from "mkdirp";
 import validatePackageName from "validate-npm-package-name";
 import kleur from "kleur";
 
-import { clear, command, spawn, spawnSilent } from "./utils/cli";
+import { banner, clear, command, spawn, spawnSilent } from "./utils/cli";
 import { CLI_DEPENDENCY, INVERTED_SKELETON_SHORTHANDS } from "./config";
 import { PorterSkeletonInterface } from "./authoring/skeleton";
 import { withSynchronizers } from "./utils/skeleton";
@@ -46,11 +46,7 @@ export async function create(
   validateProjectName(projectName);
 
   clear();
-
-  console.log(
-    `💁 ${kleur.bold().red("Porter")} ${kleur.cyan(`v${require("../package.json").version}`)}`
-  );
-  console.log();
+  banner("Porter", require("../package.json").version, "💁");
 
   console.log(`🏭 Creating ${kleur.green(projectName)}`);
 
