@@ -3,7 +3,7 @@ import { PorterSkeleton } from '@mediamonks/porter/lib/authoring/skeleton';
 export default class PorterReactBaseSkeleton extends PorterSkeleton<
   typeof import('./package.json')
 > {
-  tool = '@mediamonks/porter-react-tool';
+  tool = '@mediamonks/porter-react-tools';
 
   dependencies = ['react', 'react-dom', 'web-vitals'] as const;
 

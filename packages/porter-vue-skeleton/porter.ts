@@ -1,7 +1,7 @@
 import { PorterSkeleton } from '@mediamonks/porter/lib/authoring/skeleton';
 
 export default class PorterVueSkeleton extends PorterSkeleton<typeof import('./package.json')> {
-  tool = '@mediamonks/porter-vue-tool';
+  tool = '@mediamonks/porter-vue-tools';
 
   dependencies = ['vue', 'vue-router', 'vuex', 'isntnt'] as const;
 

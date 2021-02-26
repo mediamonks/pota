@@ -69,8 +69,9 @@ export async function create(
   // console.log(`📒 Initialized git repository.`);
 
   console.log();
-  console.log(`🔋 Installing ${kleur.cyan(skeletonType)} skeleton's dependencies.`);
-  console.log("This might take a while...");
+  console.log(
+    `🔋 Installing ${kleur.cyan(skeletonType)} skeleton's dependencies, this might take a while...`
+  );
   console.log();
 
   let skeletonDependency = (INVERTED_SKELETON_SHORTHANDS[skeletonType] as string) ?? skeletonType;

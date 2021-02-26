@@ -51,7 +51,7 @@ import { PorterSkeleton } from "@mediamonks/porter/lib/authoring/skeleton";
 // typeof import("./package.json") infers the types of your package.json
 export default class Skeleton extends PorterSkeleton<typeof import("./package.json")> {
   // the tool the project will use
-  tool = "@mediamonks/porter-react-tool";
+  tool = "@mediamonks/porter-react-tools";
 
   // the usable dependencies for the project
   dependencies = ["react", "react-dom", "web-vitals"] as const;
