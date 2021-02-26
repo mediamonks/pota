@@ -46,7 +46,7 @@ export function getStyleLoaders(cssOptions: Record<any, unknown>, preProcessor?:
       loader: require.resolve("postcss-loader"),
       options: {
         postcssOptions: {
-          plugins: () => [require("autoprefixer")],
+          plugins: ["autoprefixer"],
         },
       },
     },

@@ -23,7 +23,7 @@ function getStyleLoaders(cssOptions: Record<any, unknown>, preProcessor?: any): 
       loader: require.resolve("postcss-loader"),
       options: {
         postcssOptions: {
-          plugins: () => [require("autoprefixer")],
+          plugins: ["autoprefixer"],
         },
       },
     },
@@ -53,7 +53,6 @@ const withLoaderConfig: Configuration = {
         test: /\.vue$/,
         loader: require.resolve("vue-loader"),
       },
-
       {
         test: /\.tsx?$/,
         use: [
@@ -88,7 +87,7 @@ const withLoaderConfig: Configuration = {
       // of CSS.
       {
         test: /\.css$/,
-        use: getStyleLoaders({ importLoaders: 3, esModule: false }),
+        use: getStyleLoaders({ importLoaders: 1, esModule: false }),
         // Don't consider CSS imports dead code even if the
         // containing package claims to have no side effects.
         // Remove this when webpack adds a warning or an error for this.
@@ -99,8 +98,8 @@ const withLoaderConfig: Configuration = {
       // By default we support SASS Modules with the
       // extensions .module.scss or .module.sass
       {
-        test: /\.(scss|sass)$/,
-        use: getStyleLoaders({ importLoaders: 1 }, "sass-loader"),
+        test: /\.scss$/,
+        use: getStyleLoaders({ importLoaders: 3 }, "sass-loader"),
         // Don't consider CSS imports dead code even if the
         // containing package claims to have no side effects.
         // Remove this when webpack adds a warning or an error for this.

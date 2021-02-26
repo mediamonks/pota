@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "@mediamonks/porter-webpack-tools": "workspace:packages/porter-webpack-tools",
-    "@vue/compiler-sfc": "3.0.5",
+    "@vue/compiler-sfc": "3.0.6",
     "ts-node": "^9.1.1",
     "vue-loader": "^16.1.2",
     "vue-style-loader": "^4.1.2",
