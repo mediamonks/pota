@@ -21,7 +21,8 @@
     "tsconfig.tools.json"
   ],
   "scripts": {
-    "build": "rm -rf lib ; tsc -b"
+    "build": "rm -rf lib ; tsc -b",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@psimk/typed-object": "^1.0.4",
