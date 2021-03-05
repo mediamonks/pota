@@ -1313,6 +1313,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mediamonks/eslint-config-base@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@mediamonks/eslint-config-base@npm:1.0.2"
+  dependencies:
+    "@typescript-eslint/eslint-plugin": ^4.15.0
+    "@typescript-eslint/parser": ^4.15.0
+    eslint-config-airbnb-base: ^14.2.1
+    eslint-config-prettier: ^7.2.0
+    eslint-import-resolver-typescript: ^2.3.0
+    eslint-plugin-babel: ^5.3.1
+    eslint-plugin-html: ^6.1.1
+    eslint-plugin-import: ^2.22.1
+    eslint-plugin-prettier: ^3.3.1
+    eslint-plugin-unicorn: ^27.0.0
+  peerDependencies:
+    eslint: ">=7"
+    prettier: ">=2"
+    typescript: ">=4"
+  checksum: 07b24bd41a7aaa20042a2a1d40c3dadd1a91e0e386d03bccfe04cf932e3916bd3c4db94d2da4d1a060a49f93a44275eaf6327ff32190f96936dfb3a992c967f4
+  languageName: node
+  linkType: hard
+
 "@mediamonks/eslint-config-react@npm:^1.0.0-alpha.2":
   version: 1.0.0-alpha.2
   resolution: "@mediamonks/eslint-config-react@npm:1.0.0-alpha.2"
@@ -1329,18 +1351,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mediamonks/eslint-config-vue@npm:^1.0.0-alpha.2":
-  version: 1.0.0-alpha.2
-  resolution: "@mediamonks/eslint-config-vue@npm:1.0.0-alpha.2"
+"@mediamonks/eslint-config-vue@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@mediamonks/eslint-config-vue@npm:1.0.0"
   dependencies:
-    "@mediamonks/eslint-config-base": 1.0.0-alpha.2
+    "@mediamonks/eslint-config-base": 1.0.2
     eslint-plugin-vue: ^7.5.0
     vue-eslint-parser: ^7.4.1
   peerDependencies:
     eslint: ">=7"
     prettier: ">=2"
     typescript: ">=4"
-  checksum: 9631b8423a4011f613319769f01d2e8b41be6ccf90f7bc08bbfbddafa770f80047570091510737a9c76d2e1378ab8195748fc5bd820312f9ec21af16baa05b35
+  checksum: e9ba47af4f2ef20ecd34b67d85eb469c2a9b1e200de2c95fe7b400ee6739d977eb966186220db250f4fc4633abcec493b174e1a58133b4bb71f72882ad4b558f
   languageName: node
   linkType: hard
 
@@ -1427,7 +1449,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@mediamonks/porter-vue-skeleton@workspace:packages/porter-vue-skeleton"
   dependencies:
-    "@mediamonks/eslint-config-vue": ^1.0.0-alpha.2
+    "@mediamonks/eslint-config-vue": ^1.0.0
     cross-env: ^7.0.3
     eslint: ^7.19.0
     husky: ^4.3.0
