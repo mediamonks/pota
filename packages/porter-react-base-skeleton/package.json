@@ -36,7 +36,7 @@
     "lint-staged.config.js"
   ],
   "dependencies": {
-    "@mediamonks/eslint-config-react": "^1.0.0-alpha.2",
+    "@mediamonks/eslint-config-react": "^1.0.2",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "cross-env": "^7.0.3",
