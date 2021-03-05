@@ -112,12 +112,6 @@ const withLoaderConfig: Configuration = {
 };
 
 export default merge(withLoaderConfig, {
-  resolve: {
-    extensions: [".vue"],
-    alias: {
-      vue: "@vue/runtime-dom",
-    },
-  },
-
+  resolve: { extensions: [".vue"] },
   plugins: [new VueLoaderPlugin()],
 });
