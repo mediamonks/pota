@@ -42,7 +42,7 @@
     "lint-staged.config.js"
   ],
   "dependencies": {
-    "@mediamonks/eslint-config-vue": "^1.0.0",
+    "@mediamonks/eslint-config-vue": "^1.0.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.19.0",
     "husky": "^4.3.0",
