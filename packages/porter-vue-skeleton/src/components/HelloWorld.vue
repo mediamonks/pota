@@ -5,17 +5,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "HelloWorld",
+  name: 'HelloWorld',
   props: {
-    msg: String
-  },setup() {
-    function add(num:number, numO:number) {
-      return num + numO;
-
-    }
-  }
+    msg: String,
+  },
 });
 </script>
+
