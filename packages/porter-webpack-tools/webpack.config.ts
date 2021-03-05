@@ -104,122 +104,92 @@ export default {
     // TODO:
     strictExportPresence: true,
     rules: [
+      /**
+       * TYPESCRIPT
+       */
       {
-        // "oneOf" will traverse all following loaders until one will
-        // match the requirements. When no loader matches it will fall
-        // back to the "file" loader at the end of the loader list.
-        oneOf: [
-          /**
-           * TYPESCRIPT
-           */
+        test: /\.tsx?$/,
+        use: [
+          { loader: require.resolve("babel-loader"), options: babelConfig },
           {
-            test: /\.tsx?$/,
-            use: [
-              { loader: require.resolve("babel-loader"), options: babelConfig },
-              {
-                loader: require.resolve("ts-loader"),
-                options: {
-                  // makes sure to load only the files required by webpack and nothing more
-                  onlyCompileBundledFiles: true,
-                  // type checking is handled by `fork-ts-checker-webpack-plugin`
-                  transpileOnly: true,
-                  happyPackMode: true,
-                },
-              },
-            ],
-          },
-          /**
-           * JAVASCRIPT
-           */
-          {
-            test: /\.m?jsx?$/,
-            use: [{ loader: require.resolve("babel-loader"), options: babelConfig }],
-          },
-          /**
-           * CSS
-           */
-          // "postcss" loader applies autoprefixer to our CSS.
-          // "css" loader resolves paths in CSS and adds assets as dependencies.
-          // "style" loader turns CSS into JS modules that inject <style> tags.
-          // In production, we use MiniCSSExtractPlugin to extract that CSS
-          // to a file, but in development "style" loader enables hot editing
-          // of CSS.
-          {
-            test: /\.css$/,
-            use: getStyleLoaders({ importLoaders: 1 }),
-            // Don't consider CSS imports dead code even if the
-            // containing package claims to have no side effects.
-            // Remove this when webpack adds a warning or an error for this.
-            // See https://github.com/webpack/webpack/issues/6571
-            sideEffects: true,
-          },
-          // Opt-in support for SASS (using .scss or .sass extensions).
-          // By default we support SASS Modules with the
-          // extensions .module.scss or .module.sass
-          {
-            test: /\.(scss|sass)$/,
-            use: getStyleLoaders({ importLoaders: 3 }, "sass-loader"),
-            // Don't consider CSS imports dead code even if the
-            // containing package claims to have no side effects.
-            // Remove this when webpack adds a warning or an error for this.
-            // See https://github.com/webpack/webpack/issues/6571
-            sideEffects: true,
-          },
-          // TODO: Merge both of the `url-loader` rules
-          // once `image/avif` is in the mime-db (and `url-loader` is updated to support it)
-          // https://github.com/jshttp/mime-db
-          {
-            test: [/\.avif$/],
-            loader: require.resolve("url-loader"),
+            loader: require.resolve("ts-loader"),
             options: {
-              mimetype: "image/avif",
-              name: "static/media/[name].[hash:8].[ext]",
+              // makes sure to load only the files required by webpack and nothing more
+              onlyCompileBundledFiles: true,
+              // type checking is handled by `fork-ts-checker-webpack-plugin`
+              transpileOnly: true,
+              happyPackMode: true,
             },
           },
-          // "url" loader works like "file" loader except that it embeds assets
-          // smaller than specified limit in bytes as data URLs to avoid requests.
-          // A missing `test` is equivalent to a match.
-          {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-            loader: require.resolve("url-loader"),
-            options: {
-              name: "static/media/[name].[hash:8].[ext]",
-            },
-          },
-          {
-            test: /\.(png|jpe?g|gif)(\?.*)?$/,
-            use: [
-              {
-                loader: require.resolve("file-loader"),
-                options: {
-                  limit: 10000,
-                  name: "image/[name].[hash:7].[ext]",
-                },
-              },
-            ],
-          },
-          // "file" loader makes sure those assets get served by WebpackDevServer.
-          // When you `import` an asset, you get its (virtual) filename.
-          // In production, they would get copied to the `build` folder.
-          // This loader doesn't use a "test" so it will catch all modules
-          // that fall through the other loaders.
-          {
-            loader: require.resolve("file-loader"),
-            // Exclude `js` files to keep "css" loader working as it injects
-            // its runtime that would otherwise be processed through "file" loader.
-            // Also exclude `html` and `json` extensions so they get processed
-            // by webpacks internal loaders.
-            exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
-            options: {
-              name: "static/media/[name].[hash:8].[ext]",
-            },
-          },
-          /**
-           * 🛑 STOP 🛑
-           * are you adding a new loader?
-           * make sure to add new loader(s) before `file-loader
-           */
         ],
+      },
+      /**
+       * JAVASCRIPT
+       */
+      {
+        test: /\.m?jsx?$/,
+        use: [{ loader: require.resolve("babel-loader"), options: babelConfig }],
+      },
+      /**
+       * CSS
+       */
+      // "postcss" loader applies autoprefixer to our CSS.
+      // "css" loader resolves paths in CSS and adds assets as dependencies.
+      // "style" loader turns CSS into JS modules that inject <style> tags.
+      // In production, we use MiniCSSExtractPlugin to extract that CSS
+      // to a file, but in development "style" loader enables hot editing
+      // of CSS.
+      {
+        test: /\.css$/,
+        use: getStyleLoaders({ importLoaders: 1 }),
+        // Don't consider CSS imports dead code even if the
+        // containing package claims to have no side effects.
+        // Remove this when webpack adds a warning or an error for this.
+        // See https://github.com/webpack/webpack/issues/6571
+        sideEffects: true,
+      },
+      // Opt-in support for SASS (using .scss or .sass extensions).
+      // By default we support SASS Modules with the
+      // extensions .module.scss or .module.sass
+      {
+        test: /\.(scss|sass)$/,
+        use: getStyleLoaders({ importLoaders: 3 }, "sass-loader"),
+        // Don't consider CSS imports dead code even if the
+        // containing package claims to have no side effects.
+        // Remove this when webpack adds a warning or an error for this.
+        // See https://github.com/webpack/webpack/issues/6571
+        sideEffects: true,
+      },
+      /**
+       * IMAGES
+       */
+      {
+        test: /\.(png|jpe?g|gif|webp|avif)(\?.*)?$/,
+        type: "asset",
+        generator: { filename: "img/[contenthash:8][ext][query]" },
+      },
+      // do not base64-inline SVGs.
+      // https://github.com/facebookincubator/create-react-app/pull/1180
+      {
+        test: /\.(svg)(\?.*)?$/,
+        type: "asset/resource",
+        generator: { filename: "img/[contenthash:8][ext][query]" },
+      },
+      /**
+       * MISC MEDIA
+       */
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        type: "asset",
+        generator: { filename: "media/[contenthash:8][ext][query]" },
+      },
+      /**
+       * FONTS
+       */
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
+        type: "asset",
+        generator: { filename: "fonts/[contenthash:8][ext][query]" },
       },
     ],
   },
