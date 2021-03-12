@@ -1464,11 +1464,13 @@ __metadata:
   dependencies:
     "@babel/core": ^7.12.10
     "@babel/preset-env": ^7.12.11
+    "@types/copy-webpack-plugin": ^6.4.0
     "@types/mini-css-extract-plugin": ^1.2.2
     "@types/react-dev-utils": ^9.0.4
     "@types/webpack-dev-server": 3.11.1
     autoprefixer: 10.2.4
     babel-loader: ^8.2.2
+    copy-webpack-plugin: ^8.0.0
     css-loader: ^5.0.1
     dotenv: ^8.2.0
     dotenv-expand: ^5.1.0
@@ -1664,6 +1666,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 6f712a0408ed119a42037bcbc38c12e053d3ffe11337221a3966c9e29a21c8455e331fe2116c426361c0b2c0e44cb3fb1f83594326e42ba34ce4723d726b7d30
+  languageName: node
+  linkType: hard
+
+"@types/copy-webpack-plugin@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "@types/copy-webpack-plugin@npm:6.4.0"
+  dependencies:
+    "@types/webpack": "*"
+  checksum: 353676dbf410684c128294233ff5ee5c8ad38bead6bbcd19c25bbd3a387102bedf31a636ab91071ed8b53929f0b942798ba82bf9f13d85dc334cb78f6886d7d6
   languageName: node
   linkType: hard
 
@@ -4246,6 +4257,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"copy-webpack-plugin@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "copy-webpack-plugin@npm:8.0.0"
+  dependencies:
+    fast-glob: ^3.2.5
+    glob-parent: ^5.1.1
+    globby: ^11.0.2
+    normalize-path: ^3.0.0
+    p-limit: ^3.1.0
+    schema-utils: ^3.0.0
+    serialize-javascript: ^5.0.1
+  peerDependencies:
+    webpack: ^5.1.0
+  checksum: 83de40696df01870bc977ef5ac1805c1f7fcf74adf64b657691f1ba9946a15a77391e4b64c27cce5abd7eba5a9f2d1404408a6073924aa09196a48c99cd11bf2
+  languageName: node
+  linkType: hard
+
 "core-js-compat@npm:^3.8.0":
   version: 3.8.3
   resolution: "core-js-compat@npm:3.8.3"
@@ -6408,6 +6436,15 @@ fsevents@~2.3.1:
   dependencies:
     is-glob: ^4.0.1
   checksum: 2af6e196fba4071fb07ba261366e446ba2b320e6db0a2069cf8e12117c5811abc6721f08546148048882d01120df47e56aa5a965517a6e5ba19bfeb792655119
+  languageName: node
+  linkType: hard
+
+"glob-parent@npm:^5.1.1":
+  version: 5.1.2
+  resolution: "glob-parent@npm:5.1.2"
+  dependencies:
+    is-glob: ^4.0.1
+  checksum: 82fcaa4ce102a0ae01370ed8fd5299ca32184af0418e1c1b613ed851240160558c0cc9712868eb9ca1924f687b07cd9c70c25f303f39f9f376d9a32f94f28e76
   languageName: node
   linkType: hard
 

@@ -1,16 +1,15 @@
 import * as fs from "fs";
-import * as path from "path";
+import { resolve } from "path";
+import * as paths from "./paths";
 
 const IS_PROD = (process.env.WEBPACK_MODE || process.env.NODE_ENV) === "production";
 
 const USE_VERSIONING = process.env.USE_VERSIONING === "true";
 const CUSTOM_VERSION = process.env.CUSTOM_VERSION;
 
-const appDirectory = fs.realpathSync(process.cwd());
-
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const ENV_FILES = [`.env.${process.env.NODE_ENV}.local`, `.env.local`, `.env`].map((file) =>
-  path.resolve(appDirectory, file)
+  resolve(paths.user, file)
 );
 
 // Load environment variables from .env* files. Suppress warnings using silent
@@ -37,12 +36,11 @@ export default function () {
         return env;
       },
       {
-        PUBLIC_URL: (process.env.PUBLIC_URL || "/")!.slice(0, -1),
+        PUBLIC_URL: process.env.PUBLIC_URL || "/",
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || "development",
-        VERSION_PATH:
-          USE_VERSIONING && IS_PROD ? `/static/version/${CUSTOM_VERSION || Date.now()}` : "/",
+        VERSION_PATH: USE_VERSIONING && IS_PROD ? `/version/${CUSTOM_VERSION || Date.now()}` : "/",
       }
     );
   // Stringify all values so we can feed into webpack DefinePlugin

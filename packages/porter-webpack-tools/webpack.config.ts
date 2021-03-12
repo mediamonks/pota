@@ -1,13 +1,20 @@
 import getEnv from "./env";
-import { Configuration, DefinePlugin, HotModuleReplacementPlugin, RuleSetUse } from "webpack";
-import { cwd } from "process";
+import {
+  CleanPlugin,
+  Configuration,
+  DefinePlugin,
+  HotModuleReplacementPlugin,
+  RuleSetUse,
+} from "webpack";
 import { resolve } from "path";
+import * as paths from "./paths";
 import babelConfig from "./babel.config";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+import HTMLPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import InlineChunkHtmlPlugin from "react-dev-utils/InlineChunkHtmlPlugin";
 import InterpolateHtmlPlugin from "react-dev-utils/InterpolateHtmlPlugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 
 /**
  * PARSE `process.env`
@@ -21,8 +28,6 @@ const CUSTOM_SOURCE_MAP = process.env.CUSTOM_SOURCE_MAP;
 const USE_INLINE_RUNTIME_CHUNK = process.env.INLINE_RUNTIME_CHUNK !== "false";
 
 const USE_TYPE_CHECK = process.env.TYPE_CHECK !== "false";
-
-const PUBLIC_URL = process.env.PUBLIC_URL || "/";
 
 const IS_DEV = (process.env.WEBPACK_MODE || process.env.NODE_ENV) === "development";
 const IS_PROD = (process.env.WEBPACK_MODE || process.env.NODE_ENV) === "production";
@@ -70,6 +75,7 @@ export default {
     : false,
 
   optimization: {
+    minimize: false,
     // Automatically split vendor and commons
     // https://twitter.com/wSokra/status/969633336732905474
     // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
@@ -87,17 +93,17 @@ export default {
   },
 
   // TODO:
-  // context: process.cwd(),
-  entry: "./src/main.ts",
+  context: paths.user,
+  entry: paths.entry,
   output: {
-    path: resolve(cwd(), "./build"),
-    publicPath: PUBLIC_URL,
+    path: paths.output,
+    publicPath: env.raw.PUBLIC_URL,
     globalObject: "this",
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: {
-      "@": resolve("src"),
+      "@": paths.source,
     },
   },
   module: {
@@ -194,9 +200,11 @@ export default {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
+    new CleanPlugin({}),
+    new HTMLPlugin({
       inject: true,
-      template: "./public/index.html",
+      favicon: resolve(paths.publicDir, "favicon.ico"),
+      template: resolve(paths.publicDir, "index.html"),
     }),
 
     // Inlines the webpack runtime script. This script is too small to warrant
@@ -204,25 +212,31 @@ export default {
     // https://github.com/facebook/create-react-app/issues/5358
     IS_PROD &&
       USE_INLINE_RUNTIME_CHUNK &&
-      new InlineChunkHtmlPlugin(HtmlWebpackPlugin as any, [/runtime-.+[.]js/]),
+      new InlineChunkHtmlPlugin(HTMLPlugin as any, [/runtime-.+[.]js/]),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">
     // It will be an empty string unless you specify "homepage"
     // in `package.json`, in which case it will be the pathname of that URL.
-    new InterpolateHtmlPlugin(HtmlWebpackPlugin as any, env.raw),
+    new InterpolateHtmlPlugin(HTMLPlugin as any, env.raw),
     new DefinePlugin(env.stringified),
     IS_DEV && new HotModuleReplacementPlugin(),
     IS_PROD && new MiniCssExtractPlugin(),
+    IS_PROD &&
+      new CopyPlugin({
+        patterns: [
+          {
+            from: paths.publicDir,
+            to: paths.output,
+            toType: "dir",
+            globOptions: { ignore: ["**/.DS_Store", resolve(paths.publicDir, "index.html")] },
+          },
+        ],
+      }),
     USE_TYPE_CHECK &&
       new ForkTsCheckerWebpackPlugin({
         async: IS_DEV,
-        typescript: {
-          diagnosticOptions: {
-            semantic: true,
-            syntactic: true,
-          },
-        },
+        typescript: { diagnosticOptions: { semantic: true, syntactic: true } },
       }),
   ].filter(Boolean),
 } as Configuration;
