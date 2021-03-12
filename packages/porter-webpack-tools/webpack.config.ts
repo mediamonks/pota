@@ -15,6 +15,7 @@ import InlineChunkHtmlPlugin from "react-dev-utils/InlineChunkHtmlPlugin";
 import InterpolateHtmlPlugin from "react-dev-utils/InterpolateHtmlPlugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
+import ErrorPlugin from "friendly-errors-webpack-plugin";
 
 /**
  * PARSE `process.env`
@@ -64,9 +65,10 @@ export const getStyleLoaders = (cssOptions: Record<any, unknown>, preProcessor?:
   ].filter(Boolean) as RuleSetUse;
 
 export default {
+  target: "web",
   // if an improper mode or environment is selected,
   // `mode` will be false and webpack will complain about it
-  mode: IS_PROD ? "production" : IS_DEV && "development",
+  mode: (IS_PROD ? "production" : IS_DEV && "development") || "production",
   // will bail compilation on the first error,
   // instead of the default behavior of tolerating the error
   bail: IS_PROD,
@@ -74,25 +76,6 @@ export default {
     ? CUSTOM_SOURCE_MAP || (IS_PROD ? "source-map" : IS_DEV && "cheap-source-map")
     : false,
 
-  optimization: {
-    minimize: false,
-    // Automatically split vendor and commons
-    // https://twitter.com/wSokra/status/969633336732905474
-    // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-    splitChunks: {
-      chunks: "all",
-      // TODO:
-      name: false,
-    },
-    // Keep the runtime chunk separated to enable long term caching
-    // https://twitter.com/wSokra/status/969679223278505985
-    // https://github.com/facebook/create-react-app/issues/5358
-    runtimeChunk: {
-      name: "runtime",
-    },
-  },
-
-  // TODO:
   context: paths.user,
   entry: paths.entry,
   output: {
@@ -106,6 +89,35 @@ export default {
       "@": paths.source,
     },
   },
+
+  optimization: {
+    minimize: false,
+    splitChunks: {
+      cacheGroups: {
+        defaultVendors: {
+          name: `chunk-vendors`,
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          chunks: "initial",
+        },
+        common: {
+          name: `chunk-common`,
+          minChunks: 2,
+          priority: -20,
+          chunks: "initial",
+          reuseExistingChunk: true,
+        },
+      },
+    },
+
+    // Keep the runtime chunk separated to enable long term caching
+    // https://twitter.com/wSokra/status/969679223278505985
+    // https://github.com/facebook/create-react-app/issues/5358
+    runtimeChunk: {
+      name: "runtime",
+    },
+  },
+
   module: {
     // TODO:
     strictExportPresence: true,
@@ -206,19 +218,20 @@ export default {
       favicon: resolve(paths.publicDir, "favicon.ico"),
       template: resolve(paths.publicDir, "index.html"),
     }),
-
+    new ErrorPlugin(),
+    // new ErrorPlugin(),
     // Inlines the webpack runtime script. This script is too small to warrant
     // a network request.
     // https://github.com/facebook/create-react-app/issues/5358
     IS_PROD &&
       USE_INLINE_RUNTIME_CHUNK &&
-      new InlineChunkHtmlPlugin(HTMLPlugin as any, [/runtime-.+[.]js/]),
+      new (InlineChunkHtmlPlugin as any)(HTMLPlugin as any, [/runtime\.js/]),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">
     // It will be an empty string unless you specify "homepage"
     // in `package.json`, in which case it will be the pathname of that URL.
-    new InterpolateHtmlPlugin(HTMLPlugin as any, env.raw),
+    new InterpolateHtmlPlugin(HTMLPlugin, env.raw),
     new DefinePlugin(env.stringified),
     IS_DEV && new HotModuleReplacementPlugin(),
     IS_PROD && new MiniCssExtractPlugin(),

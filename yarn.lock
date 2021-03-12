@@ -1465,17 +1465,20 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/preset-env": ^7.12.11
     "@types/copy-webpack-plugin": ^6.4.0
+    "@types/friendly-errors-webpack-plugin": ^0.1.2
     "@types/mini-css-extract-plugin": ^1.2.2
     "@types/react-dev-utils": ^9.0.4
     "@types/webpack-dev-server": 3.11.1
     autoprefixer: 10.2.4
     babel-loader: ^8.2.2
     copy-webpack-plugin: ^8.0.0
+    core-js: ^3.9.1
     css-loader: ^5.0.1
     dotenv: ^8.2.0
     dotenv-expand: ^5.1.0
     file-loader: ^6.2.0
     fork-ts-checker-webpack-plugin: ^6.1.0
+    friendly-errors-webpack-plugin: "npm:@soda/friendly-errors-webpack-plugin@^1.8.0"
     html-webpack-plugin: 5.2.0
     kleur: ^4.1.3
     mini-css-extract-plugin: ^1.3.9
@@ -1737,6 +1740,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/friendly-errors-webpack-plugin@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@types/friendly-errors-webpack-plugin@npm:0.1.2"
+  dependencies:
+    "@types/webpack": "*"
+  checksum: a675d4a5d110719bdf0b735ffc663b5fab0ca0761a062a8e3be1a587ce2475434017563cfdd54d1da1bbd05477e379b50a741c7ee103fe2f5e487c989127321a
+  languageName: node
+  linkType: hard
+
 "@types/fs-extra@npm:^9.0.7":
   version: 9.0.7
   resolution: "@types/fs-extra@npm:9.0.7"
@@ -1833,6 +1845,22 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: 66e9ac0143ec521522c7bb670301e9836ee886207eeed1aab6d4854a1b19b404ab3a54cd8d449f9b1f13acc357f540be96f8ac2d1e86e301eab52ae0f9a4066f
+  languageName: node
+  linkType: hard
+
+"@types/lodash-es@npm:^4.17.4":
+  version: 4.17.4
+  resolution: "@types/lodash-es@npm:4.17.4"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 5a56261030df09302229a6bbabfcb5a0a63a290bdcc0ca9ee6a96a4fbf7a34101fae4b772fedf5dc4a2b49212ddaf9019b3f014b8c7c84adfea500ece157ec1b
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.14.168
+  resolution: "@types/lodash@npm:4.14.168"
+  checksum: 9a4e25f89fc035b9f0388f1f7be85e5eff49f9e6db0d93432c9a89fce0916f8a89db4e8290415f7ea02de6b00d3573826378dcb655b7b2d20530a6e8d6dd6fd0
   languageName: node
   linkType: hard
 
@@ -4291,6 +4319,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core-js@npm:^3.9.1":
+  version: 3.9.1
+  resolution: "core-js@npm:3.9.1"
+  checksum: 3f360466246e816ff745f349bf0ea0c54bc3a05203638d84c5f0eae3583f07e7d848d6aa9b69c30467efb418e526bae034a6da50bcfda8b2cd413e5144cd1444
+  languageName: node
+  linkType: hard
+
 "core-util-is@npm:1.0.2, core-util-is@npm:~1.0.0":
   version: 1.0.2
   resolution: "core-util-is@npm:1.0.2"
@@ -5109,7 +5144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"error-stack-parser@npm:^2.0.6":
+"error-stack-parser@npm:^2.0.2, error-stack-parser@npm:^2.0.6":
   version: 2.0.6
   resolution: "error-stack-parser@npm:2.0.6"
   dependencies:
@@ -6185,6 +6220,20 @@ __metadata:
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
   checksum: 2f76c8505d1ea5a6d5accea3e7aff0b796bfa43364c84929254f33909fa08640948bd1728220d1ff5f4c2b378a65e97da647f2fe0f2b7ddb44001f6e0dc2e91f
+  languageName: node
+  linkType: hard
+
+"friendly-errors-webpack-plugin@npm:@soda/friendly-errors-webpack-plugin@^1.8.0":
+  version: 1.8.0
+  resolution: "@soda/friendly-errors-webpack-plugin@npm:1.8.0"
+  dependencies:
+    chalk: ^2.4.2
+    error-stack-parser: ^2.0.2
+    string-width: ^2.0.0
+    strip-ansi: ^5
+  peerDependencies:
+    webpack: ^4.0.0 || ^5.0.0
+  checksum: f3f1305b074a3e48f93e2ac891de94faa0fd14f77c03deb31e872c83db39b37a410a989ff04e3cb8027ce6e6b4bcc659ee2565091870307d5df245d2c0c2e434
   languageName: node
   linkType: hard
 
@@ -8298,6 +8347,13 @@ fsevents@~2.3.1:
   dependencies:
     p-locate: ^5.0.0
   checksum: 4c379638152e0e5fda9a8cc07005702f81fcb9899db0f66d691ac1e64193dea670af14e96c50f14d82d45959daa4c400cb712c158cffe22ae265bfc1b1e3a221
+  languageName: node
+  linkType: hard
+
+"lodash-es@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: ff0e7bb9595594d8b9c32fbe15912eaeefd83266f6e6872fbc498533cf8c2f039d12d37034b33965f1c04ef66ec1d6da83377c77e84e14c51a137901bb50865e
   languageName: node
   linkType: hard
 
@@ -11776,7 +11832,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"string-width@npm:^1.0.2 || 2, string-width@npm:^2.1.0":
+"string-width@npm:^1.0.2 || 2, string-width@npm:^2.0.0, string-width@npm:^2.1.0":
   version: 2.1.1
   resolution: "string-width@npm:2.1.1"
   dependencies:
@@ -11910,7 +11966,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"strip-ansi@npm:^5.0.0, strip-ansi@npm:^5.1.0, strip-ansi@npm:^5.2.0":
+"strip-ansi@npm:^5, strip-ansi@npm:^5.0.0, strip-ansi@npm:^5.1.0, strip-ansi@npm:^5.2.0":
   version: 5.2.0
   resolution: "strip-ansi@npm:5.2.0"
   dependencies:
@@ -12451,6 +12507,8 @@ fsevents@~2.3.1:
     "@mediamonks/porter-react-tools": "workspace:packages/porter-react-tools"
     "@mediamonks/porter-vue-tools": "workspace:packages/porter-vue-tools"
     "@mediamonks/porter-webpack-tools": "workspace:packages/porter-webpack-tools"
+    "@types/lodash-es": ^4.17.4
+    lodash-es: ^4.17.21
     typescript: ^4.2.3
   languageName: unknown
   linkType: soft

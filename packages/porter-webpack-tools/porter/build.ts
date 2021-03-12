@@ -14,18 +14,19 @@ export async function handler({ config: configPath }: Arguments<typeof builder>)
 
   const config = (await import(configPath))?.default;
 
-  try {
-    await new Promise<string | undefined>(async (resolve, reject) =>
-      webpack(config, (error, stats) => {
-        error = error ?? (stats?.hasErrors() && stats.toJson()?.errors);
+  await new Promise<void>(async (resolve, reject) =>
+    webpack(config, (error, stats) => {
+      if (error) {
+        return reject(error);
+      }
 
-        return error ? reject(error) : resolve(stats?.toString());
-      })
-    );
+      if (stats?.hasErrors()) {
+        return reject(new Error("Build failed with errors."));
+      }
 
-    console.log(`Finished bundling`);
-  } catch (error) {
-    console.error(`Bundling failed`);
-    console.error(error);
-  }
+      resolve();
+    })
+  );
+
+  console.log(`Finished bundling`);
 }
