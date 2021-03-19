@@ -8,7 +8,7 @@ _the CLI tool to carry your projects across the finish line and then some_
 Porter is a tool for creating and managing project skeletons (scaffolds) and creating new projects from these skeletons.
 [If you encounter any problems, please submit an issue.](https://github.com/mediamonks/porter/issues/new)
 
-# 🚀 projects
+## 🚀 projects
 
 If all you want is to quickly bootstrap a project with one of the builtin skeletons, you can use the `create` command.
 
@@ -32,11 +32,11 @@ npx @mediamonks/porter create vue my-vue-app
 
 The `base` versions of the skeletons only have a basic development setup, don't contain anything additional are not opinionated. The standard versions expand on the `base` counterparts and include additional dependencies and a predefined project structure.
 
-# 📚 skeletons & tools
+## 📚 Skeletons & tools
 
 A porter skeleton is split into the _skeleton_ and _tools_ packages.
 
-## ☠️ Skeletons
+### ☠️ skeletons
 
 Are responsible for defining the **structure, dependencies, scripts and the tools** used by the created project.
 
@@ -74,7 +74,7 @@ export default class Skeleton extends PorterSkeleton<typeof import("./package.js
 }
 ```
 
-## ⚒️ Tools
+### ⚒️ tools
 
 Are responsible for providing the **build system** for a skeleton and adding new **commands** to the porter CLI.
 
@@ -100,7 +100,7 @@ export const handler = () => {
 };
 ```
 
-# 💫 Migration
+## 💫 Migration
 
 ### `cra-template`
 
@@ -110,6 +110,6 @@ For those migrating from `cra-template`...
 
 For those migrating from `vue-skeleton`...
 
-# 🙏 Contributing
+## 🙏 Contributing
 
 We appreciate other great minds working Porter and making it better for all. See CONTRIBUTING.md for more information on how to get started.
