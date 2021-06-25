@@ -1,6 +1,6 @@
-# porter-react-skeleton
+# porter-vue-skeleton
 
-The skeleton for React projects
+The skeleton for Vue projects
 
 ## Dependencies
 

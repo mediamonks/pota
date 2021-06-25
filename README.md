@@ -1,7 +1,7 @@
 # Porter :tipping_hand_person:
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/mediamonks/porter/tree/main/CONTRIBUTING.md)
-[![CLI package](https://badge.fury.io/js/%40mediamonks%2Fporter.svg)](https://github.com/mediamonks/porter/tree/main/packages/porter)
+[![CLI package](https://badge.fury.io/js/%40mediamonks%2Fporter.svg)](https://www.npmjs.com/package/@mediamonks/porter)
 
 _the CLI tool to carry your projects across the finish line and then some_
 
@@ -24,11 +24,11 @@ npx @mediamonks/porter create vue my-vue-app
 
 ```
 
-| skeleton              | version                                                                                                                                                                       |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `react-skeleton`      | [![npm version](https://badge.fury.io/js/%40mediamonks%2Fporter-react-skeleton.svg)](https://github.com/mediamonks/porter/tree/main/packages/porter-react-skeleton)           |
-| `react-base-skeleton` | [![npm version](https://badge.fury.io/js/%40mediamonks%2Fporter-react-base-skeleton.svg)](https://github.com/mediamonks/porter/tree/main/packages/porter-react-base-skeleton) |
-| `vue-skeleton`        | [![npm version](https://badge.fury.io/js/%40mediamonks%2Fporter-vue-skeleton.svg)](https://github.com/mediamonks/porter/tree/main/packages/porter-vue-skeleton)               |
+| skeleton              | version                                                                                                                                                         |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `react-skeleton`      | [![npm version](https://badge.fury.io/js/%40mediamonks%2Fporter-react-skeleton.svg)](https://www.npmjs.com/package/@mediamonks/porter-react-skeleton)           |
+| `react-base-skeleton` | [![npm version](https://badge.fury.io/js/%40mediamonks%2Fporter-react-base-skeleton.svg)](https://www.npmjs.com/package/@mediamonks/porter-react-base-skeleton) |
+| `vue-skeleton`        | [![npm version](https://badge.fury.io/js/%40mediamonks%2Fporter-vue-skeleton.svg)](https://www.npmjs.com/package/@mediamonks/porter-vue-skeleton)               |
 
 The `base` versions of the skeletons only have a basic development setup, don't contain anything additional are not opinionated. The standard versions expand on the `base` counterparts and include additional dependencies and a predefined project structure.
 
