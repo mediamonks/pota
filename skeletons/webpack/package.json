@@ -1,0 +1,56 @@
+{
+  "name": "@pota/webpack-skeleton",
+  "version": "0.1.0-alpha.4",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mediamonks/pota.git",
+    "directory": "skeletons/webpack"
+  },
+  "files": [
+    "pota.js",
+    "pota.package.json",
+    "tsconfig.json",
+    "public",
+    "src",
+    "webpack"
+  ],
+  "scripts": {
+    "build": "webpack -c webpack/webpack.config.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "@pota/authoring": "0.1.0-alpha.1",
+    "autoprefixer": "^10.3.6",
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^9.0.1",
+    "core-js": "^3.18.1",
+    "css-loader": "^6.3.0",
+    "dotenv": "^10.0.0",
+    "dotenv-expand": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "fork-ts-checker-webpack-plugin": "^6.3.3",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.3.0",
+    "postcss": "^8.3.8",
+    "postcss-loader": "^6.1.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "resolve-url-loader": "^4.0.0",
+    "sass": "^1.42.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.3.0",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.4.3",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.55.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

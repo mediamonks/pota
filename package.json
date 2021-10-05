@@ -1,13 +1,20 @@
 {
-  "name": "porter-project",
+  "name": "@pota/root",
   "private": true,
   "version": "0.0.1",
   "description": "💁 the build system to carry your projects",
-  "scripts": {
-    "publish": "yarn workspaces foreach npm publish"
-  },
   "workspaces": [
-    "packages/*",
-    "kitchen-sink/*"
-  ]
+    "core/create",
+    "core/skeleton",
+    "core/authoring",
+    "core/skeleton-config",
+    "skeletons/webpack"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "jest": "^27.2.4"
+  }
 }

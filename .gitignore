@@ -1,7 +1,5 @@
 # Logs
 *.log
-yarn-debug.log*
-yarn-error.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -14,11 +12,3 @@ node_modules/
 
 # Optional eslint cache
 .eslintcache
-
-# yarn
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions 

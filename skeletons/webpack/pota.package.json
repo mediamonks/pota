@@ -1,0 +1,9 @@
+{
+  "name": "porter-webpack-skeleton-project",
+  "scripts": "<>",
+  "dependencies": {
+    "react": "<>",
+    "react-dom": "<>"
+  },
+  "proxy": "<>"
+}

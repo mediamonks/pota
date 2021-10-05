@@ -1,0 +1,41 @@
+{
+  "name": "@pota/create",
+  "version": "0.1.0-alpha.4",
+  "description": "Create Pota Apps with no configuration",
+  "author": "Paul <p.simkevi@gmail.com>",
+  "type": "module",
+  "bin": "./bin/create-pota.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "core/create-pota"
+  },
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -b -i",
+    "clean:build": "rm -rf lib ; npm run build",
+    "prepublishOnly": "npm run clean:build"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.3",
+    "fs-extra": "^10.0.0",
+    "npm-package-arg": "^8.1.5",
+    "ora": "^6.0.1",
+    "sade": "^1.7.4"
+  },
+  "devDependencies": {
+    "@pota/skeleton-config": "0.1.0-alpha.1",
+    "@tsconfig/node14": "^1.0.1",
+    "@types/cross-spawn": "^6.0.2",
+    "@types/fs-extra": "^9.0.13",
+    "@types/npm-package-arg": "^6.1.1",
+    "@types/sade": "^1.7.3",
+    "typescript": "^4.5.0-beta"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
