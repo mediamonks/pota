@@ -1,0 +1,34 @@
+{
+  "name": "@pota/cli",
+  "version": "0.1.0-alpha.1",
+  "description": "Create Pota Apps with no configuration",
+  "type": "module",
+  "bin": {
+    "pota": "./bin/pota.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "core/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -b -i",
+    "clean:build": "rm -rf lib ; npm run build",
+    "prepublishOnly": "npm run clean:build"
+  },
+  "dependencies": {
+    "sade": "^1.7.4"
+  },
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
+    "@types/sade": "^1.7.3",
+    "typescript": "^4.5.0-beta"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

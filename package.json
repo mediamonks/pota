@@ -1,10 +1,11 @@
 {
   "name": "@pota/root",
-  "private": true,
   "version": "0.0.1",
+  "private": true,
   "description": "💁 the build system to carry your projects",
   "workspaces": [
     "core/create",
+    "core/cli",
     "core/skeleton",
     "core/authoring",
     "core/skeleton-config",
