@@ -30,17 +30,17 @@ const createSpawn = (options: SpawnOptions) =>
 export const spawn = createSpawn({ stdio: "inherit" });
 export const spawnSilent = createSpawn({ stdio: "ignore" });
 
-export const command = (command: string, quiet: boolean = true) => 
-  new Promise<string | undefined>((resolve, reject) => 
+export const command = (command: string, quiet: boolean = true) =>
+  new Promise<string | undefined>((resolve, reject) =>
     exec(command, (error, stdout, stderr) => {
-      if(error) {
+      if (error) {
         return reject(error);
       }
       resolve(quiet ? undefined : stdout || stderr);
     }));
 
 export async function isValidSkeleton(skeleton: string) {
-  try { 
+  try {
     return Boolean(npa(skeleton));
   } catch (error) {
     return false;
@@ -66,13 +66,13 @@ function getPackageManager(): PackageManager {
 async function callManager(...commands: ReadonlyArray<string>) {
   switch (getPackageManager()) {
     case "npm":
-      return command(["npm", ...commands].join(" "),false);
+      return command(["npm", ...commands].join(" "), false);
     case "yarn":
-      return command(["yarn", ...commands].join(" "),false);
+      return command(["yarn", ...commands].join(" "), false);
   }
 }
 
-interface InstallOptions  {
+interface InstallOptions {
   cwd?: string;
   dev?: boolean;
 }
@@ -103,7 +103,7 @@ export function createInstaller(options: InstallOptions = {}) {
     // we must use `install` instead of `add` with `yarn`
     // when installing `package.json` deps
     switch (pm) {
-      case "yarn": 
+      case "yarn":
         if (packages.length === 0) pre[0] = "install";
         break;
     }
@@ -115,8 +115,8 @@ export function createInstaller(options: InstallOptions = {}) {
 export async function getSkeletonName(rawSkeletonName: string, packageJsonPath: string) {
   const { dependencies = {}, devDependencies = {} } = await readPackageJson(packageJsonPath);
   const [name] = [dependencies, devDependencies].flatMap(d => Object.entries(d)).find(
-    ([name, version]) => name === rawSkeletonName || (version.startsWith("file:") ?  version.endsWith(rawSkeletonName) : version === rawSkeletonName)
+    ([name, version]) => name === rawSkeletonName || (version.startsWith("file:") ? version.endsWith(rawSkeletonName) : version === rawSkeletonName)
   ) ?? [null];
- 
+
   return name;
 }

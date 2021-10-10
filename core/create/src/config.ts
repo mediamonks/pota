@@ -9,16 +9,21 @@ type ObjectEntries = <T extends object>(
   >
 >;
 
+const typedObjectEntries: ObjectEntries = Object.entries;
+
 const SCOPE = "@pota";
 
 const getPorterDependency = <T extends string>(name: T) => `${SCOPE}/${name}` as const;
 
 const SKELETON_SHORTHANDS = {
   [getPorterDependency("webpack-skeleton")]: ["webpack"] as const,
+  [getPorterDependency("react-skeleton")]: ["react"] as const,
+  [getPorterDependency("vue-skeleton")]: ["vue"] as const,
+  [getPorterDependency("vue3-skeleton")]: ["vue3"] as const,
 };
 
 const INVERTED_SKELETON_SHORTHANDS = Object.fromEntries(
-  (Object.entries as ObjectEntries)(SKELETON_SHORTHANDS).flatMap(([skeleton, shorthands]) =>
+  typedObjectEntries(SKELETON_SHORTHANDS).flatMap(([skeleton, shorthands]) =>
     shorthands.map((shorthand) => [shorthand, skeleton] as const)
   )
 );
@@ -29,16 +34,10 @@ export const getSkeletonFromShorthand = (shorthand: string) => INVERTED_SKELETON
 
 export type PackageManager = 'yarn' | 'npm';
 
-export const REPLACE_MARK = "<>";
-export const UNDEFINED_MARK = "<undefined>";
-
-export const POTA_PACKAGE_JSON_FILE = "pota.package.json";
-export const POTA_CONFIG_FILE = "pota.js";
-export const PACKAGE_JSON_FILE = "package.json";
+export const PACKAGE_JSON_FILE = "package.json" as const;
 export const DEFAULT_EXCLUDED_FILES = [
-  POTA_PACKAGE_JSON_FILE,
-  POTA_CONFIG_FILE,
   PACKAGE_JSON_FILE,
+  "package-lock.json",
   "node_modules"
 ];
 

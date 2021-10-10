@@ -1,49 +1,29 @@
-export function getPathToValue(value: unknown, object: {}): ReadonlyArray<string> | null {
-  type Key = keyof typeof object;
+export function merge(a: {}, b: {}) {
+  // TODO: yes, I am ashamed of all of this 💔...
+  type A = typeof a;
+  type B = typeof b;
 
-  for (const key of Object.keys(object || {})) {
-    const fValue = object![key as Key];
+  type BKey = keyof B;
 
-    if (fValue === value) return [key];
-    if (typeof fValue === "string") continue;
+  const o: A & B = { ...a };
 
-    const path = getPathToValue(value, fValue);
+  type OKey = keyof typeof o;
 
-    if (path && path.length > 0) return [key, ...path];
-  }
-
-  return null;
-}
-
-export function getValueForPath(path: ReadonlyArray<string>, object: {}) {
-  let current = object;
-
-  type Key = keyof typeof current;
-
-  for (const key of path) {
-    if (key in current) current = current[key as Key];
-    else return null;
-  }
-
-  return current;
-}
-
-export function setValueForPath(value: unknown, path: ReadonlyArray<string>, object: {}) {
-  let current = object;
-
-  type Current = typeof current;
-  type Key = keyof Current;
-
-  const lastKey = path[path.length - 1];
-
-  for (const key of path) {
-    // set the value if the key is last one in the path
-    if (lastKey === key) {
-      (current[key as Key] as Current) = value as Current;
-      return;
+  for (const key in b) {
+    if (
+      typeof o?.[key as OKey] === "object" &&
+      typeof b?.[key as BKey] === "object" &&
+      !Array.isArray(o[key as OKey]) &&
+      !Array.isArray(b[key as BKey]) &&
+      Object.keys(o[key as OKey] ?? {}).length > 0 &&
+      Object.keys(b[key as BKey] ?? {}).length > 0) {
+      const value = merge(o[key as OKey] as {}, b[key as BKey] as {});
+      (o as any)[key as OKey] = value;
+      continue;
     }
-
-    // go to next key
-    current = current[key as Key] ?? {};
+    o[key as OKey] = b[key as BKey];
   }
+
+  return o;
 }
+

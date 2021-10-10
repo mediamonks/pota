@@ -1,14 +1,13 @@
 import { promises } from "fs";
-import { relative, join } from "path";
+import { relative } from "path";
 import sade from "sade";
 import ora from "ora";
 
 import * as helpers from "./helpers.js";
 import * as config from "./config.js";
-import * as object from "./object.js";
 import * as fs from "./fs.js";
+import sync from "./sync.js";
 
-const { stderr, exit } = process;
 const { rm, mkdir } = promises;
 const { clear, log } = helpers;
 
@@ -24,10 +23,9 @@ sade("@pota/create <skeleton> <dir>", true)
     SPINNER.start("Validating directory availability...");
 
     if (!(await fs.isDirectoryAvailable(dir))) {
-      stderr.write(`"${dir}" already exists, please specify a different directory`);
-      stderr.write("\n");
+      console.error(`"${dir}" already exists, please specify a different directory`);
 
-      exit(1);
+      process.exit(1);
     }
 
     SPINNER.succeed();
@@ -35,10 +33,9 @@ sade("@pota/create <skeleton> <dir>", true)
     SPINNER.start("Validating skeleton package...");
 
     if (!(await helpers.isValidSkeleton(skeleton))) {
-      stderr.write(`"${skeleton}" is not a valid skeleton package`);
-      stderr.write("\n");
+      console.error(`"${skeleton}" is not a valid skeleton package`);
 
-      exit(1);
+      process.exit(1);
     }
 
     SPINNER.succeed();
@@ -59,12 +56,12 @@ sade("@pota/create <skeleton> <dir>", true)
 
     async function bail() {
       try {
-        stderr.write("\n");
-        stderr.write("Deleting created directory.");
+        console.log();
+        console.error("Deleting created directory.");
         await rm(cwd);
-      } catch {}
+      } catch { }
 
-      exit(1);
+      process.exit(1);
     }
 
     SPINNER.color = "yellow";
@@ -72,9 +69,9 @@ sade("@pota/create <skeleton> <dir>", true)
 
     try {
       await mkdir(cwd, { recursive: true });
-    } catch {
-      stderr.write(`An Error occured trying to create a directory on '${relativeCwd}'`);
-      stderr.write("\n");
+    } catch (error) {
+      SPINNER.fail();
+      console.error(error);
 
       await bail();
     }
@@ -89,10 +86,8 @@ sade("@pota/create <skeleton> <dir>", true)
     try {
       await helpers.command(`git init`);
     } catch (error) {
-      stderr.write(`An Error occured initializing "git":`);
-      stderr.write("\n");
-      stderr.write(String(error));
-      stderr.write("\n");
+      SPINNER.fail();
+      console.error(error);
 
       await bail();
     }
@@ -104,124 +99,54 @@ sade("@pota/create <skeleton> <dir>", true)
     try {
       await installDev(skeleton);
     } catch (error) {
-      stderr.write(`An Error occured installing skeleton '${skeleton}':`);
-      stderr.write("\n");
-      stderr.write(String(error));
-      stderr.write("\n");
+      SPINNER.fail();
+      console.error(error);
 
       await bail();
     }
-    SPINNER.succeed();
-
-    let skeletonName: string | null;
 
     try {
-      skeletonName = await helpers.getSkeletonName(skeleton, cwd);
+      skeleton = await helpers.getSkeletonName(skeleton, cwd);
     } catch (error) {
-      stderr.write(`An Error occured reading the new package.json:`);
-      stderr.write("\n");
-      stderr.write(String(error));
-      stderr.write("\n");
+      SPINNER.fail(`An Error occured reading the project 'package.json'`);
+      console.error(error);
 
       await bail();
     }
 
-    const modulesPath = join(cwd, "node_modules");
-    const skeletonPath = join(modulesPath, skeletonName!);
-
-    // sync files
-
-    SPINNER.start(`Reading '${config.POTA_CONFIG_FILE}'`);
-    const potaConfig = await fs.readPotaConfig(skeletonPath);
     SPINNER.succeed();
 
-    const { transformFiles } = potaConfig;
-    let { excludedFiles = [] } = potaConfig;
-
-    excludedFiles = [...excludedFiles, ...config.DEFAULT_EXCLUDED_FILES];
-
-    const fileOptions = { transformFiles, exclude: excludedFiles };
-
-    SPINNER.start(`Copying skeleton files...`);
+    SPINNER.start(`Syncing...`);
 
     try {
-      await fs.synchronizeFiles(skeletonPath, cwd, fileOptions);
+      await sync(cwd, skeleton);
     } catch (error) {
-      stderr.write(`An Error occured copying skeleton files:`);
-      stderr.write("\n");
-      stderr.write(String(error));
-      stderr.write("\n");
+      SPINNER.fail();
+      console.error(error);
 
       await bail();
     }
 
     SPINNER.succeed();
-
-    // sync "package.json"
-    //
-    SPINNER.start(`Reading project '${config.PACKAGE_JSON_FILE}'`);
-
-    try {
-      let projectJson = await fs.readPackageJson(cwd);
-      SPINNER.succeed();
-
-      // save the `devDependencies` as they contain the skeleton package
-      const oldDevDependencies = { ...(projectJson.devDependencies ?? {}) };
-
-      SPINNER.start(`Reading skeleton '${config.PACKAGE_JSON_FILE}'`);
-      const skeletonJson = await fs.readPackageJson(skeletonPath);
-      SPINNER.succeed();
-
-      SPINNER.start(`Reading '${config.POTA_PACKAGE_JSON_FILE}'`);
-      const potaJson = await fs.readPackageJson(skeletonPath, true);
-      SPINNER.succeed();
-
-      projectJson = { ...projectJson, ...potaJson };
-      projectJson.devDependencies = { ...oldDevDependencies, ...projectJson.devDependencies };
-
-      const getPath = () => object.getPathToValue(config.REPLACE_MARK, projectJson);
-
-      let pathToTag = getPath();
-
-      while (pathToTag != null) {
-        // get value from the skeleton's "package.json"
-        const skeletonValue = object.getValueForPath(pathToTag, skeletonJson);
-
-        // update the project "package.json" with the new value
-        object.setValueForPath(skeletonValue || config.UNDEFINED_MARK, pathToTag, projectJson);
-
-        // get the path to the next "<>" field
-        pathToTag = getPath();
-      }
-
-      SPINNER.start(`Writing project '${config.PACKAGE_JSON_FILE}'`);
-
-      await fs.writePackageJson(projectJson, cwd);
-    } catch {
-      await bail();
-    }
-
-    SPINNER.succeed();
-
-    SPINNER.start(`Installing project dependencies...`);
 
     let failed = false;
+
+    SPINNER.start(`Installing remaining dependencies...`);
 
     try {
       await install();
       SPINNER.succeed();
     } catch (error) {
-      failed = true;
-
       SPINNER.fail();
+      console.error(error);
 
-      stderr.write("\n");
-      stderr.write(String(error));
-      stderr.write("\n");
+      failed = true;
     }
 
     SPINNER.stop();
 
     log(`🥊 Done${failed ? `, but with errors 😥` : ""}`);
+
+    process.exit(0);
   })
   .parse(process.argv);

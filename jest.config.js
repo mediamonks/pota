@@ -6,5 +6,6 @@ module.exports = {
   verbose: true,
   rootDir: "test",
   modulePaths: ["<rootDir>/lib"],
-  transformIgnorePatterns: ["/node_modules/"]
+  transformIgnorePatterns: ["/node_modules/"],
+  extensionsToTreatAsEsm: [".ts"]
 }

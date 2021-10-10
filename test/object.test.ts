@@ -1,43 +1,14 @@
-const {
-    getPathToValue,
-    setValueForPath,
-    getValueForPath
-  } = require("../core/create/lib/object");
+import { merge } from "../core/create/lib/object";
 
-// TODO: add more tests
+describe("merge", () => {
+  it("merges a shallow object", () =>
+    expect(merge({ 1: 2, 2: 3 }, { 3: 4, 5: 6 })).toEqual({ 1: 2, 2: 3, 3: 4, 5: 6 })
+  );
 
-describe("getPathToValue", () => {
-  it("should return the path to the value", () => {
-    const o = { biz: { boo: { boo: { foo: { bar: "bar" } } } }, foo: "bar" };
-
-    expect(getPathToValue("bar", o)).toEqual(["biz", "boo", "boo", "foo", "bar"]);
-  });
+  it("merges a nested object", () =>
+    expect(merge({ 1: 2, 2: { 4: 5 } }, { 2: { 5: 6 } })).toEqual({ 1: 2, 2: { 4: 5, 5: 6 } })
+  );
 });
 
-describe("setValueForPath", () => {
-  it("should set the value of the object on the specified path", () => {
-    const o = { biz: { boo: { boo: { foo: { bar: "bar" } } } }, foo: "bar" };
-
-    setValueForPath("boo", ["biz", "boo", "boo", "foo", "bar"], o);
-
-    expect(o).toEqual({ biz: { boo: { boo: { foo: { bar: "boo" } } } }, foo: "bar" });
-  });
-});
-
-describe("getValueForPath", () => {
-  it("should return the value of the specified path", () => {
-    const o = { biz: { boo: { boo: { foo: { bar: "bar" } } } }, foo: "bar" };
-
-    
-    expect(getValueForPath(["biz", "boo", "boo", "foo", "bar"], o)).toEqual("bar");
-  });
-
-  it("should return null if it can't find the value", () => {
-    const o = { biz: { boo: "foo" }, foo: "bar" };
-
-    
-    expect(getValueForPath(["biz", "boo", "foo"], o)).toEqual(null);
-  });
-});
 
 
