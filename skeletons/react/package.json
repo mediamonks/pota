@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-skeleton",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "bugs": {
@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.14.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
-    "@pota/webpack-skeleton": "0.1.0-alpha.6",
+    "@pota/webpack-skeleton": "0.1.0-alpha.7",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "babel-plugin-named-asset-import": "^0.3.7",
