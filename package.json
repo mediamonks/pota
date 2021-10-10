@@ -9,7 +9,8 @@
     "core/skeleton",
     "core/authoring",
     "core/skeleton-config",
-    "skeletons/webpack"
+    "skeletons/webpack",
+    "skeletons/react"
   ],
   "scripts": {
     "test": "jest"

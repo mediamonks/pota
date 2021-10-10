@@ -1,0 +1,55 @@
+{
+  "name": "@pota/react-skeleton",
+  "version": "0.1.0-alpha.2",
+  "author": "Paul <p.simkevi@gmail.com>",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mediamonks/pota.git",
+    "directory": "skeletons/react"
+  },
+  "files": [
+    "build-tools",
+    "public",
+    "tsconfig.json",
+    "src",
+    ".eslintrc.mod.cjs"
+  ],
+  "dependencies": {
+    "@babel/preset-react": "^7.14.5",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
+    "@pota/webpack-skeleton": "0.1.0-alpha.6",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "babel-plugin-named-asset-import": "^0.3.7",
+    "babel-plugin-styled-components": "^1.13.2",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-refresh": "^0.10.0",
+    "web-vitals": "^2.1.1",
+    "@types/jscodeshift": "^0.11.2",
+    "jscodeshift": "^0.13.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "pota": {
+    "extends": "@pota/webpack-skeleton",
+    "excludedFiles": ["build-tools"],
+    "package.json": {
+      "name": "react-project",
+      "dependencies": {
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "web-vitals": "^2.1.1",
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.0"
+      }
+    }
+  }
+}

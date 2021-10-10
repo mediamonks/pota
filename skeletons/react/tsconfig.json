@@ -1,0 +1,8 @@
+{
+  "extends": "@pota/webpack-skeleton",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["/**/*.del.ts", "/**/*.del.tsx"]
+}
