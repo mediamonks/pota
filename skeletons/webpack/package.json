@@ -1,6 +1,6 @@
 {
   "name": "@pota/webpack-skeleton",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "bugs": {
@@ -40,7 +40,6 @@
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
     "@mediamonks/eslint-config": "^1.2.3",
-    "@pota/authoring": "0.1.0-alpha.1",
     "@types/friendly-errors-webpack-plugin": "^0.1.4",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
@@ -101,8 +100,6 @@
     "package.json": {
       "name": "webpack-project",
       "scripts": {
-        "build": "cross-env NODE_ENV=development webpack -c webpack/webpack.config.js",
-        "dev": "cross-env NODE_ENV=development webpack serve -c webpack/webpack.config.js",
         "check-types": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
         "fix": "npm-run-all fix:*",
         "fix:eslint": "npm run lint:eslint -- --fix",
