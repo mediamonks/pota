@@ -1,0 +1,8 @@
+{
+  "extends": "@tsconfig/node14",
+  "compilerOptions": {
+    "module": "node12",
+    "outDir": "lib",
+    "declaration": true
+  }
+}

@@ -1,11 +1,12 @@
 import { promises } from "fs";
 import { relative } from "path";
+
 import sade from "sade";
 import ora from "ora";
+import * as fs from "@pota/shared/fs";
 
+import { isSkeletonShorthand, getSkeletonFromShorthand } from "./config.js";
 import * as helpers from "./helpers.js";
-import * as config from "./config.js";
-import * as fs from "./fs.js";
 import sync from "./sync.js";
 
 const { rm, mkdir } = promises;
@@ -40,8 +41,8 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.succeed();
 
-    if (config.isSkeletonShorthand(skeleton)) {
-      skeleton = config.getSkeletonFromShorthand(skeleton);
+    if (isSkeletonShorthand(skeleton)) {
+      skeleton = getSkeletonFromShorthand(skeleton);
     }
 
     const initialCwd = fs.getCWD();
@@ -58,7 +59,7 @@ sade("@pota/create <skeleton> <dir>", true)
       try {
         console.log();
         console.error("Deleting created directory.");
-        await rm(cwd);
+        await rm(cwd, { recursive: true });
       } catch { }
 
       process.exit(1);

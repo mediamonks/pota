@@ -1,7 +1,8 @@
 import { join, resolve } from "path";
-
-import { PACKAGE_JSON_FILE } from "./config.js";
 import { promises as fs, realpathSync } from "fs";
+
+import type { PotaConfig, PackageJsonShape } from "./config.js";
+import { PACKAGE_JSON_FILE } from "./config.js";
 
 const { access, readdir, readFile, writeFile } = fs;
 
@@ -29,30 +30,9 @@ export function normalizePackagePath(path: string, postfix: string = PACKAGE_JSO
   return path;
 }
 
-
-export interface ProjectPotaConfig {
-  default?: string;
-}
-
-
-export interface SkeletonPotaConfig {
-  extends?: string;
-  excludedFiles?: ReadonlyArray<string>;
-  "package.json"?: Omit<PackageJsonShape, "pota">
-}
-
-export type PotaConfig = ProjectPotaConfig | SkeletonPotaConfig;
-
-export interface PackageJsonShape {
-  scripts?: Record<string, string>;
-  dependencies?: Record<string, string>;
-  devDependencies?: Record<string, string>;
-  pota?: PotaConfig;
-}
-
 const READ_CACHE = new Map<string, PackageJsonShape>();
 
-export async function readPackageJson(path: string) {
+export async function readPackageJson<C extends PotaConfig = PotaConfig>(path: string) {
   path = normalizePackagePath(path);
 
   if (!READ_CACHE.has(path)) {
@@ -61,7 +41,7 @@ export async function readPackageJson(path: string) {
     READ_CACHE.set(path, json);
   }
 
-  return READ_CACHE.get(path)!;
+  return READ_CACHE.get(path)! as PackageJsonShape<C>;
 }
 
 export async function writePackageJson(object: PackageJsonShape, path: string) {
@@ -70,14 +50,19 @@ export async function writePackageJson(object: PackageJsonShape, path: string) {
   await writeFile(path, JSON.stringify(object, null, 2), { encoding: "utf8" })
 }
 
+interface ReaddirOptions {
+  omit?: ReadonlyArray<string>;
+  include?: ReadonlyArray<string>;
+}
+
 export class Recursive {
 
-  static async readdir(dir: string, omit: ReadonlyArray<string> = []) {
+  static async readdir(dir: string, { omit, include }: ReaddirOptions = {}) {
     const files = await readdir(dir, { withFileTypes: true });
     const finalFiles: Array<string> = [];
 
     for (const file of files) {
-      if (omit.includes(file.name)) continue;
+      if (omit?.includes(file.name) || include && !include.includes(file.name)) continue;
       else if (file.isFile()) finalFiles.push(file.name);
       else if (file.isDirectory()) {
         // sub files come in relative to `file.name`

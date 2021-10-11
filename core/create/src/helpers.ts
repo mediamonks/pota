@@ -2,7 +2,7 @@ import npa from "npm-package-arg";
 import readline from "readline";
 import crossSpawn from "cross-spawn";
 import { exec, SpawnOptions } from "child_process";
-import { readPackageJson } from "./fs.js";
+import { readPackageJson } from "@pota/shared/fs";
 
 export const newline = () => console.log();
 

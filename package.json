@@ -5,6 +5,7 @@
   "workspaces": [
     "core/create",
     "core/cli",
+    "core/shared",
     "skeletons/webpack",
     "skeletons/react"
   ],

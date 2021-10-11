@@ -1,20 +1,14 @@
-import { extname, basename } from "path";
-import { spawn } from "./helpers.js";
-
-import { join, dirname } from "path";
-
+import { extname, basename, join, dirname } from "path";
 import { promises as fs } from "fs";
 
-import type {
-  PotaConfig,
-  PackageJsonShape,
-  ProjectPotaConfig,
-  SkeletonPotaConfig
-} from "./fs.js";
-import { Recursive } from "./fs.js";
 import { copy } from "fs-extra"
-import { PACKAGE_JSON_FILE } from "./config.js";
-import { readPackageJson, writePackageJson } from "./fs.js";
+import type { ProjectPotaConfig, SkeletonPotaConfig } from "@pota/shared/config";
+import { readPackageJson, writePackageJson } from "@pota/shared/fs";
+import { PACKAGE_JSON_FILE } from "@pota/shared/config";
+
+import { getNestedSkeletons } from "@pota/shared/skeleton";
+
+import { spawn } from "./helpers.js";
 import * as object from "./object.js";
 
 
@@ -82,7 +76,7 @@ function createFileSyncer(targetPath: string) {
   // key is the base path (not extensions), value is the full path (with extensions)
   const copied: Record<string, string> = {};
 
-  return (file: string, skeletonPath: string) => {
+  return async (file: string, skeletonPath: string) => {
     const [base, , potaExt] = parsePotaFile(file);
 
     const basepath = join(dirname(file), base); // file path without any extensions
@@ -94,45 +88,10 @@ function createFileSyncer(targetPath: string) {
       return applyPotaExtension(potaExt, targetPath, sourcepath, copied[basepath]);
     }
 
-    return copy(sourcepath, newpath).then(() => {
-      copied[basepath] = newpath;
-    });
+    await copy(sourcepath, newpath);
+
+    copied[basepath] = newpath;
   }
-}
-
-
-interface SkeletonEntry {
-  config: PotaConfig;
-  path: string;
-  files: ReadonlyArray<string>;
-}
-
-async function getNestedSkeletons(targetPath: string, skeleton: string) {
-  const skeletons: Array<SkeletonEntry> = [];
-  const modulesPath = join(targetPath, "node_modules");
-
-  let currentSkeleton: string | undefined = skeleton;
-  let currentPath: string;
-  let currentPackageJson: PackageJsonShape;
-
-  do {
-    currentPath = join(modulesPath, currentSkeleton);
-    currentPackageJson = await readPackageJson(currentPath);
-
-    const config = currentPackageJson.pota as SkeletonPotaConfig;
-
-    if (config) {
-      // recursively read all of the files in the skeleton
-      const files = await Recursive.readdir(currentPath, config.excludedFiles);
-
-      // store the skeletons in reverse order
-      skeletons.unshift({ config, files, path: currentPath })
-    }
-
-    currentSkeleton = config?.extends;
-  } while (currentSkeleton);
-
-  return skeletons;
 }
 
 export default async function sync(targetPath: string, skeleton: string) {
@@ -150,6 +109,8 @@ export default async function sync(targetPath: string, skeleton: string) {
       }
     }
   }
+
+  // TODO: inject commands for `@pota/cli`
 
   packageJsonSyncer.setSkeleton(skeleton);
 

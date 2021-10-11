@@ -1,24 +1,25 @@
-
-import { promises as fs } from "fs";
-import { fileURLToPath } from "url";
 import { join } from "path";
+import { getNestedSkeletons } from "@pota/shared/skeleton";
+import { getCWD } from "@pota/shared/fs";
 
-const {  readdir } = fs;
-
-function getNodeModulesPath() {
-  const currentPath = fileURLToPath(import.meta.url)
-
-  const modulesDir = "node_modules";
-
-  return currentPath.substring(0, currentPath.indexOf(modulesDir) + modulesDir.length);
+export interface CommandModule {
+  command?: string;
+  description?: string | ReadonlyArray<string>;
+  options?: ReadonlyArray<{ option: string, description: string, default?: string | number | boolean }>
+  examples?: ReadonlyArray<string>
+  action?: (...options: ReadonlyArray<unknown>) => void
 }
 
-export async function getCommandModules(skeleton: string): Promise<ReadonlyArray<string>> {
-  // TODO: allow configuring "pota_commands"
-  const commandsPath = join(getNodeModulesPath(), skeleton, "pota_commands");
+interface CommandPath {
+  skeleton: string;
+  path: string;
+}
 
-  const files = await readdir(commandsPath, { withFileTypes: true })
+// TODO: make this configurable
+const COMMAND_DIR = "pota_commands";
 
-  return files.filter(file => file.isFile()).map(file => join(commandsPath, file.name));
+export async function getCommandPaths(skeleton: string): Promise<ReadonlyArray<CommandPath>> {
+  return (await getNestedSkeletons(getCWD(), skeleton, { enableExcludedFiles: false, readDir: COMMAND_DIR })).
+    flatMap(({ skeleton, path, files }) => files.map(file => ({ skeleton, path: join(path, COMMAND_DIR, file) })));
 }
 
