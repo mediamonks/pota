@@ -3,7 +3,6 @@
   "compilerOptions": {
     "module": "node12",
     "outDir": "lib",
-    "declaration": true,
-    "types": ["@pota/skeleton-config"]
+    "declaration": true
   }
 }

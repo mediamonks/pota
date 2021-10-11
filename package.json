@@ -6,9 +6,7 @@
   "workspaces": [
     "core/create",
     "core/cli",
-    "core/skeleton",
     "core/authoring",
-    "core/skeleton-config",
     "skeletons/webpack",
     "skeletons/react"
   ],
@@ -20,3 +18,4 @@
     "jest": "^27.2.4"
   }
 }
+

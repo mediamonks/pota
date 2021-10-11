@@ -2,7 +2,6 @@
   "extends": "@tsconfig/node14",
   "compilerOptions": {
     "outDir": "lib",
-    "declaration": true,
-    "types": ["@pota/skeleton-config"]
+    "declaration": true
   }
 }
