@@ -27,7 +27,13 @@
 > pick a skeleton from below and start hacking
 
 ```bash
-npx @pota react my-react-app
+npm init @pota react my-react-app
+```
+
+> with npx
+
+```bash
+npx @pota/create react my-react-app
 ```
 
 > with yarn
