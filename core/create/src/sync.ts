@@ -11,6 +11,7 @@ import { getNestedSkeletons } from "@pota/shared/skeleton";
 import { spawn } from "./helpers.js";
 import * as object from "./object.js";
 import { POTA_CLI_BIN } from "./config.js";
+import { SPINNER } from "./spinner.js";
 
 const { unlink } = fs;
 
@@ -26,11 +27,15 @@ const POTA_OPERATIONS: Record<POTA_EXTENSION, PotaOperationFn> = {
     await unlink(targetPath)
   },
   async [POTA_EXTENSION.MODIFY](cwd, sourcePath, targetPath) {
+    SPINNER.stopAndPersist();
+
     try {
       await spawn(`npx`, `--prefix=${cwd}`, `jscodeshift`, `--verbose=2`, `--extensions=js,cjs,mjs`, `--transform=${sourcePath}`, targetPath)
     } catch (error) {
       console.log("jscodeshift: ", error)
     }
+
+    SPINNER.start();
   }
 }
 

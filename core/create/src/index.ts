@@ -1,17 +1,18 @@
 import { promises } from "fs";
 
 import sade from "sade";
-import ora from "ora";
 import * as fs from "@pota/shared/fs";
 
 import { isSkeletonShorthand, getSkeletonFromShorthand, POTA_CLI } from "./config.js";
 import * as helpers from "./helpers.js";
 import sync from "./sync.js";
+import { SPINNER } from "./spinner.js";
+import kleur from "kleur";
 
 const { rm, mkdir } = promises;
 const { clear, log } = helpers;
+const { red, green, cyan } = kleur;
 
-const SPINNER = ora("Creating a Pota Project");
 
 sade("@pota/create <skeleton> <dir>", true)
   .describe("Create Pota project")
@@ -25,7 +26,7 @@ sade("@pota/create <skeleton> <dir>", true)
     SPINNER.start("Validating directory availability...");
 
     if (!(await fs.isDirectoryAvailable(dir))) {
-      console.error(`"${dir}" already exists, please specify a different directory`);
+      console.error(`${green(dir)} already exists, please specify a different directory`);
 
       process.exit(1);
     }
@@ -35,7 +36,7 @@ sade("@pota/create <skeleton> <dir>", true)
     SPINNER.start("Validating skeleton package...");
 
     if (!(await helpers.isValidSkeleton(skeleton))) {
-      console.error(`"${skeleton}" is not a valid skeleton package`);
+      console.error(`${green(skeleton)} is not a valid skeleton package`);
 
       process.exit(1);
     }
@@ -100,7 +101,7 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.succeed();
 
-    SPINNER.start(`Installing '${skeleton}' and ${POTA_CLI}, this might take a while...`);
+    SPINNER.start(`Installing ${cyan(skeleton)} and ${cyan(POTA_CLI)}, this might take a while...`);
 
     try {
       await installDev(skeleton, POTA_CLI);
@@ -114,7 +115,7 @@ sade("@pota/create <skeleton> <dir>", true)
     try {
       skeleton = await helpers.getSkeletonName(skeleton, cwd);
     } catch (error) {
-      SPINNER.fail(`An Error occured reading the project 'package.json'`);
+      SPINNER.fail(`An Error occured reading the project ${green("package.json")}`);
       console.error(error);
 
       await bail();
@@ -151,7 +152,7 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.stop();
 
-    log(`🥊 Done${failed ? `, but with errors 😥` : ""}`);
+    log(`🥊 Done${failed ? red(`, but with errors 😥`) : ""}`);
 
     process.exit(0);
   })

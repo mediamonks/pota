@@ -23,6 +23,7 @@
     "@pota/shared": "^0.1.0",
     "cross-spawn": "^7.0.3",
     "fs-extra": "^10.0.0",
+    "kleur": "^4.1.4",
     "npm-package-arg": "^8.1.5",
     "ora": "^6.0.1",
     "sade": "^1.7.4"
@@ -39,4 +40,3 @@
     "access": "public"
   }
 }
-
