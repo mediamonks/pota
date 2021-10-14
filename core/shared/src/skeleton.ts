@@ -18,6 +18,11 @@ interface SkeletonEntry {
   files: ReadonlyArray<string>;
 }
 
+const EXCLUDED_FILES = [
+  "package-lock.json",
+  "node_modules"
+]
+
 export async function getNestedSkeletons(cwd: string, skeleton: string, options: GetNestedSkeletonsOptions = {}) {
   const { enableExcludedFiles = true, readDir = "" } = options;
 
@@ -39,7 +44,8 @@ export async function getNestedSkeletons(cwd: string, skeleton: string, options:
       let files: ReadonlyArray<string> = [];
 
       try {
-        files = await Recursive.readdir(join(currentPath, readDir), enableExcludedFiles ? { omit: config.excludedFiles } : undefined);
+        const omit = [...(config.excludedFiles ?? []), ...EXCLUDED_FILES];
+        files = await Recursive.readdir(join(currentPath, readDir), enableExcludedFiles ? { omit } : undefined);
       } catch {
         // TODO: add debug logging
       }
