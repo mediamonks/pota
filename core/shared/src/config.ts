@@ -19,3 +19,4 @@ export interface PackageJsonShape<C extends PotaConfig = PotaConfig> {
 
 export const PACKAGE_JSON_FILE = "package.json" as const;
 
+export const POTA_COMMANDS_DIR = "pota_commands" as const;

@@ -1,5 +1,3 @@
-import { PACKAGE_JSON_FILE } from "@pota/shared/config";
-
 type ObjectEntries = <T extends object>(
   o: T
 ) => Array<
@@ -36,10 +34,5 @@ export const getSkeletonFromShorthand = (shorthand: string) => INVERTED_SKELETON
 
 export type PackageManager = 'yarn' | 'npm';
 
-export const DEFAULT_EXCLUDED_FILES = [
-  PACKAGE_JSON_FILE,
-  "pota_commands",
-  "package-lock.json",
-  "node_modules"
-];
-
+export const POTA_CLI = "@pota/cli" as const;
+export const POTA_CLI_BIN = "pota" as const;

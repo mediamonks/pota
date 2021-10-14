@@ -4,13 +4,13 @@ import { promises as fs } from "fs";
 import { copy } from "fs-extra"
 import type { ProjectPotaConfig, SkeletonPotaConfig } from "@pota/shared/config";
 import { readPackageJson, writePackageJson } from "@pota/shared/fs";
-import { PACKAGE_JSON_FILE } from "@pota/shared/config";
+import { PACKAGE_JSON_FILE, POTA_COMMANDS_DIR } from "@pota/shared/config";
 
 import { getNestedSkeletons } from "@pota/shared/skeleton";
 
 import { spawn } from "./helpers.js";
 import * as object from "./object.js";
-
+import { POTA_CLI_BIN } from "./config.js";
 
 const { unlink } = fs;
 
@@ -66,6 +66,12 @@ async function createPackageJsonSyncer(targetPath: string) {
       projectPackageJson.pota ??= {};
       (projectPackageJson.pota as ProjectPotaConfig).default = skeleton;
     },
+    addPotaCommand(command: string) {
+      projectPackageJson.scripts ??= {};
+
+      projectPackageJson.scripts[command] = `${POTA_CLI_BIN} ${command}`;
+
+    },
     commit() {
       return writePackageJson(projectPackageJson, targetPath);
     }
@@ -100,17 +106,11 @@ export default async function sync(targetPath: string, skeleton: string) {
 
   for (const { path, config, files } of await getNestedSkeletons(targetPath, skeleton)) {
     for (const file of files) {
-      switch (file) {
-        case PACKAGE_JSON_FILE: {
-          if (PACKAGE_JSON_FILE in config) packageJsonSyncer.apply(config)
-          break;
-        }
-        default: await syncFile(file, path);
-      }
+      if (file === PACKAGE_JSON_FILE && PACKAGE_JSON_FILE in config) packageJsonSyncer.apply(config);
+      else if (file.startsWith(POTA_COMMANDS_DIR)) packageJsonSyncer.addPotaCommand(basename(file, extname(file)));
+      else await syncFile(file, path);
     }
   }
-
-  // TODO: inject commands for `@pota/cli`
 
   packageJsonSyncer.setSkeleton(skeleton);
 

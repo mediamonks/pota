@@ -1,11 +1,10 @@
 import { promises } from "fs";
-import { relative } from "path";
 
 import sade from "sade";
 import ora from "ora";
 import * as fs from "@pota/shared/fs";
 
-import { isSkeletonShorthand, getSkeletonFromShorthand } from "./config.js";
+import { isSkeletonShorthand, getSkeletonFromShorthand, POTA_CLI } from "./config.js";
 import * as helpers from "./helpers.js";
 import sync from "./sync.js";
 
@@ -18,9 +17,11 @@ sade("@pota/create <skeleton> <dir>", true)
   .describe("Create Pota project")
   .example("npx @pota webpack ./project-directory")
   .action(async (skeleton, dir) => {
-    // validation
 
-    SPINNER.color = "green";
+    /**
+     * Validation
+     */
+
     SPINNER.start("Validating directory availability...");
 
     if (!(await fs.isDirectoryAvailable(dir))) {
@@ -41,19 +42,18 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.succeed();
 
+    /**
+     * Post-validation, initialization of utilities
+     */
+
     if (isSkeletonShorthand(skeleton)) {
       skeleton = getSkeletonFromShorthand(skeleton);
     }
 
-    const initialCwd = fs.getCWD();
     const cwd = fs.resolveUser(dir);
-    const relativeCwd = relative(initialCwd, cwd);
 
     const install = helpers.createInstaller({ cwd });
     const installDev = helpers.createInstaller({ cwd, dev: true });
-
-    // banner
-    clear();
 
     async function bail() {
       try {
@@ -65,7 +65,12 @@ sade("@pota/create <skeleton> <dir>", true)
       process.exit(1);
     }
 
-    SPINNER.color = "yellow";
+    /**
+     * Project creation
+     */
+
+    clear();
+
     SPINNER.start("Creating directory");
 
     try {
@@ -95,10 +100,10 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.succeed();
 
-    SPINNER.start(`Installing '${skeleton}', this might take a while...`);
+    SPINNER.start(`Installing '${skeleton}' and ${POTA_CLI}, this might take a while...`);
 
     try {
-      await installDev(skeleton);
+      await installDev(skeleton, POTA_CLI);
     } catch (error) {
       SPINNER.fail();
       console.error(error);
