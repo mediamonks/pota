@@ -1,6 +1,5 @@
 import { join } from "path";
 import type {
-  PotaConfig,
   PackageJsonShape,
   SkeletonPotaConfig
 } from "./config.js";
@@ -12,7 +11,7 @@ interface GetNestedSkeletonsOptions {
 }
 
 interface SkeletonEntry {
-  config: PotaConfig;
+  config: SkeletonPotaConfig;
   skeleton: string;
   path: string;
   files: ReadonlyArray<string>;

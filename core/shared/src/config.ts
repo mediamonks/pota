@@ -5,6 +5,7 @@ export interface ProjectPotaConfig {
 export interface SkeletonPotaConfig {
   extends?: string;
   excludedFiles?: ReadonlyArray<string>;
+  renames?: Record<string, string>;
   "package.json"?: Omit<PackageJsonShape, "pota">
 }
 

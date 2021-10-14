@@ -87,11 +87,11 @@ function createFileSyncer(targetPath: string) {
   // key is the base path (not extensions), value is the full path (with extensions)
   const copied: Record<string, string> = {};
 
-  return async (file: string, skeletonPath: string) => {
+  return async (file: string, skeletonPath: string, newName?: string) => {
     const [base, , potaExt] = parsePotaFile(file);
 
     const basepath = join(dirname(file), base); // file path without any extensions
-    const newpath = join(targetPath, file);
+    const newpath = join(targetPath, newName ?? file);
     const sourcepath = join(skeletonPath, file);
 
     // TODO: add logging
@@ -113,7 +113,7 @@ export default async function sync(targetPath: string, skeleton: string) {
     for (const file of files) {
       if (file === PACKAGE_JSON_FILE && PACKAGE_JSON_FILE in config) packageJsonSyncer.apply(config);
       else if (file.startsWith(POTA_COMMANDS_DIR)) packageJsonSyncer.addPotaCommand(basename(file, extname(file)));
-      else await syncFile(file, path);
+      else await syncFile(file, path, config.renames?.[file]);
     }
   }
 

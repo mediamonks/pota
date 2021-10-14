@@ -20,7 +20,7 @@
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {
-    "@pota/shared": "^0.1.0",
+    "@pota/shared": "file:../shared",
     "cross-spawn": "^7.0.3",
     "fs-extra": "^10.0.0",
     "kleur": "^4.1.4",
