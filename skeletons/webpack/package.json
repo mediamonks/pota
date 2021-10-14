@@ -101,6 +101,7 @@
     "excludedFiles": [
       "build-tools"
     ],
+    "renames": { "gitignore": ".gitignore" },
     "package.json": {
       "name": "webpack-project",
       "scripts": {
