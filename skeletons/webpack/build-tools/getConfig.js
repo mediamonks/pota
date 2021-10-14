@@ -17,6 +17,6 @@ function getConfigPath() {
   return join(getNodeModulesPath(), getSkeleton(), "build-tools", "webpack.config.js");
 }
 
-export default function getConfig() {
-  return import(getConfigPath()).then(({ default: m }) => m);
+export default async function getConfig() {
+  return (await import(getConfigPath())).default;
 }

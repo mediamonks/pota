@@ -1,6 +1,6 @@
 import webpack from "webpack";
 import ora from "ora";
-import getConfig, { getSkeleton } from "./getConfig.js";
+import getConfig, { getSkeleton } from "../build-tools/getConfig.js";
 
 export const description = "Build the source directory using webpack.";
 

@@ -12,7 +12,6 @@
     "directory": "skeletons/react"
   },
   "files": [
-    "pota_commands",
     "build-tools",
     "public",
     "tsconfig.json",

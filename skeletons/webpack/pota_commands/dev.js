@@ -1,6 +1,6 @@
 import webpack from "webpack";
 import Server from "webpack-dev-server";
-import getConfig from "./getConfig.js";
+import getConfig from "../build-tools/getConfig.js";
 
 export const description = "Start the development server using webpack.";
 
