@@ -36,6 +36,10 @@
     "@types/jscodeshift": "^0.11.2",
     "jscodeshift": "^0.13.0"
   },
+  "engines": {
+    "node": ">=14",
+    "npm": ">=7"
+  },
   "publishConfig": {
     "access": "public"
   },
