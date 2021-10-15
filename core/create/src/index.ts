@@ -16,7 +16,7 @@ const { red, green, cyan } = kleur;
 
 sade("@pota/create <skeleton> <dir>", true)
   .describe("Create Pota project")
-  .example("npx @pota webpack ./project-directory")
+  .example("npx @pota/create webpack ./project-directory")
   .action(async (skeleton, dir) => {
 
     /**
