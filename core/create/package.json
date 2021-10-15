@@ -1,6 +1,6 @@
 {
   "name": "@pota/create",
-  "version": "0.1.0",
+  "version": "1.0.0-rc.1",
   "description": "Create Pota Apps with no configuration",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
@@ -20,7 +20,7 @@
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {
-    "@pota/shared": "file:../shared",
+    "@pota/shared": "^1.0.0",
     "cross-spawn": "^7.0.3",
     "fs-extra": "^10.0.0",
     "kleur": "^4.1.4",

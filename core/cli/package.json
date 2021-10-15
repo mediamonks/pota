@@ -1,6 +1,6 @@
 {
   "name": "@pota/cli",
-  "version": "0.1.0",
+  "version": "1.0.0-rc.1",
   "description": "Create Pota Apps with no configuration",
   "type": "module",
   "bin": {
@@ -21,7 +21,7 @@
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {
-    "@pota/shared": "^0.1.0",
+    "@pota/shared": "^1.0.0",
     "sade": "^1.7.4"
   },
   "devDependencies": {
