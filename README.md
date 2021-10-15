@@ -33,13 +33,13 @@ npm init @pota react my-react-app
 > with npx
 
 ```bash
-npx @pota/create react my-react-app
+npx @pota/create vue3 my-vue3-app
 ```
 
 > with yarn
 
 ```bash
-yarn create @pota react my-react-app
+yarn create @pota/vue-skeleton my-vue-app
 ```
 
 ## 📚 Official Skeletons
