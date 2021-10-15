@@ -1,0 +1,5 @@
+{
+  "extends": "@pota/webpack-skeleton",
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "exclude": ["/**/*.del.ts", "/**/*.del.tsx"]
+}
