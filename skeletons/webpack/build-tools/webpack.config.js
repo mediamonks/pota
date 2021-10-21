@@ -122,6 +122,7 @@ export default {
        */
       {
         test: /\.tsx?$/,
+        include: paths.source,
         use: [
           { loader: "babel-loader", options: babelConfig },
           {
@@ -142,6 +143,7 @@ export default {
        */
       {
         test: /\.m?jsx?$/,
+        include: paths.source,
         use: [{ loader: "babel-loader", options: babelConfig }],
       },
 
