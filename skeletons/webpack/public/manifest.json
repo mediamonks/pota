@@ -1,6 +1,6 @@
 {
-  "short_name": "MM react-skeleton App",
-  "name": "MM react-skeleton",
+  "short_name": "webpack-skeleton",
+  "name": "webpack-skeleton",
   "icons": [
     {
       "src": "favicon.ico",

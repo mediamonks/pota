@@ -1,6 +1,6 @@
 {
-  "short_name": "MM react-skeleton App",
-  "name": "MM react-skeleton",
+  "short_name": "react-skeleton",
+  "name": "react-skeleton",
   "icons": [
     {
       "src": "favicon.ico",
