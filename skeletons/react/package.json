@@ -13,6 +13,7 @@
   },
   "files": [
     "build-tools",
+    "pota_commands",
     "public",
     "tsconfig.json",
     "src"

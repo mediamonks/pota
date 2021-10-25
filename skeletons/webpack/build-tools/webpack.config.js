@@ -12,36 +12,41 @@ import babelConfig from "./babel.config.js";
 import * as paths from "./paths.js";
 import getEnv from "./getEnv.js";
 
-const USE_TYPE_CHECK = process.env.TYPE_CHECK !== "false";
-
 const IS_DEV_ENV = process.env.NODE_ENV === "development";
 const IS_PROD_ENV = (process.env.NODE_ENV === "production") || !IS_DEV_ENV;
 
-function parseOptions(options) {
+export function parseOptions(options) {
   const {
     mode = IS_PROD_ENV ? "production" : "development",
-    publicUrl = "/",
-    outputDir = paths.output,
     analyze = false,
+    output = paths.output,
+    ['public-url']: publicUrl = "/",
+    ['type-check']: typeCheck = true,
+    ['source-map']: sourceMap = { "production": 'source-map', 'development': 'eval-source-map' }[mode],
   } = options;
 
-  let {
-    sourceMap = { "production": 'source-map', 'development': 'eval-source-map' }[mode],
-  } = options;
-
-  if (sourceMap === "false") sourceMap = false;
-
-  return { mode, publicUrl, outputDir, sourceMap, analyze, isDev: mode === "development", isProd: mode === "production" };
+  return {
+    mode,
+    publicUrl,
+    output,
+    sourceMap: sourceMap === "false" ? false : sourceMap,
+    typeCheck: typeCheck === "false" ? false : typeCheck,
+    analyze,
+    isDev: mode === "development",
+    isProd: mode === "production"
+  };
 }
 
-export default function createConfig(options = {}) {
-  const { isDev, isProd, mode, publicUrl, analyze, outputDir, sourceMap } = parseOptions(options);
+export default function createConfig(unsafeOptions = {}) {
+  const options = parseOptions(unsafeOptions);
   const env = getEnv();
+
+  console.log(parseOptions(options));
 
   function getStyleLoaders(cssOptions, preProcessor) {
     return [
-      isDev && "style-loader",
-      isProd && MiniCssExtractPlugin.loader,
+      options.isDev && "style-loader",
+      options.isProd && MiniCssExtractPlugin.loader,
       { loader: "css-loader", options: cssOptions },
       {
         loader: "postcss-loader",
@@ -67,19 +72,19 @@ export default function createConfig(options = {}) {
     stats: "none",
     name: "pota-webpack",
     target: "web",
-    mode,
+    mode: options.mode,
     // will bail compilation on the first error,
     // instead of the default behavior of tolerating the error
-    bail: isProd,
-    devtool: sourceMap,
+    bail: options.isProd,
+    devtool: options.sourceMap,
     context: paths.user,
     entry: paths.entry,
 
     output: {
-      path: outputDir,
-      publicPath: publicUrl,
-      filename: `static/chunks/[name]${isProd ? ".[contenthash]" : ""}.js`,
-      chunkFilename: `static/chunks/[name]${isProd ? ".[contenthash]" : ""}.js`,
+      path: options.output,
+      publicPath: options.publicUrl,
+      filename: `static/chunks/[name]${options.isProd ? ".[contenthash]" : ""}.js`,
+      chunkFilename: `static/chunks/[name]${options.isProd ? ".[contenthash]" : ""}.js`,
       hotUpdateChunkFilename: `static/webpack/[id].[fullhash].hot-update.js`,
       hotUpdateMainFilename: `static/webpack/[fullhash].[runtime].hot-update.json`,
       globalObject: "this",
@@ -94,10 +99,10 @@ export default function createConfig(options = {}) {
     },
 
     optimization: {
-      minimize: isProd,
-      emitOnErrors: isProd,
-      moduleIds: isProd ? 'deterministic' : 'named',
-      splitChunks: isProd && {
+      minimize: options.isProd,
+      emitOnErrors: options.isProd,
+      moduleIds: options.isProd ? 'deterministic' : 'named',
+      splitChunks: options.isProd && {
         cacheGroups: {
           defaultVendors: {
             name: `chunk-vendors`,
@@ -245,27 +250,27 @@ export default function createConfig(options = {}) {
       }),
       new ErrorPlugin(),
       new webpack.DefinePlugin(env.stringified),
-      isProd && new MiniCssExtractPlugin({
+      options.isProd && new MiniCssExtractPlugin({
         filename: 'static/css/[contenthash].css',
         chunkFilename: 'static/css/[contenthash].css',
       }),
-      isProd &&
+      options.isProd &&
       new CopyPlugin({
         patterns: [
           {
             from: paths.publicDir,
-            to: outputDir,
+            to: options.output,
             toType: "dir",
             globOptions: { ignore: ["**/.DS_Store", resolve(paths.publicDir, "index.html")] },
           },
         ],
       }),
-      USE_TYPE_CHECK &&
+      options.typeCheck &&
       new ForkTsCheckerWebpackPlugin({
-        async: isDev,
+        async: options.isDev,
         typescript: { diagnosticOptions: { semantic: true, syntactic: true } },
       }),
-      analyze && new BundleAnalyzerPlugin(typeof analyze === "string" ? { analyzerMode: analyze } : {}),
+      options.analyze && new BundleAnalyzerPlugin(typeof options.analyze === "string" ? { analyzerMode: options.analyze } : {}),
     ].filter(Boolean),
   }
 }

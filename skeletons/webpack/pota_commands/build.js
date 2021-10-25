@@ -10,11 +10,11 @@ export const description = "Build the source directory using webpack.";
 
 export const options = [
   {
-    option: '--publicUrl',
+    option: '--public-url',
     description: 'The public url',
   },
   {
-    option: '--outputDir',
+    option: '--output',
     description: 'The output directory',
     default: relative(paths.user, paths.output)
   },
@@ -23,18 +23,23 @@ export const options = [
     description: 'The webpack mode',
   },
   {
-    option: '--sourceMap',
+    option: '--source-map',
     description: 'The source map type (https://webpack.js.org/configuration/devtool/#devtool)',
   },
   {
     option: '--analyze',
     description: 'Build and then analyze the build output',
+  },
+  {
+    option: '--type-check',
+    description: 'When disabled, will not do any type checking and ignore TypeScript errors',
+    default: true
   }
 ];
 
 function preprocessOptions(options) {
-  if ("outputDir" in options && !isAbsolute(options.outputDir)) {
-    return { ...options, outputDir: resolve(options.outputDir) }
+  if ("output" in options && !isAbsolute(options.output)) {
+    return { ...options, output: resolve(options.output) }
   }
 
   return options;
