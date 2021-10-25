@@ -6,6 +6,7 @@
   "bin": {
     "pota": "./bin/pota.js"
   },
+  "files": ["lib", "bin"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mediamonks/pota.git",

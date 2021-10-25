@@ -60,7 +60,6 @@ sade("@pota/create <skeleton> <dir>", true)
       skeleton = relative(cwd, skeleton);
     } else if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
 
-
     const install = helpers.createInstaller({ cwd });
     const installDev = helpers.createInstaller({ cwd, dev: true });
 
