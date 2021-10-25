@@ -3,6 +3,7 @@ import readline from "readline";
 import crossSpawn from "cross-spawn";
 import { exec, SpawnOptions } from "child_process";
 import { readPackageJson } from "@pota/shared/fs";
+import { SPINNER } from "./spinner.js";
 
 export const newline = () => console.log();
 
@@ -63,12 +64,12 @@ function getPackageManager(): PackageManager {
   return "npm";
 }
 
-async function callManager(...commands: ReadonlyArray<string>) {
+function callManager(...commands: ReadonlyArray<string>) {
   switch (getPackageManager()) {
     case "npm":
-      return command(["npm", ...commands].join(" "), false);
+      return spawn("npm", ...commands);
     case "yarn":
-      return command(["yarn", ...commands].join(" "), false);
+      return spawn("yarn", ...commands);
   }
 }
 
@@ -86,20 +87,20 @@ export function createInstaller(options: InstallOptions = {}) {
 
   switch (pm) {
     case "npm": {
-      pre.push("install");
+      pre = ["install"]
       if (cwd) post.push("--prefix", cwd);
       if (dev) post.push("--save-dev");
       break;
     };
     case "yarn": {
-      pre.push("add");
+      pre = ["add"]
       if (cwd) post.push("--cwd", cwd);
       if (dev) post.push("--dev");
       break;
     };
   }
 
-  return (...packages: ReadonlyArray<string>) => {
+  return async (...packages: ReadonlyArray<string>) => {
     // we must use `install` instead of `add` with `yarn`
     // when installing `package.json` deps
     switch (pm) {
@@ -108,7 +109,14 @@ export function createInstaller(options: InstallOptions = {}) {
         break;
     }
 
-    return callManager(...pre, ...packages, ...post);
+    SPINNER.stopAndPersist();
+
+    try {
+      await callManager(...pre, ...packages, ...post);
+    } finally {
+      SPINNER.start();
+    }
+
   };
 }
 
