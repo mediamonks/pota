@@ -13,11 +13,15 @@ const { rm, mkdir } = promises;
 const { clear, log } = helpers;
 const { red, green, cyan } = kleur;
 
+type SadeSkeleton = string;
+type SadeDirectory = string;
+interface SadeOptions { 'fail-cleanup': boolean };
 
 sade("@pota/create <skeleton> <dir>", true)
   .describe("Create Pota project")
+  .option('--fail-cleanup', 'Cleanup after failing initialization', true)
   .example("npx @pota/create webpack ./project-directory")
-  .action(async (skeleton, dir) => {
+  .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
 
     /**
      * Validation
@@ -57,11 +61,13 @@ sade("@pota/create <skeleton> <dir>", true)
     const installDev = helpers.createInstaller({ cwd, dev: true });
 
     async function bail() {
-      try {
-        console.log();
-        console.error("Deleting created directory.");
-        await rm(cwd, { recursive: true });
-      } catch { }
+      if (options["fail-cleanup"]) {
+        try {
+          console.log();
+          console.error("Deleting created directory.");
+          await rm(cwd, { recursive: true });
+        } catch { }
+      }
 
       process.exit(1);
     }
