@@ -4,6 +4,9 @@ import crossSpawn from "cross-spawn";
 import { exec, SpawnOptions } from "child_process";
 import { readPackageJson } from "@pota/shared/fs";
 import { SPINNER } from "./spinner.js";
+import kleur from "kleur";
+
+const { green, cyan } = kleur;
 
 export const newline = () => console.log();
 
@@ -121,10 +124,24 @@ export function createInstaller(options: InstallOptions = {}) {
 }
 
 export async function getSkeletonName(rawSkeletonName: string, packageJsonPath: string) {
-  const { dependencies = {}, devDependencies = {} } = await readPackageJson(packageJsonPath);
-  const [name] = [dependencies, devDependencies].flatMap(d => Object.entries(d)).find(
-    ([name, version]) => name === rawSkeletonName || (version.startsWith("file:") ? version.endsWith(rawSkeletonName) : version === rawSkeletonName)
-  ) ?? [null];
+  const parsedName = npa(rawSkeletonName);
 
-  return name;
+  const { dependencies = {}, devDependencies = {} } = await readPackageJson(packageJsonPath);
+
+  const dependency = [dependencies, devDependencies].flatMap(d => Object.entries(d)).find(([name, version]) => {
+    switch (parsedName.type) {
+      case "git": {
+        const { gitCommittish, hosted } = parsedName;
+        const { user, type, project } = hosted!;
+        // github:mediamonks/pota#feature
+        return (version === `${type}:${user}/${project}#${gitCommittish}`)
+      }
+      case "file": return version === parsedName.saveSpec;
+      default: return name === rawSkeletonName;
+    }
+  })
+
+  if (!dependency) throw new Error(`Could not find ${cyan(rawSkeletonName)} in ${green(packageJsonPath)}`);
+
+  return dependency[0]; // the name of the dependency
 }
