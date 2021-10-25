@@ -11,7 +11,8 @@ export const description = "Build the source directory using webpack.";
 export const options = [
   {
     option: '--public-url',
-    description: 'The public url',
+    description: `The URL from which static assets are referenced from`,
+    default: '/'
   },
   {
     option: '--output',

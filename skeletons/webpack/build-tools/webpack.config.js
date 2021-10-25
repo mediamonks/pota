@@ -41,8 +41,6 @@ export default function createConfig(unsafeOptions = {}) {
   const options = parseOptions(unsafeOptions);
   const env = getEnv();
 
-  console.log(parseOptions(options));
-
   function getStyleLoaders(cssOptions, preProcessor) {
     return [
       options.isDev && "style-loader",
