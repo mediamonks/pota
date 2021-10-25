@@ -21,7 +21,11 @@ export const options = [
   {
     option: '--mode',
     description: 'The webpack mode',
-  }
+  },
+  {
+    option: '--sourceMap',
+    description: 'The source map type (https://webpack.js.org/configuration/devtool/#devtool)',
+  },
 ];
 
 function preprocessOptions(options) {
@@ -46,7 +50,7 @@ export const action = async (options) => {
   try {
     const stats = await new Promise((resolve, reject) =>
       webpack(config(options), (error, stats) => {
-        if (!error && stats?.hasErrors()) error = stats.toJson()?.errors;
+        if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
 
         return error ? reject(error) : resolve(stats?.toString({ colors: true, chunks: false }));
       })

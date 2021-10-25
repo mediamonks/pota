@@ -11,29 +11,34 @@ import babelConfig from "./babel.config.js";
 import * as paths from "./paths.js";
 import getEnv from "./getEnv.js";
 
-const env = getEnv();
-
-let DEV_SOURCE_MAP = process.env.DEV_SOURCE_MAP || "eval-source-map";
-if (DEV_SOURCE_MAP === "false") DEV_SOURCE_MAP = false;
-let PROD_SOURCE_MAP = process.env.PROD_SOURCE_MAP || "source-map";
-if (PROD_SOURCE_MAP === "false") PROD_SOURCE_MAP = false;
 
 const USE_TYPE_CHECK = process.env.TYPE_CHECK !== "false";
 
 const IS_DEV_ENV = process.env.NODE_ENV === "development";
 const IS_PROD_ENV = (process.env.NODE_ENV === "production") || !IS_DEV_ENV;
 
-export default function createConfig(options = {}) {
+function parseOptions(options) {
   const {
-    // if an improper mode or environment is selected,
-    // `mode` will be false and webpack will complain about it
     mode = IS_PROD_ENV ? "production" : "development",
     publicUrl = "/",
     outputDir = paths.output
   } = options;
 
+  let {
+    sourceMap = { "production": 'source-map', 'development': 'eval-source-map' }[mode],
+  } = options;
+
+  if (sourceMap === "false") sourceMap = false;
+
   const isDev = mode === "development";
   const isProd = mode === "production";
+
+  return { mode, publicUrl, outputDir, sourceMap, isDev, isProd };
+}
+
+export default function createConfig(options = {}) {
+  const { isDev, isProd, mode, publicUrl, outputDir, sourceMap } = parseOptions(options);
+  const env = getEnv();
 
   function getStyleLoaders(cssOptions, preProcessor) {
     return [
@@ -68,7 +73,7 @@ export default function createConfig(options = {}) {
     // will bail compilation on the first error,
     // instead of the default behavior of tolerating the error
     bail: isProd,
-    devtool: isProd ? PROD_SOURCE_MAP : DEV_SOURCE_MAP,
+    devtool: sourceMap,
     context: paths.user,
     entry: paths.entry,
 
@@ -130,8 +135,6 @@ export default function createConfig(options = {}) {
         overlay: false,
       },
     },
-
-    performance: false,
 
     module: {
       rules: [
