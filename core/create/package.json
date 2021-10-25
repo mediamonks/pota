@@ -1,10 +1,14 @@
 {
   "name": "@pota/create",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "Create Pota Apps with no configuration",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "bin": "./bin/create-pota.js",
+  "files": [
+    "lib",
+    "bin"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mediamonks/pota.git",
