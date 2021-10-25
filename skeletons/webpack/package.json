@@ -1,6 +1,6 @@
 {
   "name": "@pota/webpack-skeleton",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "bugs": {
@@ -101,7 +101,9 @@
     "excludedFiles": [
       "build-tools"
     ],
-    "renames": { "gitignore": ".gitignore" },
+    "renames": {
+      "gitignore": ".gitignore"
+    },
     "package.json": {
       "name": "webpack-project",
       "scripts": {
