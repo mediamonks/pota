@@ -1,6 +1,9 @@
+import { relative, isAbsolute, resolve } from "path";
+
 import webpack from "webpack";
 import ora from "ora";
 
+import * as paths from "../build-tools/paths.js";
 import getConfig, { getSkeleton } from "../build-tools/getConfig.js";
 
 export const description = "Build the source directory using webpack.";
@@ -9,8 +12,21 @@ export const options = [
   {
     option: '--publicUrl',
     description: 'The public url',
+  },
+  {
+    option: '--outputDir',
+    description: 'The output directory',
+    default: relative(paths.user, paths.output)
   }
 ];
+
+function preprocessOptions(options) {
+  if ("outputDir" in options && !isAbsolute(options.outputDir)) {
+    return { ...options, outputDir: resolve(options.outputDir) }
+  }
+
+  return options;
+}
 
 export const action = async (options) => {
   process.env.NODE_ENV = "production";
@@ -20,6 +36,8 @@ export const action = async (options) => {
   const config = await getConfig();
 
   SPINNER.succeed().start("Building...");
+
+  options = preprocessOptions(options);
 
   try {
     const stats = await new Promise((resolve, reject) =>

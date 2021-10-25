@@ -26,7 +26,8 @@ const IS_PROD_ENV = (process.env.NODE_ENV === "production") || !IS_DEV_ENV;
 export default function createConfig(options = {}) {
   const {
     mode = IS_PROD_ENV ? "production" : "development",
-    publicUrl = "/"
+    publicUrl = "/",
+    outputDir = paths.output
   } = options;
 
   const isDev = mode === "development";
@@ -72,7 +73,7 @@ export default function createConfig(options = {}) {
     entry: paths.entry,
 
     output: {
-      path: paths.output,
+      path: outputDir,
       publicPath: publicUrl,
       filename: `static/chunks/[name]${isProd ? ".[contenthash]" : ""}.js`,
       chunkFilename: `static/chunks/[name]${isProd ? ".[contenthash]" : ""}.js`,
@@ -252,7 +253,7 @@ export default function createConfig(options = {}) {
         patterns: [
           {
             from: paths.publicDir,
-            to: paths.output,
+            to: outputDir,
             toType: "dir",
             globOptions: { ignore: ["**/.DS_Store", resolve(paths.publicDir, "index.html")] },
           },
