@@ -25,6 +25,8 @@ const IS_PROD_ENV = (process.env.NODE_ENV === "production") || !IS_DEV_ENV;
 
 export default function createConfig(options = {}) {
   const {
+    // if an improper mode or environment is selected,
+    // `mode` will be false and webpack will complain about it
     mode = IS_PROD_ENV ? "production" : "development",
     publicUrl = "/",
     outputDir = paths.output
@@ -62,8 +64,6 @@ export default function createConfig(options = {}) {
     stats: "none",
     name: "pota-webpack",
     target: "web",
-    // if an improper mode or environment is selected,
-    // `mode` will be false and webpack will complain about it
     mode,
     // will bail compilation on the first error,
     // instead of the default behavior of tolerating the error

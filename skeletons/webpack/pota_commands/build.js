@@ -17,6 +17,10 @@ export const options = [
     option: '--outputDir',
     description: 'The output directory',
     default: relative(paths.user, paths.output)
+  },
+  {
+    option: '--mode',
+    description: 'The webpack mode',
   }
 ];
 
