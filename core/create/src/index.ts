@@ -8,6 +8,7 @@ import * as helpers from "./helpers.js";
 import sync from "./sync.js";
 import { SPINNER } from "./spinner.js";
 import kleur from "kleur";
+import { relative, basename } from "path";
 
 const { rm, mkdir } = promises;
 const { clear, log } = helpers;
@@ -39,7 +40,7 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.start("Validating skeleton package...");
 
-    if (!(await helpers.isValidSkeleton(skeleton))) {
+    if (!(helpers.isValidSkeleton(skeleton))) {
       console.error(`${green(skeleton)} is not a valid skeleton package`);
 
       process.exit(1);
@@ -50,12 +51,15 @@ sade("@pota/create <skeleton> <dir>", true)
     /**
      * Post-validation, initialization of utilities
      */
-
-    if (isSkeletonShorthand(skeleton)) {
-      skeleton = getSkeletonFromShorthand(skeleton);
-    }
+    let isFileSkeleton = false;
 
     const cwd = fs.resolveUser(dir);
+
+    if (helpers.isFileSkeleton(skeleton)) {
+      isFileSkeleton = true;
+      skeleton = relative(cwd, skeleton);
+    } else if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
+
 
     const install = helpers.createInstaller({ cwd });
     const installDev = helpers.createInstaller({ cwd, dev: true });
@@ -107,7 +111,9 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.succeed();
 
-    SPINNER.start(`Installing ${cyan(skeleton)} and ${cyan(POTA_CLI)}, this might take a while...`);
+    const visualName = isFileSkeleton ? basename(skeleton) : skeleton;
+
+    SPINNER.start(`Installing ${cyan(visualName)} and ${cyan(POTA_CLI)}, this might take a while...`);
 
     try {
       await installDev(skeleton, POTA_CLI);

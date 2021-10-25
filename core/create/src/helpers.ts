@@ -43,12 +43,16 @@ export const command = (command: string, quiet: boolean = true) =>
       resolve(quiet ? undefined : stdout || stderr);
     }));
 
-export async function isValidSkeleton(skeleton: string) {
+export function isValidSkeleton(skeleton: string) {
   try {
     return Boolean(npa(skeleton));
   } catch (error) {
     return false;
   }
+}
+
+export function isFileSkeleton(skeleton: string) {
+  return npa(skeleton).type === "file";
 }
 
 type PackageManager = "yarn" | "npm";
