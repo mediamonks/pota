@@ -2,21 +2,10 @@ import { resolve } from "path";
 import { existsSync } from "fs";
 import * as paths from "./paths.js";
 
-let DEV_SOURCE_MAP = process.env.DEV_SOURCE_MAP || "eval-source-map";
-if (DEV_SOURCE_MAP === "false") DEV_SOURCE_MAP = false;
-let PROD_SOURCE_MAP = process.env.PROD_SOURCE_MAP || "source-map";
-if (PROD_SOURCE_MAP === "false") PROD_SOURCE_MAP = false;
-
-const USE_TYPE_CHECK = process.env.TYPE_CHECK !== "false";
-
-const IS_DEV = process.env.NODE_ENV === "development";
-const IS_PROD = (process.env.NODE_ENV === "production") || !IS_DEV;
-
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const ENV_FILES = [`.env.${process.env.NODE_ENV}.local`, `.env.local`, `.env`].map((file) =>
   resolve(paths.user, file)
 );
-
 
 // Load environment variables from .env* files. Suppress warnings using silent
 // if this file is missing. dotenv will never modify any environment variables
@@ -34,7 +23,7 @@ for (const file of ENV_FILES) {
 // injected into the application via DefinePlugin in webpack configuration.
 const POTA_APP = /^POTA_APP/i;
 
-export function getEnv() {
+export default function getUserEnv() {
   const raw = Object.keys(process.env)
     .filter((key) => POTA_APP.test(key))
     .reduce(
@@ -42,7 +31,7 @@ export function getEnv() {
         env[key] = process.env[key];
         return env;
       },
-      { PUBLIC_URL: process.env.PUBLIC_URL || "/" }
+      {}
     );
   // Stringify all values so we can feed into webpack DefinePlugin
   const stringified = {
@@ -54,5 +43,3 @@ export function getEnv() {
 
   return { raw, stringified };
 }
-
-export { DEV_SOURCE_MAP, PROD_SOURCE_MAP, USE_TYPE_CHECK, IS_DEV, IS_PROD };

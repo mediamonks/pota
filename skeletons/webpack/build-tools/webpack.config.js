@@ -1,235 +1,253 @@
-import { getEnv, DEV_SOURCE_MAP, PROD_SOURCE_MAP, USE_TYPE_CHECK, IS_DEV, IS_PROD } from "./env.js";
-import webpack from "webpack";
 import { resolve } from "path";
-import * as paths from "./paths.js";
-import babelConfig from "./babel.config.js";
+
+import webpack from "webpack";
 import HTMLPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import ErrorPlugin from "friendly-errors-webpack-plugin";
 
+import babelConfig from "./babel.config.js";
+import * as paths from "./paths.js";
+import getEnv from "./getEnv.js";
+
 const env = getEnv();
 
-/**
- * UTILITIES
- */
-function getStyleLoaders(cssOptions, preProcessor) {
-  return [
-    IS_DEV && "style-loader",
-    IS_PROD &&  MiniCssExtractPlugin.loader,
-    { loader: "css-loader", options: cssOptions },
-    {
-      loader: "postcss-loader",
-      options: {
-        postcssOptions: {
-          plugins: ["autoprefixer"],
+let DEV_SOURCE_MAP = process.env.DEV_SOURCE_MAP || "eval-source-map";
+if (DEV_SOURCE_MAP === "false") DEV_SOURCE_MAP = false;
+let PROD_SOURCE_MAP = process.env.PROD_SOURCE_MAP || "source-map";
+if (PROD_SOURCE_MAP === "false") PROD_SOURCE_MAP = false;
+
+const USE_TYPE_CHECK = process.env.TYPE_CHECK !== "false";
+
+const IS_DEV_ENV = process.env.NODE_ENV === "development";
+const IS_PROD_ENV = (process.env.NODE_ENV === "production") || !IS_DEV_ENV;
+
+export default function createConfig(options = {}) {
+  const {
+    mode = IS_PROD_ENV ? "production" : "development",
+    publicUrl = "/"
+  } = options;
+
+  const isDev = mode === "development";
+  const isProd = mode === "production";
+
+  function getStyleLoaders(cssOptions, preProcessor) {
+    return [
+      isDev && "style-loader",
+      isProd && MiniCssExtractPlugin.loader,
+      { loader: "css-loader", options: cssOptions },
+      {
+        loader: "postcss-loader",
+        options: {
+          postcssOptions: {
+            plugins: ["autoprefixer"],
+          },
         },
       },
-    },
-    ...(preProcessor
-      ? [
+      ...(preProcessor
+        ? [
           { loader: "resolve-url-loader" },
           { loader: preProcessor },
-      ]
-      : []),
-  ].filter(Boolean);
-}
+        ]
+        : []),
+    ].filter(Boolean);
+  }
 
-/**
-  * @type {import('webpack').Configuration}
-  */
-export default {
-  stats: "none",
-  name: "pota-webpack",
-  target: "web",
-  // if an improper mode or environment is selected,
-  // `mode` will be false and webpack will complain about it
-  mode: IS_PROD ? "production" : "development",
-  // will bail compilation on the first error,
-  // instead of the default behavior of tolerating the error
-  bail: IS_PROD,
-  devtool: IS_PROD ? PROD_SOURCE_MAP : DEV_SOURCE_MAP,
-  context: paths.user,
-  entry: paths.entry,
+  /**
+    * @type {import('webpack').Configuration}
+    */
+  return {
+    stats: "none",
+    name: "pota-webpack",
+    target: "web",
+    // if an improper mode or environment is selected,
+    // `mode` will be false and webpack will complain about it
+    mode,
+    // will bail compilation on the first error,
+    // instead of the default behavior of tolerating the error
+    bail: isProd,
+    devtool: isProd ? PROD_SOURCE_MAP : DEV_SOURCE_MAP,
+    context: paths.user,
+    entry: paths.entry,
 
-  output: {
-    path: paths.output,
-    filename: `static/chunks/[name]${IS_PROD ? ".[contenthash]": ""}.js`,
-    chunkFilename: `static/chunks/[name]${IS_PROD ? ".[contenthash]": ""}.js`,
-    hotUpdateChunkFilename: `static/webpack/[id].[fullhash].hot-update.js`,
-    hotUpdateMainFilename: `static/webpack/[fullhash].[runtime].hot-update.json`,
-    publicPath: env.raw.PUBLIC_URL,
-    globalObject: "this",
-    strictModuleErrorHandling: true
-  },
-
-  resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
-    alias: {
-      "@": paths.source
+    output: {
+      path: paths.output,
+      publicPath: publicUrl,
+      filename: `static/chunks/[name]${isProd ? ".[contenthash]" : ""}.js`,
+      chunkFilename: `static/chunks/[name]${isProd ? ".[contenthash]" : ""}.js`,
+      hotUpdateChunkFilename: `static/webpack/[id].[fullhash].hot-update.js`,
+      hotUpdateMainFilename: `static/webpack/[fullhash].[runtime].hot-update.json`,
+      globalObject: "this",
+      strictModuleErrorHandling: true
     },
-  },
 
-  optimization: {
-    minimize: IS_PROD,
-    emitOnErrors: IS_PROD,
-    moduleIds: IS_PROD ? 'deterministic' : 'named',
-    splitChunks: IS_PROD && {
-      cacheGroups: {
-        defaultVendors: {
-          name: `chunk-vendors`,
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          chunks: "initial",
-        },
-        common: {
-          name: `chunk-common`,
-          minChunks: 2,
-          priority: -20,
-          chunks: "initial",
-          reuseExistingChunk: true,
-        },
+    resolve: {
+      extensions: [".js", ".jsx", ".ts", ".tsx"],
+      alias: {
+        "@": paths.source
       },
-      maxInitialRequests: 25
     },
 
-    // Keep the runtime chunk separated to enable long term caching
-    // https://twitter.com/wSokra/status/969679223278505985
-    // https://github.com/facebook/create-react-app/issues/5358
-    runtimeChunk: {
-      name: "runtime",
-    },
-  },
-
-  devServer: {
-    hot: true,
-    historyApiFallback: true,
-    client: {
-      logging: 'none',
-      progress: true,
-      overlay: false,
-    },
-  },
-
-  performance: false,
-
-  module: {
-    rules: [
-
-      /**
-       * TYPESCRIPT
-       */
-      {
-        test: /\.tsx?$/,
-        include: paths.source,
-        use: [
-          { loader: "babel-loader", options: babelConfig },
-          {
-            loader: "ts-loader",
-            options: {
-              // makes sure to load only the files required by webpack and nothing more
-              onlyCompileBundledFiles: true,
-              // type checking is handled by `fork-ts-checker-webpack-plugin`
-              transpileOnly: true,
-              happyPackMode: true,
-            },
+    optimization: {
+      minimize: isProd,
+      emitOnErrors: isProd,
+      moduleIds: isProd ? 'deterministic' : 'named',
+      splitChunks: isProd && {
+        cacheGroups: {
+          defaultVendors: {
+            name: `chunk-vendors`,
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            chunks: "initial",
           },
-        ],
+          common: {
+            name: `chunk-common`,
+            minChunks: 2,
+            priority: -20,
+            chunks: "initial",
+            reuseExistingChunk: true,
+          },
+        },
+        maxInitialRequests: 25
       },
 
-      /**
-       * JAVASCRIPT
-       */
-      {
-        test: /\.m?jsx?$/,
-        include: paths.source,
-        use: [{ loader: "babel-loader", options: babelConfig }],
+      // Keep the runtime chunk separated to enable long term caching
+      // https://twitter.com/wSokra/status/969679223278505985
+      // https://github.com/facebook/create-react-app/issues/5358
+      runtimeChunk: {
+        name: "runtime",
       },
+    },
 
-      /**
-       * CSS
-       */
-      // "postcss" loader applies autoprefixer to our CSS.
-      // "css" loader resolves paths in CSS and adds assets as dependencies.
-      // "style" loader turns CSS into JS modules that inject <style> tags.
-      // In production, we use MiniCSSExtractPlugin to extract that CSS
-      // to a file, but in development "style" loader enables hot editing
-      // of CSS.
-      {
-        test: /\.css$/,
-        use: getStyleLoaders({ importLoaders: 1 }),
-        // Don't consider CSS imports dead code even if the
-        // containing package claims to have no side effects.
-        // Remove this when webpack adds a warning or an error for this.
-        // See https://github.com/webpack/webpack/issues/6571
-        sideEffects: true,
+    devServer: {
+      hot: true,
+      historyApiFallback: true,
+      client: {
+        logging: 'none',
+        progress: true,
+        overlay: false,
       },
+    },
 
-      // Opt-in support for SASS (using .scss or .sass extensions).
-      // By default we support SASS Modules with the
-      // extensions .module.scss or .module.sass
-      {
-        test: /\.(scss|sass)$/,
-        use: getStyleLoaders({ importLoaders: 3 }, "sass-loader"),
-        // Don't consider CSS imports dead code even if the
-        // containing package claims to have no side effects.
-        // Remove this when webpack adds a warning or an error for this.
-        // See https://github.com/webpack/webpack/issues/6571
-        sideEffects: true,
-      },
+    performance: false,
 
-      /**
-       * IMAGES
-       */
-      {
-        test: /\.(png|jpe?g|gif|webp|avif)(\?.*)?$/,
-        type: "asset",
-        generator: { filename: "static/img/[contenthash][ext][query]" },
-      },
+    module: {
+      rules: [
 
-      // do not base64-inline SVGs.
-      // https://github.com/facebookincubator/create-react-app/pull/1180
-      {
-        test: /\.(svg)(\?.*)?$/,
-        type: "asset/resource",
-        generator: { filename: "static/img/[contenthash][ext][query]" },
-      },
+        /**
+         * TYPESCRIPT
+         */
+        {
+          test: /\.tsx?$/,
+          include: paths.source,
+          use: [
+            { loader: "babel-loader", options: babelConfig },
+            {
+              loader: "ts-loader",
+              options: {
+                // makes sure to load only the files required by webpack and nothing more
+                onlyCompileBundledFiles: true,
+                // type checking is handled by `fork-ts-checker-webpack-plugin`
+                transpileOnly: true,
+                happyPackMode: true,
+              },
+            },
+          ],
+        },
 
-      /**
-       * MISC MEDIA
-       */
-      {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        type: "asset",
-        generator: { filename: "static/media/[contenthash:8][ext][query]" },
-      },
+        /**
+         * JAVASCRIPT
+         */
+        {
+          test: /\.m?jsx?$/,
+          include: paths.source,
+          use: [{ loader: "babel-loader", options: babelConfig }],
+        },
 
-      /**
-       * FONTS
-       */
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
-        type: "asset",
-        generator: { filename: "static/fonts/[contenthash:8][ext][query]" },
-      },
-    ],
-  },
+        /**
+         * CSS
+         */
+        // "postcss" loader applies autoprefixer to our CSS.
+        // "css" loader resolves paths in CSS and adds assets as dependencies.
+        // "style" loader turns CSS into JS modules that inject <style> tags.
+        // In production, we use MiniCSSExtractPlugin to extract that CSS
+        // to a file, but in development "style" loader enables hot editing
+        // of CSS.
+        {
+          test: /\.css$/,
+          use: getStyleLoaders({ importLoaders: 1 }),
+          // Don't consider CSS imports dead code even if the
+          // containing package claims to have no side effects.
+          // Remove this when webpack adds a warning or an error for this.
+          // See https://github.com/webpack/webpack/issues/6571
+          sideEffects: true,
+        },
 
-  plugins: [
-    // new webpack.CleanPlugin({}),
-    new HTMLPlugin({
-      inject: true,
-      favicon: resolve(paths.publicDir, "favicon.ico"),
-      template: resolve(paths.publicDir, "index.html"),
-    }),
-    new ErrorPlugin(),
-    new webpack.DefinePlugin(env.stringified),
-    IS_PROD && new MiniCssExtractPlugin({
-      filename: 'static/css/[contenthash].css',
-      chunkFilename: 'static/css/[contenthash].css',
-    }),
-    IS_PROD &&
+        // Opt-in support for SASS (using .scss or .sass extensions).
+        // By default we support SASS Modules with the
+        // extensions .module.scss or .module.sass
+        {
+          test: /\.(scss|sass)$/,
+          use: getStyleLoaders({ importLoaders: 3 }, "sass-loader"),
+          // Don't consider CSS imports dead code even if the
+          // containing package claims to have no side effects.
+          // Remove this when webpack adds a warning or an error for this.
+          // See https://github.com/webpack/webpack/issues/6571
+          sideEffects: true,
+        },
+
+        /**
+         * IMAGES
+         */
+        {
+          test: /\.(png|jpe?g|gif|webp|avif)(\?.*)?$/,
+          type: "asset",
+          generator: { filename: "static/img/[contenthash][ext][query]" },
+        },
+
+        // do not base64-inline SVGs.
+        // https://github.com/facebookincubator/create-react-app/pull/1180
+        {
+          test: /\.(svg)(\?.*)?$/,
+          type: "asset/resource",
+          generator: { filename: "static/img/[contenthash][ext][query]" },
+        },
+
+        /**
+         * MISC MEDIA
+         */
+        {
+          test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+          type: "asset",
+          generator: { filename: "static/media/[contenthash:8][ext][query]" },
+        },
+
+        /**
+         * FONTS
+         */
+        {
+          test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
+          type: "asset",
+          generator: { filename: "static/fonts/[contenthash:8][ext][query]" },
+        },
+      ],
+    },
+
+    plugins: [
+      // new webpack.CleanPlugin({}),
+      new HTMLPlugin({
+        inject: true,
+        favicon: resolve(paths.publicDir, "favicon.ico"),
+        template: resolve(paths.publicDir, "index.html"),
+      }),
+      new ErrorPlugin(),
+      new webpack.DefinePlugin(env.stringified),
+      isProd && new MiniCssExtractPlugin({
+        filename: 'static/css/[contenthash].css',
+        chunkFilename: 'static/css/[contenthash].css',
+      }),
+      isProd &&
       new CopyPlugin({
         patterns: [
           {
@@ -240,10 +258,11 @@ export default {
           },
         ],
       }),
-    USE_TYPE_CHECK &&
+      USE_TYPE_CHECK &&
       new ForkTsCheckerWebpackPlugin({
-        async: IS_DEV,
+        async: isDev,
         typescript: { diagnosticOptions: { semantic: true, syntactic: true } },
       }),
-  ].filter(Boolean),
+    ].filter(Boolean),
+  }
 }

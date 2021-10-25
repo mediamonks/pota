@@ -1,10 +1,18 @@
 import webpack from "webpack";
 import ora from "ora";
+
 import getConfig, { getSkeleton } from "../build-tools/getConfig.js";
 
 export const description = "Build the source directory using webpack.";
 
-export const action = async () => {
+export const options = [
+  {
+    option: '--publicUrl',
+    description: 'The public url',
+  }
+];
+
+export const action = async (options) => {
   process.env.NODE_ENV = "production";
 
   const SPINNER = ora(`Reading configuration of '${getSkeleton()}'`).start();
@@ -15,7 +23,7 @@ export const action = async () => {
 
   try {
     const stats = await new Promise((resolve, reject) =>
-      webpack(config, (error, stats) => {
+      webpack(config(options), (error, stats) => {
         if (!error && stats?.hasErrors()) error = stats.toJson()?.errors;
 
         return error ? reject(error) : resolve(stats?.toString({ colors: true, chunks: false }));
