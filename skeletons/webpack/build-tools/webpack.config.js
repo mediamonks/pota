@@ -6,11 +6,11 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import ErrorPlugin from "friendly-errors-webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 import babelConfig from "./babel.config.js";
 import * as paths from "./paths.js";
 import getEnv from "./getEnv.js";
-
 
 const USE_TYPE_CHECK = process.env.TYPE_CHECK !== "false";
 
@@ -21,7 +21,8 @@ function parseOptions(options) {
   const {
     mode = IS_PROD_ENV ? "production" : "development",
     publicUrl = "/",
-    outputDir = paths.output
+    outputDir = paths.output,
+    analyze = false,
   } = options;
 
   let {
@@ -30,14 +31,11 @@ function parseOptions(options) {
 
   if (sourceMap === "false") sourceMap = false;
 
-  const isDev = mode === "development";
-  const isProd = mode === "production";
-
-  return { mode, publicUrl, outputDir, sourceMap, isDev, isProd };
+  return { mode, publicUrl, outputDir, sourceMap, analyze, isDev: mode === "development", isProd: mode === "production" };
 }
 
 export default function createConfig(options = {}) {
-  const { isDev, isProd, mode, publicUrl, outputDir, sourceMap } = parseOptions(options);
+  const { isDev, isProd, mode, publicUrl, analyze, outputDir, sourceMap } = parseOptions(options);
   const env = getEnv();
 
   function getStyleLoaders(cssOptions, preProcessor) {
@@ -267,6 +265,7 @@ export default function createConfig(options = {}) {
         async: isDev,
         typescript: { diagnosticOptions: { semantic: true, syntactic: true } },
       }),
+      analyze && new BundleAnalyzerPlugin(typeof analyze === "string" ? { analyzerMode: analyze } : {}),
     ].filter(Boolean),
   }
 }

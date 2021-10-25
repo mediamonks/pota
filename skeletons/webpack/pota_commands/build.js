@@ -26,6 +26,10 @@ export const options = [
     option: '--sourceMap',
     description: 'The source map type (https://webpack.js.org/configuration/devtool/#devtool)',
   },
+  {
+    option: '--analyze',
+    description: 'Build and then analyze the build output',
+  }
 ];
 
 function preprocessOptions(options) {
