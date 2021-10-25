@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-skeleton",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "bugs": {
@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.14.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
-    "@pota/webpack-skeleton": "^1.0.0-rc.3",
+    "@pota/webpack-skeleton": "^1.0.0-rc.4",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "babel-plugin-named-asset-import": "^0.3.7",
@@ -42,7 +42,9 @@
   },
   "pota": {
     "extends": "@pota/webpack-skeleton",
-    "excludedFiles": ["build-tools"],
+    "excludedFiles": [
+      "build-tools"
+    ],
     "package.json": {
       "name": "react-project",
       "dependencies": {
