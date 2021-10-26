@@ -81,8 +81,8 @@ export default function createConfig(unsafeOptions = {}) {
     output: {
       path: options.output,
       publicPath: options.publicUrl,
-      filename: `static/chunks/[name]${options.isProd ? ".[contenthash]" : ""}.js`,
-      chunkFilename: `static/chunks/[name]${options.isProd ? ".[contenthash]" : ""}.js`,
+      filename: `static/chunks/[name]${options.isDev ? "" : ".[contenthash]"}.js`,
+      chunkFilename: `static/chunks/[name]${options.isDev ? "" : ".[contenthash]"}.js`,
       hotUpdateChunkFilename: `static/webpack/[id].[fullhash].hot-update.js`,
       hotUpdateMainFilename: `static/webpack/[fullhash].[runtime].hot-update.json`,
       globalObject: "this",
@@ -92,7 +92,8 @@ export default function createConfig(unsafeOptions = {}) {
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
       alias: {
-        "@": paths.source
+        "@": paths.source,
+        'mediamonks-webgl': resolve(paths.source, 'src/webgl/lib/'),
       },
     },
 
@@ -203,12 +204,13 @@ export default function createConfig(unsafeOptions = {}) {
         },
 
         /**
-         * IMAGES
+         * ASSETS
          */
+
         {
           test: /\.(png|jpe?g|gif|webp|avif)(\?.*)?$/,
           type: "asset",
-          generator: { filename: "static/img/[contenthash][ext][query]" },
+          generator: { filename: `static/img/${options.isDev ? "[name]" : "[contenthash]"}[ext][query]` },
         },
 
         // do not base64-inline SVGs.
@@ -216,25 +218,25 @@ export default function createConfig(unsafeOptions = {}) {
         {
           test: /\.(svg)(\?.*)?$/,
           type: "asset/resource",
-          generator: { filename: "static/img/[contenthash][ext][query]" },
+          generator: { filename: `static/img/${options.isDev ? "[name]" : "[contenthash]"}[ext][query]` },
         },
 
-        /**
-         * MISC MEDIA
-         */
         {
           test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
           type: "asset",
-          generator: { filename: "static/media/[contenthash:8][ext][query]" },
+          generator: { filename: `static/media/${options.isDev ? "[name]" : "[contenthash:8]"}[ext][query]` },
         },
 
-        /**
-         * FONTS
-         */
         {
           test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
           type: "asset",
-          generator: { filename: "static/fonts/[contenthash:8][ext][query]" },
+          generator: { filename: `static/fonts/${options.isDev ? "[name]" : "[contenthash:8]"}[ext][query]` },
+        },
+
+        {
+          test: /\.(glsl|frag|vert)(\?.*)?$/,
+          type: "asset/source",
+          generator: { filename: `static/shaders/${options.isDev ? "[name]" : "[contenthash]"}[ext][query]` },
         },
       ],
     },
