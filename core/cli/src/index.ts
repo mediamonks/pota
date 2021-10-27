@@ -18,8 +18,6 @@ import { getSkeletonName } from "./skeleton.js";
 
   for (const module of await getCommandModules(mainSkeleton)) {
 
-    console.log(module);
-
     const { action, command, options, examples, description, skeleton } = module;
 
     const program = main.command(command);
