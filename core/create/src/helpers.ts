@@ -133,7 +133,7 @@ export async function getSkeletonName(rawSkeletonName: string, packageJsonPath: 
         // github:mediamonks/pota#feature
         return (version === `${type}:${user}/${project}#${gitCommittish}`)
       }
-      case "file": return version === parsedName.saveSpec;
+      case "file": return version === parsedName.rawSpec;
       default: return name === rawSkeletonName;
     }
   })
