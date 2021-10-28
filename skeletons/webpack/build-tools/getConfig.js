@@ -13,10 +13,18 @@ function getNodeModulesPath() {
   return currentPath.substring(0, currentPath.indexOf(modulesDir) + modulesDir.length);
 }
 
-function getConfigPath() {
-  return join(getNodeModulesPath(), getSkeleton(), "build-tools", "webpack.config.js");
+function getConfigPath(...paths) {
+  return join(...paths, "build-tools", "webpack.config.js");
 }
 
 export default async function getConfig() {
-  return (await import(getConfigPath())).default;
+  // attempt to load the user defined config first
+  try {
+    return (await import(getConfigPath())).default;
+  } catch (error) {
+    console.warn(error);
+  }
+
+  // fallback to the skeleton config
+  return (await import(getConfigPath(getNodeModulesPath(), getSkeleton()))).default;
 }
