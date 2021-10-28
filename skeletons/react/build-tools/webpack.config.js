@@ -15,6 +15,8 @@ function parseOptions(options) {
   return { profile };
 }
 
+const SVG_TEST = /\.(svg)(\?.*)?$/;
+
 export default function createConfig(options = {}) {
   const { isDev } = parseWebpackSkeletonOptions(options);
   const config = createWebpackSkeletonConfig(options);
@@ -43,13 +45,33 @@ export default function createConfig(options = {}) {
     },
     entry: paths.entry.replace(".ts", ".tsx"),
     module: {
-      rules: rules.map((rule) => ({
-        ...rule,
-        use:
-          rule.use?.map?.((use) =>
-            use.loader === "babel-loader" ? { ...use, options: getBabelConfig(isDev) } : use
-          ) ?? rule.use,
-      })),
+      rules: rules.map((rule) => {
+        if (String(rule.test) === String(SVG_TEST)) {
+          return {
+            test: SVG_TEST,
+            use: [
+              {
+                loader: "@svgr/webpack",
+                options: {
+                  prettier: false,
+                  svgoConfig: {
+                    plugins: [{ removeViewBox: false }],
+                  },
+                  titleProp: true,
+                  ref: true,
+                },
+              },
+              { loader: "url-loader" },
+            ],
+          };
+        }
+
+        const use = rule.use?.map?.((use) =>
+          use.loader === "babel-loader" ? { ...use, options: getBabelConfig(isDev) } : use
+        );
+
+        return { ...rule, use: use ?? rule.use };
+      }),
     },
     plugins: [...plugins, isDev && new ReactRefreshPlugin({ overlay: false })].filter(Boolean),
   };
