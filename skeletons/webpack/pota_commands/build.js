@@ -59,7 +59,7 @@ export const action = async (options) => {
 
   try {
     const stats = await new Promise((resolve, reject) =>
-      webpack(config(options), (error, stats) => {
+      webpack(await config(options), (error, stats) => {
         if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
 
         return error ? reject(error) : resolve(stats?.toString({ colors: true, chunks: false }));
