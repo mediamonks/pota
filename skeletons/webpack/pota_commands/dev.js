@@ -29,6 +29,7 @@ export const options = [
 export const action = async (options) => {
   process.env.NODE_ENV = "development";
 
-  const config = await getConfig();
-  await new Server({ ...config.devServer, https: options.https }, webpack(config(options))).start();
+  const createConfig = await getConfig();
+  const config = await createConfig(options);
+  await new Server({ ...config.devServer, https: options.https }, webpack(config)).start();
 };

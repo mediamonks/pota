@@ -58,7 +58,7 @@ export const action = async (options) => {
   options = preprocessOptions(options);
 
   try {
-    const stats = await new Promise((resolve, reject) =>
+    const stats = await new Promise(async (resolve, reject) =>
       webpack(await config(options), (error, stats) => {
         if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
 
