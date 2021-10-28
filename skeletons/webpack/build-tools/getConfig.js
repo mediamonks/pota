@@ -1,4 +1,4 @@
-import { join } from "path";
+import { resolve } from "path";
 import { fileURLToPath } from "url";
 
 export function getSkeleton() {
@@ -14,7 +14,7 @@ function getNodeModulesPath() {
 }
 
 function getConfigPath(...paths) {
-  return join(...paths, "build-tools", "webpack.config.js");
+  return resolve(...paths, "build-tools", "webpack.config.js");
 }
 
 export default async function getConfig() {
