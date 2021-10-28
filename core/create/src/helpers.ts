@@ -71,26 +71,19 @@ function getPackageManager(): PackageManager {
   return "npm";
 }
 
-function callManager(...commands: ReadonlyArray<string>) {
-  switch (getPackageManager()) {
-    case "npm":
-      return spawn("npm", ...commands);
-    case "yarn":
-      return spawn("yarn", ...commands);
-  }
-}
-
 interface InstallOptions {
   cwd?: string;
   dev?: boolean;
+  npm?: boolean;
+  yarn?: boolean;
 }
 
 export function createInstaller(options: InstallOptions = {}) {
-  const { cwd, dev } = options;
+  const { cwd, dev, yarn, npm } = options;
   let pre: Array<string> = [];
   let post: Array<string> = [];
 
-  const pm = getPackageManager();
+  const pm = !yarn && !npm ? getPackageManager() : yarn ? "yarn" : "npm";
 
   switch (pm) {
     case "npm": {
@@ -119,7 +112,7 @@ export function createInstaller(options: InstallOptions = {}) {
     SPINNER.stopAndPersist();
 
     try {
-      await callManager(...pre, ...packages, ...post);
+      await spawn(pm, ...pre, ...packages, ...post);
     } finally {
       SPINNER.start();
     }

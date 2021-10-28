@@ -16,11 +16,13 @@ const { red, green, cyan } = kleur;
 
 type SadeSkeleton = string;
 type SadeDirectory = string;
-interface SadeOptions { 'fail-cleanup': boolean };
+interface SadeOptions { 'fail-cleanup': boolean, "use-npm": boolean, "use-yarn": boolean };
 
 sade("@pota/create <skeleton> <dir>", true)
   .describe("Create Pota project")
   .option('--fail-cleanup', 'Cleanup after failing initialization', true)
+  .option('--use-yarn', 'Force Pota to use yarn', false)
+  .option('--use-npm', 'Force Pota to use npm', false)
   .example("npx @pota/create webpack ./project-directory")
   .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
 
@@ -60,8 +62,8 @@ sade("@pota/create <skeleton> <dir>", true)
       skeleton = relative(cwd, skeleton);
     } else if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
 
-    const install = helpers.createInstaller({ cwd });
-    const installDev = helpers.createInstaller({ cwd, dev: true });
+    const install = helpers.createInstaller({ cwd, npm: options["use-npm"], yarn: options["use-yarn"] });
+    const installDev = helpers.createInstaller({ cwd, dev: true, npm: options["use-npm"], yarn: options["use-yarn"] });
 
     async function bail() {
       if (options["fail-cleanup"]) {
