@@ -22,7 +22,7 @@ export default async function getConfig() {
   try {
     return (await import(getConfigPath())).default;
   } catch (error) {
-    console.warn(error);
+    // TODO: how to show this error with
   }
 
   // fallback to the skeleton config
