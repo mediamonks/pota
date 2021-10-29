@@ -130,8 +130,9 @@ export async function getSkeletonName(rawSkeletonName: string, packageJsonPath: 
       case "git": {
         const { gitCommittish, hosted } = parsedName;
         const { user, type, project } = hosted!;
+
         // github:mediamonks/pota#feature
-        return (version === `${type}:${user}/${project}#${gitCommittish}`)
+        return version === `${type}:${user}/${project}#${gitCommittish}` || version === parsedName.rawSpec;
       }
       case "file": return version === parsedName.rawSpec;
       default: return name === rawSkeletonName;
