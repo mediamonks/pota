@@ -51,8 +51,6 @@ export default async function sync(targetPath: string, skeleton: string, pkgName
   const commandScripts: PackageJsonShape["scripts"] = {};
 
   for (const { path, config, files } of await getNestedSkeletons(targetPath, skeleton)) {
-    console.log(pkg)
-    console.log(path, config, files)
     for (const file of files) {
       if (file.startsWith(POTA_DIR)) {
         if (file.startsWith(commandsDir)) {
