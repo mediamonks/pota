@@ -1,15 +1,14 @@
-import { join, resolve } from "path";
-import { promises as fs, realpathSync } from "fs";
+import { join, resolve } from 'path';
+import { promises as fs, realpathSync } from 'fs';
 
-import type { PackageJsonShape } from "./config.js";
-import { PACKAGE_JSON_FILE } from "./config.js";
+import type { PackageJsonShape } from './config.js';
+import { PACKAGE_JSON_FILE } from './config.js';
 
 const { access, readdir, readFile, writeFile } = fs;
 
 export const getCWD = () => realpathSync(process.cwd());
 
-export const resolveUser: typeof resolve = (...pathSegments) =>
-  resolve(getCWD(), ...pathSegments);
+export const resolveUser: typeof resolve = (...pathSegments) => resolve(getCWD(), ...pathSegments);
 
 export async function isDirectoryAvailable(dir: string) {
   try {
@@ -36,7 +35,7 @@ export async function readPackageJson(path: string) {
   path = normalizePackagePath(path);
 
   if (!READ_CACHE.has(path)) {
-    const json: PackageJsonShape = JSON.parse(await readFile(path, { encoding: "utf8" }));
+    const json: PackageJsonShape = JSON.parse(await readFile(path, { encoding: 'utf8' }));
 
     READ_CACHE.set(path, json);
   }
@@ -47,7 +46,7 @@ export async function readPackageJson(path: string) {
 export async function writePackageJson(object: PackageJsonShape, path: string) {
   path = normalizePackagePath(path);
 
-  await writeFile(path, JSON.stringify(object, null, 2), { encoding: "utf8" })
+  await writeFile(path, JSON.stringify(object, null, 2), { encoding: 'utf8' });
 }
 
 interface ReaddirOptions {
@@ -56,24 +55,21 @@ interface ReaddirOptions {
 }
 
 export class Recursive {
-
   static async readdir(dir: string, { omit, include }: ReaddirOptions = {}) {
     const files = await readdir(dir, { withFileTypes: true });
     const finalFiles: Array<string> = [];
 
     for (const file of files) {
-      if (omit?.includes(file.name) || include && !include.includes(file.name)) continue;
+      if (omit?.includes(file.name) || (include && !include.includes(file.name))) continue;
       else if (file.isFile()) finalFiles.push(file.name);
       else if (file.isDirectory()) {
         // sub files come in relative to `file.name`
         const subFiles = await Recursive.readdir(join(dir, file.name));
         // we have to prepend the `file.name` so the path is always relative to `dir`
-        finalFiles.push(...subFiles.map(filename => join(file.name, filename)));
+        finalFiles.push(...subFiles.map((filename) => join(file.name, filename)));
       }
     }
 
     return finalFiles;
   }
-
 }
-

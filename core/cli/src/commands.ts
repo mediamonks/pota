@@ -1,8 +1,8 @@
-import { join, extname, basename } from "path";
+import { join, extname, basename } from 'path';
 
-import { getNestedSkeletons } from "@pota/shared/skeleton";
-import { getCWD } from "@pota/shared/fs";
-import { POTA_COMMANDS_DIR, POTA_DIR } from "@pota/shared/config";
+import { getNestedSkeletons } from '@pota/shared/skeleton';
+import { getCWD } from '@pota/shared/fs';
+import { POTA_COMMANDS_DIR, POTA_DIR } from '@pota/shared/config';
 
 export interface CommandModule {
   command: string;
@@ -21,9 +21,7 @@ export async function getCommandModules(skeleton: string) {
   const dir = join(POTA_DIR, POTA_COMMANDS_DIR);
 
   // find all nested skeletons
-  const skeletons = Array.from(
-    await getNestedSkeletons(getCWD(), skeleton, { dir })
-  ).reverse();
+  const skeletons = Array.from(await getNestedSkeletons(getCWD(), skeleton, { dir })).reverse();
 
   // parse command modules from nested skeletons
   const modules = await Promise.all(
@@ -37,8 +35,8 @@ export async function getCommandModules(skeleton: string) {
           skeleton,
           command: basename(modulePath, extname(modulePath)),
         };
-      })
-    )
+      }),
+    ),
   );
 
   // to skip duplicate commands
@@ -47,9 +45,7 @@ export async function getCommandModules(skeleton: string) {
   // safety filter, to get rid of invalid modules
   return modules.filter((module) => {
     const condition =
-      !included.has(module.command) &&
-      "action" in module &&
-      typeof module.action === "function";
+      !included.has(module.command) && 'action' in module && typeof module.action === 'function';
 
     included.add(module.command);
 

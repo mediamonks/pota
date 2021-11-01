@@ -1,7 +1,7 @@
-import sade from "sade";
+import sade from 'sade';
 
-import { getCommandModules } from "./commands.js";
-import { getSkeletonName } from "./skeleton.js";
+import { getCommandModules } from './commands.js';
+import { getSkeletonName } from './skeleton.js';
 
 // TODO: top level await
 (async () => {
@@ -9,15 +9,14 @@ import { getSkeletonName } from "./skeleton.js";
 
   if (!mainSkeleton) {
     console.log(
-      "Error: no skeleton is defined in the `POTA_SKELETON` environment variable or in the pota configuration in 'pacakge.json'"
+      "Error: no skeleton is defined in the `POTA_SKELETON` environment variable or in the pota configuration in 'pacakge.json'",
     );
     process.exit(1);
   }
 
-  const main = sade("pota");
+  const main = sade('pota');
 
   for (const module of await getCommandModules(mainSkeleton)) {
-
     const { action, command, options, examples, description, skeleton } = module;
 
     const program = main.command(command);
@@ -26,9 +25,9 @@ import { getSkeletonName } from "./skeleton.js";
       const skeletonString = `[${skeleton}]`;
 
       program.describe(
-        typeof description === "string"
+        typeof description === 'string'
           ? `${description} ${skeletonString}`
-          : [...description, skeletonString]
+          : [...description, skeletonString],
       );
     }
     if (options) {

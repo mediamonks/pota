@@ -1,14 +1,14 @@
-import { promises } from "fs";
+import { promises } from 'fs';
+import { relative, basename } from 'path';
 
-import sade from "sade";
-import * as fs from "@pota/shared/fs";
+import sade from 'sade';
+import kleur from 'kleur';
+import * as fs from '@pota/shared/fs';
 
-import { isSkeletonShorthand, getSkeletonFromShorthand, POTA_CLI } from "./config.js";
-import * as helpers from "./helpers.js";
-import sync from "./sync.js";
-import { SPINNER } from "./spinner.js";
-import kleur from "kleur";
-import { relative, basename } from "path";
+import { isSkeletonShorthand, getSkeletonFromShorthand, POTA_CLI } from './config.js';
+import * as helpers from './helpers.js';
+import sync from './sync.js';
+import { SPINNER } from './spinner.js';
 
 const { rm, mkdir } = promises;
 const { clear, log } = helpers;
@@ -16,21 +16,24 @@ const { red, green, cyan } = kleur;
 
 type SadeSkeleton = string;
 type SadeDirectory = string;
-interface SadeOptions { 'fail-cleanup': boolean, "use-npm": boolean, "use-yarn": boolean };
+interface SadeOptions {
+  'fail-cleanup': boolean;
+  'use-npm': boolean;
+  'use-yarn': boolean;
+}
 
-sade("@pota/create <skeleton> <dir>", true)
-  .describe("Create Pota project")
+sade('@pota/create <skeleton> <dir>', true)
+  .describe('Create Pota project')
   .option('--fail-cleanup', 'Cleanup after failing initialization', true)
   .option('--use-yarn', 'Force Pota to use yarn', false)
   .option('--use-npm', 'Force Pota to use npm', false)
-  .example("npx @pota/create webpack ./project-directory")
+  .example('npx @pota/create webpack ./project-directory')
   .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
-
     /**
      * Validation
      */
 
-    SPINNER.start("Validating directory availability...");
+    SPINNER.start('Validating directory availability...');
 
     if (!(await fs.isDirectoryAvailable(dir))) {
       console.error(`${green(dir)} already exists, please specify a different directory`);
@@ -40,9 +43,9 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.succeed();
 
-    SPINNER.start("Validating skeleton package...");
+    SPINNER.start('Validating skeleton package...');
 
-    if (!(helpers.isValidSkeleton(skeleton))) {
+    if (!helpers.isValidSkeleton(skeleton)) {
       console.error(`${green(skeleton)} is not a valid skeleton package`);
 
       process.exit(1);
@@ -63,17 +66,17 @@ sade("@pota/create <skeleton> <dir>", true)
       skeleton = relative(cwd, skeleton);
     } else if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
 
-    const installOptions = { cwd, npm: options["use-npm"], yarn: options["use-yarn"] };
+    const installOptions = { cwd, npm: options['use-npm'], yarn: options['use-yarn'] };
     const install = helpers.createInstaller(installOptions);
     const installDev = helpers.createInstaller({ ...installOptions, dev: true });
 
     async function bail() {
-      if (options["fail-cleanup"]) {
+      if (options['fail-cleanup']) {
         try {
           console.log();
-          console.error("Deleting created directory.");
+          console.error('Deleting created directory.');
           await rm(cwd, { recursive: true });
-        } catch { }
+        } catch {}
       }
 
       process.exit(1);
@@ -85,7 +88,7 @@ sade("@pota/create <skeleton> <dir>", true)
 
     clear();
 
-    SPINNER.start("Creating directory");
+    SPINNER.start('Creating directory');
 
     try {
       await mkdir(cwd, { recursive: true });
@@ -97,11 +100,10 @@ sade("@pota/create <skeleton> <dir>", true)
     }
 
     SPINNER.succeed();
-    ;
     // change directory into current working directory (the project directory)
     process.chdir(cwd);
 
-    SPINNER.start("Initializing git");
+    SPINNER.start('Initializing git');
 
     try {
       await helpers.command(`git init`);
@@ -116,7 +118,9 @@ sade("@pota/create <skeleton> <dir>", true)
 
     const visualName = isFileSkeleton ? basename(skeleton) : skeleton;
 
-    SPINNER.start(`Installing ${cyan(visualName)} and ${cyan(POTA_CLI)}, this might take a while...`);
+    SPINNER.start(
+      `Installing ${cyan(visualName)} and ${cyan(POTA_CLI)}, this might take a while...`,
+    );
 
     try {
       await installDev(skeleton, POTA_CLI);
@@ -130,7 +134,7 @@ sade("@pota/create <skeleton> <dir>", true)
     try {
       skeleton = await helpers.getSkeletonName(skeleton, cwd);
     } catch (error) {
-      SPINNER.fail(`An Error occured reading the project ${green("package.json")}`);
+      SPINNER.fail(`An Error occured reading the project ${green('package.json')}`);
       console.error(error);
 
       await bail();

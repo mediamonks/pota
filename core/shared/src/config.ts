@@ -3,7 +3,7 @@ export interface PotaConfig {
   dependencies?: ReadonlyArray<string>;
   devDependencies?: ReadonlyArray<string>;
   scripts?: ReadonlyArray<string>;
-  rename?: Record<string, string>
+  rename?: Record<string, string>;
 }
 
 export interface PackageJsonShape {
@@ -13,22 +13,17 @@ export interface PackageJsonShape {
   pota?: string;
   files?: ReadonlyArray<string>;
   publishConfig?: Record<string, unknown>;
-  repository?: Record<string, string>
-  bugs?: Record<string, string>
+  repository?: Record<string, string>;
+  bugs?: Record<string, string>;
   author?: string;
   name?: string;
   version?: string;
 }
 
-export const PACKAGE_JSON_FILE = "package.json" as const;
+export const PACKAGE_JSON_FILE = 'package.json' as const;
 
-export const POTA_DIR = "pota";
-export const POTA_CONFIG_FILE = "config.js";
-export const POTA_COMMANDS_DIR = "commands";
+export const POTA_DIR = 'pota';
+export const POTA_CONFIG_FILE = 'config.js';
+export const POTA_COMMANDS_DIR = 'commands';
 
-export const EXCLUDED_FILES = [
-  "yarn.lock",
-  "package-lock.json",
-  "node_modules",
-];
-
+export const EXCLUDED_FILES = ['yarn.lock', 'package-lock.json', 'node_modules'];
