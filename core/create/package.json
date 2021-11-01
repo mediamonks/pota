@@ -1,6 +1,6 @@
 {
   "name": "@pota/create",
-  "version": "1.0.0-rc.7",
+  "version": "1.0.0-rc.8",
   "description": "Create Pota Apps with no configuration",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
@@ -20,7 +20,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b -i",
-    "clean:build": "rm -rf lib && tsc -b",
+    "clean:build": "rm -rf lib tsconfig.tsbuildinfo && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {

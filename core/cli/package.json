@@ -1,6 +1,6 @@
 {
   "name": "@pota/cli",
-  "version": "1.0.0-rc.5",
+  "version": "1.0.0-rc.6",
   "description": "Create Pota Apps with no configuration",
   "type": "module",
   "bin": {
@@ -21,11 +21,11 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b -i",
-    "clean:build": "rm -rf lib && tsc -b",
+    "clean:build": "rm -rf lib tsconfig.tsbuildinfo && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {
-    "@pota/shared": "^1.1.0",
+    "@pota/shared": "^1.1.1",
     "sade": "^1.7.4"
   },
   "devDependencies": {

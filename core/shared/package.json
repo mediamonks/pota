@@ -1,6 +1,6 @@
 {
   "name": "@pota/shared",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "@pota shared utility package",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
@@ -23,7 +23,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b -i",
-    "clean:build": "rm -rf lib && tsc -b",
+    "clean:build": "rm -rf lib tsconfig.tsbuildinfo && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
   "publishConfig": {
