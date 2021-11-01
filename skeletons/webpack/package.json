@@ -14,8 +14,7 @@
   "files": [
     "public",
     "src",
-    "build-tools",
-    "pota_commands",
+    "pota",
     "gitignore",
     "tsconfig.json",
     ".eslintrc.cjs",
@@ -98,24 +97,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "pota": {
-    "excludedFiles": [
-      "build-tools"
-    ],
-    "renames": {
-      "gitignore": ".gitignore"
-    },
-    "package.json": {
-      "name": "webpack-project",
-      "scripts": {
-        "check-types": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
-        "fix": "npm-run-all fix:*",
-        "fix:eslint": "npm run lint:eslint -- --fix",
-        "fix:prettier": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
-        "lint": "npm-run-all lint:*",
-        "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
-      }
-    }
   }
 }

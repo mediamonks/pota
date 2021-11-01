@@ -3,8 +3,8 @@ import { relative, isAbsolute, resolve } from "path";
 import webpack from "webpack";
 import ora from "ora";
 
-import * as paths from "../build-tools/paths.js";
-import getConfig, { getSkeleton } from "../build-tools/getConfig.js";
+import * as paths from "../webpack/paths.js";
+import getConfig, { getSkeleton } from "../webpack/getConfig.js";
 
 export const description = "Build the source directory using webpack.";
 

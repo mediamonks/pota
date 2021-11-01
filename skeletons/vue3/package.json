@@ -12,7 +12,7 @@
     "directory": "skeletons/vue3"
   },
   "files": [
-    "build-tools",
+    "pota",
     "public",
     "tsconfig.json",
     "src"
@@ -30,17 +30,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "pota": {
-    "extends": "@pota/webpack-skeleton",
-    "excludedFiles": [
-      "build-tools"
-    ],
-    "package.json": {
-      "name": "vue3-project",
-      "dependencies": {
-        "vue": "^3.2.20"
-      }
-    }
   }
 }

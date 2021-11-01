@@ -1,11 +1,10 @@
-import type { ProjectPotaConfig } from "@pota/shared/config";
 import { readPackageJson, getCWD } from "@pota/shared/fs";
 
 export async function getSkeletonName() {
   if (!process.env.POTA_SKELETON) {
-    const config = (await readPackageJson(getCWD())).pota as ProjectPotaConfig | undefined;
+    const pkg = (await readPackageJson(getCWD())) 
 
-    if (config?.default) process.env.POTA_SKELETON = config.default;
+    if (pkg?.pota) process.env.POTA_SKELETON = pkg.pota;
   }
 
   // TODO: throw error if the pota skeleton isn't installed

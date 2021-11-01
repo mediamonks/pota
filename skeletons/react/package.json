@@ -12,8 +12,7 @@
     "directory": "skeletons/react"
   },
   "files": [
-    "build-tools",
-    "pota_commands",
+    "pota",
     "public",
     "tsconfig.json",
     "src"
@@ -40,21 +39,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "pota": {
-    "extends": "@pota/webpack-skeleton",
-    "excludedFiles": [
-      "build-tools"
-    ],
-    "package.json": {
-      "name": "react-project",
-      "dependencies": {
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
-        "web-vitals": "^2.1.1",
-        "@types/react": "^17.0.0",
-        "@types/react-dom": "^17.0.0"
-      }
-    }
   }
 }

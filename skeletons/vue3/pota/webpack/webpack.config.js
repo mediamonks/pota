@@ -1,7 +1,5 @@
-import createWebpackConfig from "@pota/webpack-skeleton/build-tools/webpack.config.js";
+import createWebpackConfig from "@pota/webpack-skeleton/pota/webpack/webpack.config.js";
 import { VueLoaderPlugin } from "vue-loader";
-
-
 
 export default function createConfig(options) {
   const webpackConfig = createWebpackConfig(options);

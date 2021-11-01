@@ -1,4 +1,4 @@
-import babelConfig from "@pota/webpack-skeleton/build-tools/babel.config.js";
+import babelConfig from "@pota/webpack-skeleton/pota/webpack/babel.config.js";
 
 export default function getBabelConfig(isDev) {
   return {

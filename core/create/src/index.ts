@@ -55,6 +55,7 @@ sade("@pota/create <skeleton> <dir>", true)
      */
     let isFileSkeleton = false;
 
+    const pkgName = basename(dir);
     const cwd = fs.resolveUser(dir);
 
     if (helpers.isFileSkeleton(skeleton)) {
@@ -62,8 +63,9 @@ sade("@pota/create <skeleton> <dir>", true)
       skeleton = relative(cwd, skeleton);
     } else if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
 
-    const install = helpers.createInstaller({ cwd, npm: options["use-npm"], yarn: options["use-yarn"] });
-    const installDev = helpers.createInstaller({ cwd, dev: true, npm: options["use-npm"], yarn: options["use-yarn"] });
+    const installOptions = { cwd, npm: options["use-npm"], yarn: options["use-yarn"] };
+    const install = helpers.createInstaller(installOptions);
+    const installDev = helpers.createInstaller({ ...installOptions, dev: true });
 
     async function bail() {
       if (options["fail-cleanup"]) {
@@ -95,7 +97,7 @@ sade("@pota/create <skeleton> <dir>", true)
     }
 
     SPINNER.succeed();
-
+    ;
     // change directory into current working directory (the project directory)
     process.chdir(cwd);
 
@@ -139,7 +141,7 @@ sade("@pota/create <skeleton> <dir>", true)
     SPINNER.start(`Syncing...`);
 
     try {
-      await sync(cwd, skeleton);
+      await sync(cwd, skeleton, pkgName);
     } catch (error) {
       SPINNER.fail();
       console.error(error);
@@ -165,7 +167,8 @@ sade("@pota/create <skeleton> <dir>", true)
 
     SPINNER.stop();
 
-    log(`🥊 Done${failed ? red(`, but with errors 😥`) : ""}`);
+    if (failed) log(red(`🥊 Done, but with errors 😥`));
+    else log(`🥊 Done`);
 
     process.exit(0);
   })

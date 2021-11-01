@@ -2,8 +2,8 @@ import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 
 import createWebpackSkeletonConfig, {
   parseOptions as parseWebpackSkeletonOptions,
-} from "@pota/webpack-skeleton/build-tools/webpack.config.js";
-import * as paths from "@pota/webpack-skeleton/build-tools/paths.js";
+} from "@pota/webpack-skeleton/pota/webpack/webpack.config.js";
+import * as paths from "@pota/webpack-skeleton/pota/webpack/paths.js";
 
 import getBabelConfig from "./babel.config.js";
 

@@ -1,7 +1,7 @@
 import { join, resolve } from "path";
 import { promises as fs, realpathSync } from "fs";
 
-import type { PotaConfig, PackageJsonShape } from "./config.js";
+import type { PackageJsonShape } from "./config.js";
 import { PACKAGE_JSON_FILE } from "./config.js";
 
 const { access, readdir, readFile, writeFile } = fs;
@@ -32,7 +32,7 @@ export function normalizePackagePath(path: string, postfix: string = PACKAGE_JSO
 
 const READ_CACHE = new Map<string, PackageJsonShape>();
 
-export async function readPackageJson<C extends PotaConfig = PotaConfig>(path: string) {
+export async function readPackageJson(path: string) {
   path = normalizePackagePath(path);
 
   if (!READ_CACHE.has(path)) {
@@ -41,7 +41,7 @@ export async function readPackageJson<C extends PotaConfig = PotaConfig>(path: s
     READ_CACHE.set(path, json);
   }
 
-  return READ_CACHE.get(path)! as PackageJsonShape<C>;
+  return READ_CACHE.get(path)!;
 }
 
 export async function writePackageJson(object: PackageJsonShape, path: string) {

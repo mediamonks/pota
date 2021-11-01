@@ -6,7 +6,6 @@ export const self = dirname(fileURLToPath(import.meta.url));
 export const user = cwd();
 
 // Paths relative to the tool
-export const config = resolve(self, "./webpack.config.js");
 export const skeletonNodeModules = resolve(self, "../node_modules");
 
 // Paths relative to the user

@@ -1,23 +1,34 @@
-export interface ProjectPotaConfig {
-  default?: string;
-}
-
-export interface SkeletonPotaConfig {
+export interface PotaConfig {
   extends?: string;
-  excludedFiles?: ReadonlyArray<string>;
-  renames?: Record<string, string>;
-  "package.json"?: Omit<PackageJsonShape, "pota">
+  dependencies?: ReadonlyArray<string>;
+  devDependencies?: ReadonlyArray<string>;
+  scripts?: ReadonlyArray<string>;
+  rename?: Record<string, string>
 }
 
-export type PotaConfig = ProjectPotaConfig | SkeletonPotaConfig;
-
-export interface PackageJsonShape<C extends PotaConfig = PotaConfig> {
+export interface PackageJsonShape {
   scripts?: Record<string, string>;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
-  pota?: C;
+  pota?: string;
+  files?: ReadonlyArray<string>;
+  publishConfig?: Record<string, unknown>;
+  repository?: Record<string, string>
+  bugs?: Record<string, string>
+  author?: string;
+  name?: string;
+  version?: string;
 }
 
 export const PACKAGE_JSON_FILE = "package.json" as const;
 
-export const POTA_COMMANDS_DIR = "pota_commands" as const;
+export const POTA_DIR = "pota";
+export const POTA_CONFIG_FILE = "config.js";
+export const POTA_COMMANDS_DIR = "commands";
+
+export const EXCLUDED_FILES = [
+  "yarn.lock",
+  "package-lock.json",
+  "node_modules",
+];
+

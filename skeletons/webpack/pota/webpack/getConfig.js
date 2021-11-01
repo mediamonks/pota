@@ -6,7 +6,7 @@ export function getSkeleton() {
 }
 
 function getNodeModulesPath() {
-  const currentPath = fileURLToPath(import.meta.url)
+  const currentPath = fileURLToPath(import.meta.url);
 
   const modulesDir = "node_modules";
 
@@ -14,7 +14,7 @@ function getNodeModulesPath() {
 }
 
 function getConfigPath(...paths) {
-  return resolve(...paths, "build-tools", "webpack.config.js");
+  return resolve(...paths, "pota", 'webpack', "webpack.config.js");
 }
 
 export default async function getConfig() {

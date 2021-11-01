@@ -1,123 +1,104 @@
-import { extname, basename, join, dirname } from "path";
-import { promises as fs } from "fs";
+import { join, basename, extname } from "path";
 
 import { copy } from "fs-extra"
-import type { ProjectPotaConfig, SkeletonPotaConfig } from "@pota/shared/config";
 import { readPackageJson, writePackageJson } from "@pota/shared/fs";
-import { PACKAGE_JSON_FILE, POTA_COMMANDS_DIR } from "@pota/shared/config";
+import { PACKAGE_JSON_FILE, POTA_COMMANDS_DIR, POTA_DIR } from "@pota/shared/config";
+import type { PackageJsonShape } from "@pota/shared/config";
 
 import { getNestedSkeletons } from "@pota/shared/skeleton";
 
-import { spawn } from "./helpers.js";
-import * as object from "./object.js";
 import { POTA_CLI_BIN } from "./config.js";
-import { SPINNER } from "./spinner.js";
+// @ts-ignore TS is being weird
+import merge from "lodash.merge";
+import { sortPackageJson } from "sort-package-json";
 
-const { unlink } = fs;
+function filterObject<T extends Record<string, any>>(o: T, fields: ReadonlyArray<keyof T>) {
+  type Result = Record<typeof fields[number], any>;
 
-type PotaOperationFn = (cwd: string, sourcePath: string, targetPath: string) => Promise<void>;
+  let r: Result | undefined = undefined;
 
-export const enum POTA_EXTENSION {
-  DELETE = ".del",
-  MODIFY = ".mod",
-}
-
-const POTA_OPERATIONS: Record<POTA_EXTENSION, PotaOperationFn> = {
-  async [POTA_EXTENSION.DELETE](_, __, targetPath) {
-    await unlink(targetPath)
-  },
-  async [POTA_EXTENSION.MODIFY](cwd, sourcePath, targetPath) {
-    SPINNER.stopAndPersist();
-
-    try {
-      await spawn(`npx`, `--prefix=${cwd}`, `jscodeshift`, `--verbose=2`, `--extensions=js,cjs,mjs`, `--transform=${sourcePath}`, targetPath)
-    } catch (error) {
-      console.log("jscodeshift: ", error)
-    }
-
-    SPINNER.start();
-  }
-}
-
-function applyPotaExtension(ext: POTA_EXTENSION, ...params: Parameters<PotaOperationFn>) {
-  return POTA_OPERATIONS[ext](...params);
-}
-
-const POTA_EXTENSIONS = [POTA_EXTENSION.DELETE, POTA_EXTENSION.MODIFY];
-
-// TODO: add test
-function parsePotaFile(path: string): [base: string, ext: string, potaExt?: POTA_EXTENSION] {
-  const ext = extname(path); // get file extension
-  const base = basename(path, ext); // get file name, without the extension
-
-  if (POTA_EXTENSIONS.some(e => base.endsWith(e))) {
-    const potaExt = extname(base) as POTA_EXTENSION; // get the pota extension
-
-    return [basename(base, potaExt), ext, potaExt]
-  }
-
-  return [base, ext, undefined];
-}
-
-async function createPackageJsonSyncer(targetPath: string) {
-  let projectPackageJson = await readPackageJson(targetPath);
-
-  return {
-    apply(config: SkeletonPotaConfig) {
-      // TODO: inject dependency versions from the skeleton package.json
-      projectPackageJson = object.merge(projectPackageJson, config[PACKAGE_JSON_FILE]!);
-    },
-    setSkeleton(skeleton: string) {
-      projectPackageJson.pota ??= {};
-      (projectPackageJson.pota as ProjectPotaConfig).default = skeleton;
-    },
-    addPotaCommand(command: string) {
-      projectPackageJson.scripts ??= {};
-
-      projectPackageJson.scripts[command] = `${POTA_CLI_BIN} ${command}`;
-
-    },
-    commit() {
-      return writePackageJson(projectPackageJson, targetPath);
+  for (const field of Object.keys(o) as ReadonlyArray<keyof T>) {
+    if (fields.includes(field)) {
+      r ??= {} as Result;
+      r[field] = o[field]
     }
   }
+
+  return r;
 }
 
-function createFileSyncer(targetPath: string) {
-  // key is the base path (not extensions), value is the full path (with extensions)
-  const copied: Record<string, string> = {};
 
-  return async (file: string, skeletonPath: string, newName?: string) => {
-    const [base, , potaExt] = parsePotaFile(file);
+const FILTERED_PACKAGE_FIELDS = [
+  "dependencies",
+  "devDependencies",
+  "scripts",
+] as const;
 
-    const basepath = join(dirname(file), base); // file path without any extensions
-    const newpath = join(targetPath, newName ?? file);
-    const sourcepath = join(skeletonPath, file);
 
-    // TODO: add logging
-    if (potaExt && basepath in copied) {
-      return applyPotaExtension(potaExt, targetPath, sourcepath, copied[basepath]);
-    }
+const IGNORED_PACKAGE_FIELDS: ReadonlyArray<keyof PackageJsonShape> = [
+  "files",
+  "publishConfig",
+  "repository",
+  "bugs",
+  "author",
+  "version"
+];
 
-    await copy(sourcepath, newpath);
+export default async function sync(targetPath: string, skeleton: string, pkgName: string) {
+  let pkg = await readPackageJson(targetPath)
 
-    copied[basepath] = newpath;
-  }
-}
-
-export default async function sync(targetPath: string, skeleton: string) {
-  const syncFile = createFileSyncer(targetPath);
-  const packageJsonSyncer = await createPackageJsonSyncer(targetPath);
+  const commandsDir = join(POTA_DIR, POTA_COMMANDS_DIR);
+  const commandScripts: PackageJsonShape["scripts"] = {};
 
   for (const { path, config, files } of await getNestedSkeletons(targetPath, skeleton)) {
+    console.log(pkg)
+    console.log(path, config, files)
     for (const file of files) {
-      if (file === PACKAGE_JSON_FILE && PACKAGE_JSON_FILE in config) packageJsonSyncer.apply(config);
-      else if (file.startsWith(POTA_COMMANDS_DIR)) packageJsonSyncer.addPotaCommand(basename(file, extname(file)));
-      else await syncFile(file, path, config.renames?.[file]);
+      if (file.startsWith(POTA_DIR)) {
+        if (file.startsWith(commandsDir)) {
+          const command = basename(file, extname(file));
+
+          commandScripts[command] = `${POTA_CLI_BIN} ${command}`;
+        }
+      }
+      else if (file === PACKAGE_JSON_FILE) {
+        const skeletonPkg = await readPackageJson(join(path));
+
+        for (const field of IGNORED_PACKAGE_FIELDS) {
+          delete skeletonPkg[field];
+        }
+
+        for (const field of FILTERED_PACKAGE_FIELDS) {
+          let filtered = undefined;
+
+          if (field in skeletonPkg && field in config) {
+            filtered = filterObject(skeletonPkg[field]!, config[field]!);
+          }
+
+          skeletonPkg[field] = filtered;
+        }
+
+        merge(pkg, skeletonPkg)
+
+      } else {
+        const newName = config.rename && file in config.rename ? config.rename[file] : file;
+        await copy(join(path, file), join(targetPath, newName))
+      }
     }
   }
 
-  packageJsonSyncer.setSkeleton(skeleton);
+  pkg.name = pkgName;
+  pkg.pota = skeleton;
 
-  await packageJsonSyncer.commit();
+  pkg = sortPackageJson(pkg)
+
+  pkg.scripts ??= {};
+  pkg.scripts = { ...commandScripts, ...pkg.scripts, };
+
+  await writePackageJson(pkg, targetPath);
 }
+
+
+
+
+
