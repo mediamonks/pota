@@ -20,6 +20,10 @@ export const options = [
     description: "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
+    option: '--config',
+    description: 'Path to a custom webpack config',
+  },
+  {
     option: "--type-check",
     description: "When disabled, will not do any type checking and ignore TypeScript errors",
     default: true,
@@ -29,7 +33,6 @@ export const options = [
 export const action = async (options) => {
   process.env.NODE_ENV = "development";
 
-  const createConfig = await getConfig();
-  const config = await createConfig(options);
+  const config = await getConfig(options);
   await new Server({ ...config.devServer, https: options.https }, webpack(config)).start();
 };

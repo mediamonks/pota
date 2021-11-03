@@ -32,6 +32,10 @@ export const options = [
     description: 'Build and then analyze the build output',
   },
   {
+    option: '--config',
+    description: 'Path to a custom webpack config',
+  },
+  {
     option: '--type-check',
     description: 'When disabled, will not do any type checking and ignore TypeScript errors',
     default: true
@@ -51,7 +55,7 @@ export const action = async (options) => {
 
   const SPINNER = ora(`Reading configuration of '${getSkeleton()}'`).start();
 
-  const config = await getConfig();
+  const config = await getConfig(options);
 
   SPINNER.succeed().start("Building...");
 
@@ -59,7 +63,7 @@ export const action = async (options) => {
 
   try {
     const stats = await new Promise(async (resolve, reject) =>
-      webpack(await config(options), (error, stats) => {
+      webpack(config, (error, stats) => {
         if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
 
         return error ? reject(error) : resolve(stats?.toString({ colors: true, chunks: false }));
