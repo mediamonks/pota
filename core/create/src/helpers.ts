@@ -1,4 +1,3 @@
-
 import { exec, SpawnOptions } from 'child_process';
 
 import npa from 'npm-package-arg';
@@ -94,6 +93,8 @@ export function createInstaller(options: InstallOptions = {}) {
       pre = ['install'];
       if (cwd) post.push('--prefix', cwd);
       if (dev) post.push('--save-dev');
+      // reduce terminal noise
+      post.push('--no-audit', '--no-fund');
       break;
     }
     case 'yarn': {
