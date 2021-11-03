@@ -1,6 +1,6 @@
 {
   "name": "@pota/shared",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "@pota shared utility package",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
