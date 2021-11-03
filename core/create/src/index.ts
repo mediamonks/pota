@@ -118,12 +118,10 @@ sade('@pota/create <skeleton> <dir>', true)
 
     const visualName = isFileSkeleton ? basename(skeleton) : skeleton;
 
-    SPINNER.start(
-      `Installing ${cyan(visualName)} and ${cyan(POTA_CLI)}, this might take a while...`,
-    );
+    SPINNER.start(`Installing ${cyan(visualName)}, this might take a while...`);
 
     try {
-      await installDev(skeleton, POTA_CLI);
+      await installDev(skeleton);
     } catch (error) {
       SPINNER.fail();
       console.error(error);
@@ -157,7 +155,7 @@ sade('@pota/create <skeleton> <dir>', true)
 
     let failed = false;
 
-    SPINNER.start(`Installing remaining dependencies...`);
+    SPINNER.start(`Syncing peer dependencies...`);
 
     try {
       await install();

@@ -1,7 +1,5 @@
 export interface PotaConfig {
   extends?: string;
-  dependencies?: ReadonlyArray<string>;
-  devDependencies?: ReadonlyArray<string>;
   scripts?: ReadonlyArray<string>;
   rename?: Record<string, string>;
 }
@@ -10,6 +8,7 @@ export interface PackageJsonShape {
   scripts?: Record<string, string>;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
   pota?: string;
   files?: ReadonlyArray<string>;
   publishConfig?: Record<string, unknown>;
