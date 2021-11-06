@@ -29,29 +29,22 @@ sade('@pota/create <skeleton> <dir>', true)
   .option('--use-npm', 'Force Pota to use npm', false)
   .example('npx @pota/create webpack ./project-directory')
   .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
+    SPINNER.start(`Creating new Pota App in ${green(dir)}`);
+
     /**
      * Validation
      */
-
-    SPINNER.start('Validating directory availability...');
-
     if (!(await fs.isDirectoryAvailable(dir))) {
       console.error(`${green(dir)} already exists, please specify a different directory`);
 
       process.exit(1);
     }
 
-    SPINNER.succeed();
-
-    SPINNER.start('Validating skeleton package...');
-
     if (!helpers.isValidSkeleton(skeleton)) {
       console.error(`${green(skeleton)} is not a valid skeleton package`);
 
       process.exit(1);
     }
-
-    SPINNER.succeed();
 
     /**
      * Post-validation, initialization of utilities
@@ -87,8 +80,6 @@ sade('@pota/create <skeleton> <dir>', true)
      */
 
     clear();
-
-    SPINNER.start('Creating directory');
 
     try {
       await mkdir(cwd, { recursive: true });
