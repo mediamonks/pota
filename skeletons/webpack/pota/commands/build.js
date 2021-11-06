@@ -55,11 +55,9 @@ export const action = async (options) => {
 
   const SPINNER = ora(`Reading configuration of '${getSkeleton()}'`).start();
 
-  const config = await getConfig(options);
+  const config = await getConfig(preprocessOptions(options));
 
   SPINNER.succeed().start("Building...");
-
-  options = preprocessOptions(options);
 
   try {
     const stats = await new Promise(async (resolve, reject) =>

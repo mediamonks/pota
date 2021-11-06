@@ -17,14 +17,14 @@ function getConfigPath(...paths) {
   return resolve(...paths, "pota", 'webpack', "webpack.config.js");
 }
 
-function loadConfig(path) {
+async function loadConfig(path) {
   if (path) return (await import(path)).default;
 
   return (await import(getConfigPath(getNodeModulesPath(), getSkeleton()))).default;
 }
 
 export default async function getConfig(options) {
-  const config = await loadConfig(options.path);
+  const config = await loadConfig(options.config);
 
-  return config = typeof config === "function" ? config(options) : config;
+  return typeof config === "function" ? config(options) : config;
 }
