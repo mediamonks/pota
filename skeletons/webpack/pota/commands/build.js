@@ -1,63 +1,53 @@
 import { relative, isAbsolute, resolve } from "path";
 
+import { getNestedFiles } from "@pota/cli/authoring";
 import webpack from "webpack";
 import ora from "ora";
 
 import * as paths from "../webpack/paths.js";
-import getConfig, { getSkeleton } from "../webpack/getConfig.js";
 
 export const description = "Build the source directory using webpack.";
 
 export const options = [
   {
-    option: '--public-url',
+    option: "--public-url",
     description: `The URL from which static assets are referenced from`,
-    default: '/'
+    default: "/",
   },
   {
-    option: '--output',
-    description: 'The output directory',
-    default: relative(paths.user, paths.output)
+    option: "--output",
+    description: "The output directory",
+    default: relative(paths.user, paths.output),
   },
   {
-    option: '--mode',
-    description: 'The webpack mode',
+    option: "--mode",
+    description: "The webpack mode",
   },
   {
-    option: '--source-map',
-    description: 'The source map type (https://webpack.js.org/configuration/devtool/#devtool)',
+    option: "--source-map",
+    description: "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
-    option: '--analyze',
-    description: 'Build and then analyze the build output',
+    option: "--analyze",
+    description: "Build and then analyze the build output",
   },
   {
-    option: '--config',
-    description: 'Path to a custom webpack config',
+    option: "--type-check",
+    description: "When disabled, will not do any type checking and ignore TypeScript errors",
+    default: true,
   },
-  {
-    option: '--type-check',
-    description: 'When disabled, will not do any type checking and ignore TypeScript errors',
-    default: true
-  }
 ];
-
-function preprocessOptions(options) {
-  if ("output" in options && !isAbsolute(options.output)) {
-    return { ...options, output: resolve(options.output) }
-  }
-
-  return options;
-}
 
 export const action = async (options) => {
   process.env.NODE_ENV = "production";
 
-  const SPINNER = ora(`Reading configuration of '${getSkeleton()}'`).start();
+  const modules = await getNestedConfigModulesSelf();
 
-  const config = await getConfig(preprocessOptions(options));
+  const s = createSpinner(modules[modules.length - 1]?.skeleton);
 
-  SPINNER.succeed().start("Building...");
+  const config = await createConfig(modules, preprocessOptions(options));
+
+  s.start("Building...");
 
   try {
     const stats = await new Promise(async (resolve, reject) =>
@@ -70,10 +60,54 @@ export const action = async (options) => {
 
     console.log(stats);
     console.log();
-    SPINNER.succeed("Building Finished 🎉");
+    s.succeed("Building Finished 🎉");
   } catch (error) {
-    SPINNER.fail("Building Failed 😟")
+    s.fail("Building Failed 😟");
     console.log();
     console.error(error);
   }
+};
+
+function preprocessOptions(options) {
+  if ("output" in options && !isAbsolute(options.output)) {
+    return { ...options, output: resolve(options.output) };
+  }
+
+  return options;
+}
+
+function isFunction(value) {
+  return typeof value === "function";
+}
+
+export function createSpinner(skeleton) {
+  return ora(`Using ${skeleton === PROJECT_SKELETON ? "local" : `'${skeleton}'`} configuration`).info();
+}
+
+export async function getNestedConfigModulesSelf() {
+  const files = await getNestedFiles("pota/webpack/webpack.config.js");
+  const modules = files.map(async ({ file, skeleton }) => {
+    try {
+      const module = (await import(file)).default;
+
+      if (isFunction(module)) return { module, skeleton };
+
+      // TODO: handle skeleton module errors
+    } catch (error) { }
+
+    return null;
+  });
+
+  return (await Promise.all(modules)).filter(Boolean);
+}
+
+export async function createConfig(modules, options) {
+  let config = null;
+
+  for (const { module } of modules) {
+    if (config === null) config = await module(options);
+    else config = await module(config, options);
+  }
+
+  return config;
 }

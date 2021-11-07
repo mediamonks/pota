@@ -1,12 +1,5 @@
 import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 
-import createWebpackSkeletonConfig, {
-  parseOptions as parseWebpackSkeletonOptions,
-} from "@pota/webpack-skeleton/pota/webpack/webpack.config.js";
-import * as paths from "@pota/webpack-skeleton/pota/webpack/paths.js";
-
-import getBabelConfig from "./babel.config.js";
-
 function parseOptions(options) {
   let { profile = false } = options;
 
@@ -17,14 +10,10 @@ function parseOptions(options) {
 
 const SVG_TEST = /\.(svg)(\?.*)?$/;
 
-export default function createConfig(options = {}) {
-  const { isDev } = parseWebpackSkeletonOptions(options);
-  const config = createWebpackSkeletonConfig(options);
-  const {
-    resolve,
-    module: { rules },
-    plugins,
-  } = config;
+export default function createConfig(config, options = {}) {
+  const isDev = config.mode
+    ? config.mode === "development"
+    : process.env.NODE_ENV === "development";
 
   const { profile } = parseOptions(options);
 
@@ -34,18 +23,18 @@ export default function createConfig(options = {}) {
   return {
     ...config,
     resolve: {
-      ...resolve,
+      ...config.resolve,
       alias: {
-        ...resolve.alias,
+        ...config.resolve.alias,
         ...(profile && {
           "react-dom$": "react-dom/profiling",
           "scheduler/tracing": "scheduler/tracing-profiling",
         }),
       },
     },
-    entry: paths.entry.replace(".ts", ".tsx"),
+    entry: config.entry.replace(".ts", ".tsx"),
     module: {
-      rules: rules.map((rule) => {
+      rules: config.module.rules.map((rule) => {
         if (String(rule.test) === String(SVG_TEST)) {
           return {
             test: SVG_TEST,
@@ -67,12 +56,33 @@ export default function createConfig(options = {}) {
         }
 
         const use = rule.use?.map?.((use) =>
-          use.loader === "babel-loader" ? { ...use, options: getBabelConfig(isDev) } : use
+          use.loader === "babel-loader"
+            ? { ...use, options: updateBabelConfig(use.options, isDev) }
+            : use
         );
 
         return { ...rule, use: use ?? rule.use };
       }),
     },
-    plugins: [...plugins, isDev && new ReactRefreshPlugin({ overlay: false })].filter(Boolean),
+    plugins: [...config.plugins, isDev && new ReactRefreshPlugin({ overlay: false })].filter(
+      Boolean
+    ),
+  };
+}
+
+function updateBabelConfig(config, isDev) {
+  const { presets = [], plugins = [] } = config;
+
+  return {
+    presets: [...presets, ["@babel/preset-react"]],
+    plugins: [
+      ...plugins,
+      ["babel-plugin-styled-components"],
+      [
+        "babel-plugin-named-asset-import",
+        { loaderMap: { svg: { ReactComponent: "@svgr/webpack?-svgo,+titleProp,+ref![path]" } } },
+      ],
+      isDev && ["react-refresh/babel"],
+    ].filter(Boolean),
   };
 }

@@ -1,7 +1,7 @@
 import webpack from "webpack";
 import Server from "webpack-dev-server";
 
-import getConfig from "../webpack/getConfig.js";
+import { getNestedConfigModulesSelf, createSpinner, createConfig } from "./build.js";
 
 export const description = "Start the development server using webpack.";
 
@@ -20,10 +20,6 @@ export const options = [
     description: "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
-    option: '--config',
-    description: 'Path to a custom webpack config',
-  },
-  {
     option: "--type-check",
     description: "When disabled, will not do any type checking and ignore TypeScript errors",
     default: true,
@@ -33,6 +29,11 @@ export const options = [
 export const action = async (options) => {
   process.env.NODE_ENV = "development";
 
-  const config = await getConfig(options);
+  const modules = await getNestedConfigModulesSelf();
+
+  createSpinner(modules[modules.length - 1]?.skeleton);
+
+  const config = await createConfig(modules, options);
+
   await new Server({ ...config.devServer, https: options.https }, webpack(config)).start();
 };

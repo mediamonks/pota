@@ -1,27 +1,22 @@
-import createWebpackConfig from "@pota/webpack-skeleton/pota/webpack/webpack.config.js";
 import { VueLoaderPlugin } from "vue-loader";
 
-export default function createConfig(options) {
-  const webpackConfig = createWebpackConfig(options);
-
+export default function createConfig(config) {
   return {
-    ...webpackConfig,
+    ...config,
     module: {
-      ...webpackConfig.module,
+      ...config.module,
       rules: [
         {
           test: /\.vue$/,
           loader: "vue-loader",
         },
-        ...webpackConfig.module.rules
+        ...config.module.rules,
       ],
     },
     resolve: {
-      ...webpackConfig.resolve,
-      extensions: [...webpackConfig.resolve.extensions, ".vue"],
+      ...config.resolve,
+      extensions: [...config.resolve.extensions, ".vue"],
     },
-    plugins: [...webpackConfig.plugins, new VueLoaderPlugin()],
+    plugins: [...config.plugins, new VueLoaderPlugin()],
   };
-
 }
-
