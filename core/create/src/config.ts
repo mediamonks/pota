@@ -19,7 +19,6 @@ const SKELETON_SHORTHANDS = {
   [getPorterDependency('webpack-skeleton')]: ['webpack'] as const,
   [getPorterDependency('react-skeleton')]: ['react'] as const,
   [getPorterDependency('vue-skeleton')]: ['vue'] as const,
-  [getPorterDependency('vue3-skeleton')]: ['vue3'] as const,
 };
 
 const INVERTED_SKELETON_SHORTHANDS = Object.fromEntries(

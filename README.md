@@ -33,13 +33,7 @@ npm init @pota react my-react-app
 > with npx
 
 ```bash
-npx @pota/create vue3 my-vue3-app
-```
-
-> with yarn
-
-```bash
-yarn create @pota/vue-skeleton my-vue-app
+npx @pota/create vue my-vue-app
 ```
 
 ## 📚 Official Skeletons
@@ -49,7 +43,6 @@ yarn create @pota/vue-skeleton my-vue-app
 | [@pota/webpack-skeleton](skeletons/webpack) | ![webpack-skeleton version](https://img.shields.io/npm/v/@pota/webpack-skeleton.svg?label=%20) |
 | [@pota/react-skeleton](skeletons/react)     | ![react-skeleton version](https://img.shields.io/npm/v/@pota/react-skeleton.svg?label=%20)     |
 | [@pota/vue-skeleton](skeletons/vue)         | ![vue-skeleton version](https://img.shields.io/npm/v/@pota/vue-skeleton.svg?label=%20)         |
-| [@pota/vue3-skeleton](skeletons/vue3)       | ![vue3-skeleton version](https://img.shields.io/npm/v/@pota/vue3-skeleton.svg?label=%20)       |
 
 ## Contributing
 

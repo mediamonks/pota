@@ -8,7 +8,7 @@
     "core/shared",
     "skeletons/webpack",
     "skeletons/react",
-    "skeletons/vue3"
+    "skeletons/vue"
   ],
   "scripts": {
     "format": "prettier \"**/*.{js,ts}\" --write --loglevel warn",

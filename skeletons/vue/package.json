@@ -1,6 +1,6 @@
 {
-  "name": "@pota/vue3-skeleton",
-  "version": "1.0.0-rc.7",
+  "name": "@pota/vue-skeleton",
+  "version": "1.0.0-rc.1",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "bugs": {
@@ -9,7 +9,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mediamonks/pota.git",
-    "directory": "skeletons/vue3"
+    "directory": "skeletons/vue"
   },
   "files": [
     "pota",
