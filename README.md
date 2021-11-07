@@ -46,4 +46,4 @@ npx @pota/create vue my-vue-app
 
 ## Contributing
 
-We appreciate other great minds working Porter and making it better for all. See CONTRIBUTING.md for more information on how to get started.
+We appreciate other great minds working Pota and making it better for all. See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information on how to get started.
