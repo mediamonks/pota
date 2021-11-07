@@ -6,6 +6,9 @@
   "bin": {
     "pota": "./bin/pota.js"
   },
+  "exports": {
+    "./authoring": "./lib/authoring.js"
+  },
   "files": [
     "lib",
     "bin"

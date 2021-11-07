@@ -11,13 +11,17 @@ export const getCWD = () => realpathSync(process.cwd());
 export const resolveUser: typeof resolve = (...pathSegments) => resolve(getCWD(), ...pathSegments);
 
 export async function isDirectoryAvailable(dir: string) {
+  return !(await exists(dir));
+}
+
+export async function exists(path: string) {
   try {
-    await access(dir);
+    await access(path);
   } catch (error) {
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 export function normalizePackagePath(path: string, postfix: string = PACKAGE_JSON_FILE) {
