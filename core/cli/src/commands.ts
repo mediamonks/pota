@@ -5,6 +5,12 @@ import { getNestedSkeletons } from '@pota/shared/skeleton';
 import { getCWD } from '@pota/shared/fs';
 import { POTA_LOCAL_SKELETON, POTA_COMMANDS_DIR, POTA_DIR } from '@pota/shared/config';
 
+interface Skeleton {
+  skeleton: string;
+  path: string;
+  files: ReadonlyArray<string>;
+}
+
 export interface CommandModule {
   command: string;
   skeleton: string;
@@ -15,7 +21,7 @@ export interface CommandModule {
     default?: string | number | boolean;
   }>;
   examples?: ReadonlyArray<string>;
-  action: (...options: ReadonlyArray<unknown>) => void;
+  action?: (...options: ReadonlyArray<unknown>) => void;
 }
 
 export async function getCommandModules(skeleton: string) {
@@ -24,37 +30,47 @@ export async function getCommandModules(skeleton: string) {
   const cwd = getCWD();
 
   // find all nested skeletons
-  const skeletons = [
-    { path: cwd, skeleton: POTA_LOCAL_SKELETON, files: await readdir(join(cwd, dir)) },
-    ...Array.from(await getNestedSkeletons(cwd, skeleton, { dir })).reverse(),
-  ];
+  const skeletons: Array<Skeleton> = Array.from(
+    await getNestedSkeletons(cwd, skeleton, { dir }),
+  ).reverse();
+
+  try {
+    const localSkeleton = {
+      path: cwd,
+      skeleton: POTA_LOCAL_SKELETON,
+      files: await readdir(join(cwd, dir)),
+    };
+
+    skeletons.unshift(localSkeleton);
+  } catch (error) { } //TODO: verbose logging
 
   // parse command modules from nested skeletons
-  const modules = await Promise.all(
-    skeletons.flatMap(({ skeleton, path, files }) =>
-      files.map(async (file) => {
-        const modulePath = join(path, dir, file);
-        const module: Partial<CommandModule> = await import(modulePath);
-
-        return {
-          ...module,
-          skeleton,
-          command: basename(modulePath, extname(modulePath)),
-        };
-      }),
-    ),
+  const files = skeletons.flatMap(({ skeleton, path, files }) =>
+    files.map((file) => {
+      const modulePath = join(path, dir, file);
+      return {
+        skeleton,
+        modulePath,
+        command: basename(modulePath, extname(modulePath)),
+      };
+    }),
   );
 
   // to skip duplicate commands
   const included = new Set<string>();
 
-  // safety filter, to get rid of invalid modules
-  return modules.filter((module) => {
-    const condition =
-      !included.has(module.command) && 'action' in module && typeof module.action === 'function';
+  return Promise.all(files
+    // safety filter, remove duplicate modules
+    .filter(({ command }) => {
+      const condition = !included.has(command);
 
-    included.add(module.command);
+      included.add(command);
 
-    return condition;
-  }) as ReadonlyArray<CommandModule>;
+      return condition;
+    })
+    // import the modules
+    .map(async ({ modulePath, ...rest }) => ({
+      ...rest,
+      ...((await import(modulePath)) as CommandModule),
+    })));
 }
