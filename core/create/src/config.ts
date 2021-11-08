@@ -18,6 +18,7 @@ const getPorterDependency = <T extends string>(name: T) => `${SCOPE}/${name}` as
 const SKELETON_SHORTHANDS = {
   [getPorterDependency('webpack-skeleton')]: ['webpack'] as const,
   [getPorterDependency('react-skeleton')]: ['react'] as const,
+  [getPorterDependency('react-base-skeleton')]: ['react-base'] as const,
   [getPorterDependency('vue-skeleton')]: ['vue'] as const,
 };
 
