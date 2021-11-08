@@ -8,6 +8,7 @@
     "core/shared",
     "skeletons/webpack",
     "skeletons/react",
+    "skeletons/react-base",
     "skeletons/vue"
   ],
   "scripts": {

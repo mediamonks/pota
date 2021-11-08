@@ -1,0 +1,45 @@
+{
+  "name": "@pota/react-base-skeleton",
+  "version": "1.0.0-rc.1",
+  "author": "Paul <p.simkevi@gmail.com>",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mediamonks/pota.git",
+    "directory": "skeletons/react-base"
+  },
+  "files": [
+    "pota",
+    "public",
+    ".eslintrc.cjs",
+    "tsconfig.json",
+    "src"
+  ],
+  "dependencies": {
+    "@babel/preset-react": "^7.16.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
+    "@svgr/webpack": "^5.5.0",
+    "babel-plugin-named-asset-import": "^0.3.7",
+    "@mediamonks/eslint-config-react": "^1.0.2"
+  },
+  "peerDependencies": {
+    "@pota/cli": "^1.0.0-rc.9",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-refresh": "^0.10.0",
+    "web-vitals": "^2.1.1",
+    "@pota/webpack-skeleton": "^1.0.0-rc.17"
+  },
+  "engines": {
+    "node": ">=14",
+    "npm": ">=7"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,3 +1,3 @@
 export default {
-  extends: "@pota/webpack-skeleton",
+  extends: "@pota/react-base-skeleton",
 }

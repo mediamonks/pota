@@ -1,22 +1,11 @@
 import { StrictMode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import ReactDOM from 'react-dom';
-
-import App from './components/unlisted/App';
-import GlobalStyle from './components/unlisted/GlobalStyle';
-import theme from './config/theme';
-
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <App />
   </StrictMode>,
   // eslint-disable-next-line unicorn/prefer-query-selector
   document.getElementById('root'),
