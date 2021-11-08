@@ -1,7 +1,7 @@
 {
-  "extends": "@tsconfig/node14",
+  "extends": "@tsconfig/node16",
   "compilerOptions": {
-    "module": "node12",
+    "module": "nodenext",
     "composite": true,
     "declaration": true,
     "skipLibCheck": true
