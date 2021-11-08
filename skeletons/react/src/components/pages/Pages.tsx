@@ -5,9 +5,7 @@ import Home from './Home';
 export default function Pages(): ReactElement {
   return (
     <Routes>
-      <Route path="/">
-        <Home/>
-      </Route>
+      <Route path="/" element={<Home />} />
     </Routes>
   );
 }
