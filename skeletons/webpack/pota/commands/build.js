@@ -1,6 +1,6 @@
 import { relative, isAbsolute, resolve } from "path";
 
-import { getNestedFiles } from "@pota/cli/authoring";
+import { getNestedFiles, PROJECT_SKELETON } from "@pota/cli/authoring";
 import webpack from "webpack";
 import ora from "ora";
 
