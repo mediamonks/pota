@@ -29,6 +29,8 @@ function filterObject<T extends Record<string, any>>(o: T, fields: ReadonlyArray
 const FILTERED_PACKAGE_FIELDS = ['scripts'] as const;
 
 const IGNORED_PACKAGE_FIELDS: ReadonlyArray<keyof PackageJsonShape> = [
+  'dependencies',
+  'devDependencies',
   'files',
   'publishConfig',
   'repository',
@@ -78,7 +80,11 @@ export default async function sync(targetPath: string, skeleton: string, pkgName
 
         merge(pkg, skeletonPkg);
       } else {
+
+        // TODO: instead of copying, store all the files in a list
+        // that later can be processed to remove duplicate files from multiple skeletons and omit "config.omit" files
         const newName = config.rename && file in config.rename ? config.rename[file] : file;
+        // TODO: implement own `copy`, so we can ditch `fs-extra`
         await copy(join(path, file), join(targetPath, newName));
       }
     }
