@@ -26,7 +26,6 @@
   "dependencies": {
     "@pota/shared": "^1.1.0",
     "cross-spawn": "^7.0.3",
-    "fs-extra": "^10.0.0",
     "kleur": "^4.1.4",
     "lodash.merge": "^4.6.2",
     "npm-package-arg": "^8.1.5",
@@ -36,7 +35,6 @@
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
-    "@types/fs-extra": "^9.0.13",
     "@types/lodash.merge": "^4.6.6",
     "@types/npm-package-arg": "^6.1.1",
     "@types/sade": "^1.7.3"

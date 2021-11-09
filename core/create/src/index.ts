@@ -1,4 +1,4 @@
-import { promises } from 'fs';
+import { rm, mkdir } from 'fs/promises';
 import { relative, basename } from 'path';
 
 import sade from 'sade';
@@ -10,7 +10,6 @@ import * as helpers from './helpers.js';
 import sync from './sync.js';
 import { SPINNER } from './spinner.js';
 
-const { rm, mkdir } = promises;
 const { clear, log } = helpers;
 const { red, green, cyan } = kleur;
 

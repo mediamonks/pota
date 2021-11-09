@@ -87,6 +87,7 @@ export default class ProjectPackage {
 
     // place the skeleton package in `devDependencies`
     this.pkg.devDependencies ??= {};
+    // TODO: this semver chevron ain't great, chief
     this.pkg.devDependencies[skeleton!] = `^${version!}`;
 
     for (const [dep, version] of Object.entries(peerDependencies)) {
