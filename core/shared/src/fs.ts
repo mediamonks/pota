@@ -1,10 +1,9 @@
 import { join, resolve } from 'path';
-import { promises as fs, realpathSync } from 'fs';
+import { realpathSync } from 'fs';
+import { access, readdir, readFile, writeFile } from 'fs/promises';
 
 import type { PackageJsonShape } from './config.js';
 import { PACKAGE_JSON_FILE } from './config.js';
-
-const { access, readdir, readFile, writeFile } = fs;
 
 export const getCWD = () => realpathSync(process.cwd());
 

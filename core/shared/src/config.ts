@@ -1,6 +1,7 @@
 export interface PotaConfig {
   extends?: string;
   scripts?: ReadonlyArray<string>;
+  omit?: ReadonlyArray<string>;
   rename?: Record<string, string>;
 }
 
