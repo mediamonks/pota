@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node16",
+  "extends": "@tsconfig/node14",
   "compilerOptions": {
     "module": "nodenext",
     "composite": true,
