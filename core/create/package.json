@@ -20,7 +20,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b -i",
-    "clean:build": "rm -rf lib tsconfig.tsbuildinfo && tsc -b",
+    "clean:build": "tsc -b --clean && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {
