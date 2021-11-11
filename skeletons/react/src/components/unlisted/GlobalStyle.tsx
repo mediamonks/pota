@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { size } from 'polished';
 
 export default createGlobalStyle`
   html {

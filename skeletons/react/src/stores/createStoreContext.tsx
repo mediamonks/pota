@@ -27,7 +27,7 @@ export default function createStoreContext<T extends Record<string, any>>(Store:
     return <context.Provider value={store}>{children}</context.Provider>;
   }
 
-  function useStore (){
+  function useStore() {
     const store = useContext(context);
     if (store) {
       return store;
@@ -35,7 +35,7 @@ export default function createStoreContext<T extends Record<string, any>>(Store:
     throw new ReferenceError(
       `${Store.name} is not initialized, make sure that your component is wrapped in the 'Provider' of the store.`,
     );
-  };
+  }
 
   return [StoreProvider, useStore, context];
-};
+}
