@@ -1,20 +1,34 @@
+import ReactDOM from 'react-dom';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import ReactDOM from 'react-dom';
 
 import App from './components/unlisted/App';
 import GlobalStyle from './components/unlisted/GlobalStyle';
+import { GlobalStoreProvider } from './stores/global';
 import theme from './config/theme';
 
 import reportWebVitals from './reportWebVitals';
+
+/** SETUP */
+
+configure({
+  // restricts observable value updating only to actions
+  enforceActions: 'observed',
+});
+
+/** RENDER */
 
 ReactDOM.render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
+        <GlobalStoreProvider>
+          <>
+            <GlobalStyle />
+            <App />
+          </>
+        </GlobalStoreProvider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,
