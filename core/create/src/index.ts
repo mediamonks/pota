@@ -124,7 +124,7 @@ sade('@pota/create <skeleton> <dir>', true)
 
         We suggest that you begin by typing:
 
-          ${cyan('cd')} my-app
+          ${cyan('cd')} ${pkgName}
           ${cyan(`npm run dev`)}
 
 
