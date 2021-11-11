@@ -42,7 +42,7 @@ export async function getCommandModules(skeleton: string) {
     };
 
     skeletons.unshift(localSkeleton);
-  } catch (error) { } //TODO: verbose logging
+  } catch (error) {} //TODO: verbose logging
 
   // parse command modules from nested skeletons
   const files = skeletons.flatMap(({ skeleton, path, files }) =>
@@ -59,18 +59,20 @@ export async function getCommandModules(skeleton: string) {
   // to skip duplicate commands
   const included = new Set<string>();
 
-  return Promise.all(files
-    // safety filter, remove duplicate modules
-    .filter(({ command }) => {
-      const condition = !included.has(command);
+  return Promise.all(
+    files
+      // safety filter, remove duplicate modules
+      .filter(({ command }) => {
+        const condition = !included.has(command);
 
-      included.add(command);
+        included.add(command);
 
-      return condition;
-    })
-    // import the modules
-    .map(async ({ modulePath, ...rest }) => ({
-      ...rest,
-      ...((await import(modulePath)) as CommandModule),
-    })));
+        return condition;
+      })
+      // import the modules
+      .map(async ({ modulePath, ...rest }) => ({
+        ...rest,
+        ...((await import(modulePath)) as CommandModule),
+      })),
+  );
 }

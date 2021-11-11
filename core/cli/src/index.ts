@@ -16,7 +16,7 @@ const main = sade('pota');
 for (const module of await getCommandModules(mainSkeleton)) {
   const { action, command, options, examples, description, skeleton } = module;
 
-  if (!action || typeof action !== "function") continue;
+  if (!action || typeof action !== 'function') continue;
 
   const program = main.command(command);
 
