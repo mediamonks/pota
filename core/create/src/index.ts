@@ -1,166 +1,134 @@
-import { rm, mkdir } from 'fs/promises';
 import { relative, basename } from 'path';
 
+import npa from 'npm-package-arg';
 import sade from 'sade';
 import kleur from 'kleur';
-import * as fs from '@pota/shared/fs';
+// @ts-ignore TypeScript is being weird
+import dedent from 'dedent';
+import { resolveUser } from '@pota/shared/fs';
 
-import { isSkeletonShorthand, getSkeletonFromShorthand, POTA_CLI } from './config.js';
+import { isSkeletonShorthand, getSkeletonFromShorthand } from './config.js';
 import * as helpers from './helpers.js';
 import sync from './sync.js';
-import { SPINNER } from './spinner.js';
 
-const { clear, log } = helpers;
-const { red, green, cyan } = kleur;
+const { log } = helpers;
+const { green, cyan, bold } = kleur;
 
 type SadeSkeleton = string;
 type SadeDirectory = string;
 interface SadeOptions {
   'fail-cleanup': boolean;
-  'use-npm': boolean;
-  'use-yarn': boolean;
 }
 
 sade('@pota/create <skeleton> <dir>', true)
   .describe('Create Pota project')
   .option('--fail-cleanup', 'Cleanup after failing initialization', true)
-  .option('--use-yarn', 'Force Pota to use yarn', false)
-  .option('--use-npm', 'Force Pota to use npm', false)
   .example('npx @pota/create webpack ./project-directory')
   .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
-    SPINNER.start(`Creating new Pota App in ${green(dir)}`);
+    const pkgName = basename(dir);
+    const cwd = resolveUser(dir);
 
-    /**
-     * Validation
-     */
-    if (!(await fs.isDirectoryAvailable(dir))) {
-      console.error(`${green(dir)} already exists, please specify a different directory`);
+    log(`Creating a new Pota App ${cyan(pkgName)} in ${green(cwd)}.`);
 
-      process.exit(1);
-    }
+    // resolve shorthand to full package name
+    if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
 
-    if (!helpers.isValidSkeleton(skeleton)) {
+    // parse the skeleton package
+    let skeletonPkgDetails: npa.Result;
+
+    try {
+      skeletonPkgDetails = npa(skeleton);
+    } catch (error) {
       console.error(`${green(skeleton)} is not a valid skeleton package`);
 
       process.exit(1);
     }
 
-    /**
-     * Post-validation, initialization of utilities
-     */
-    let isFileSkeleton = false;
+    // if the skeleton package is a file path, then resolve it to a relative path
+    if (skeletonPkgDetails.type === 'file') skeleton = relative(cwd, skeleton);
 
-    const pkgName = basename(dir);
-    const cwd = fs.resolveUser(dir);
+    const bail = helpers.createBailer(options['fail-cleanup'] ? cwd : undefined);
 
-    if (helpers.isFileSkeleton(skeleton)) {
-      isFileSkeleton = true;
-      skeleton = relative(cwd, skeleton);
-    } else if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
+    try {
+      // create project directory
+      await helpers.createDir(cwd);
 
-    const installOptions = { cwd, npm: options['use-npm'], yarn: options['use-yarn'] };
-    const install = helpers.createInstaller(installOptions);
-    const installDev = helpers.createInstaller({ ...installOptions, dev: true });
+      // change directory into current working directory (the project directory)
+      process.chdir(cwd);
 
-    async function bail() {
-      if (options['fail-cleanup']) {
-        try {
-          console.log();
-          console.error('Deleting created directory.');
-          await rm(cwd, { recursive: true });
-        } catch {}
+      const visualName = skeletonPkgDetails.type === 'file' ? basename(skeleton) : skeleton;
+
+      log(`Installing ${cyan(visualName)}, this might take a while...`);
+      log();
+
+      await helpers.spawn(
+        'npm',
+        'install',
+        skeleton,
+        `--prefix ${cwd}`,
+        '--include=dev',
+        '--no-audit',
+        '--no-fund',
+      );
+
+      log();
+      console.log(`Setting up project structure...`);
+
+      await sync(cwd, await helpers.getSkeletonName(skeletonPkgDetails, cwd), pkgName);
+
+      console.log(`Installing remaining peer dependencies...`);
+
+      await helpers.spawn(
+        'npm',
+        'install',
+        `--prefix ${cwd}`,
+        '--no-audit',
+        '--no-fund',
+        '--prefer-offline',
+      );
+
+      // create branch under the name `main` and create initial commit
+      try {
+        await helpers.command('git init -b main');
+        await helpers.command('git add .');
+        await helpers.command('git commit -m "Initial commit from @pota/create"');
+      } catch (error) {
+        // if `-b main` isn't supported fallback to renaming the branch
+        if ((error as { code: number }).code === 129) {
+          await helpers.command('git init');
+          await helpers.command('git add .');
+          await helpers.command('git commit -m "Initial commit from @pota/create"');
+          await helpers.command('git branch master -m main');
+        } else throw error;
       }
-
-      process.exit(1);
-    }
-
-    /**
-     * Project creation
-     */
-
-    clear();
-
-    try {
-      await mkdir(cwd, { recursive: true });
     } catch (error) {
-      SPINNER.fail();
       console.error(error);
 
       await bail();
     }
 
-    SPINNER.succeed();
-    // change directory into current working directory (the project directory)
-    process.chdir(cwd);
+    log();
+    log(dedent`
+        Initialized a git repository.
 
-    SPINNER.start('Initializing git');
+        🚀🚀🚀 ${green('SUCCESS')} 🚀🚀🚀
+        Created ${cyan(pkgName)} at ${green(cwd)}
 
-    try {
-      await helpers.command(`git init`);
-    } catch (error) {
-      SPINNER.fail();
-      console.error(error);
+        Inside that directory, you can run several commands:
 
-      await bail();
-    }
+          ${cyan(`npm run dev`)}
+            Starts the development server.
 
-    SPINNER.succeed();
+          ${cyan(`npm run build`)}
+            Builds the app for production.
 
-    const visualName = isFileSkeleton ? basename(skeleton) : skeleton;
+        We suggest that you begin by typing:
 
-    SPINNER.start(`Installing ${cyan(visualName)}, this might take a while...`);
+          ${cyan('cd')} my-app
+          ${cyan(`npm run dev`)}
 
-    try {
-      await installDev(skeleton);
-    } catch (error) {
-      SPINNER.fail();
-      console.error(error);
 
-      await bail();
-    }
-
-    try {
-      skeleton = await helpers.getSkeletonName(skeleton, cwd);
-    } catch (error) {
-      SPINNER.fail(`An Error occured reading the project ${green('package.json')}`);
-      console.error(error);
-
-      await bail();
-    }
-
-    SPINNER.succeed();
-
-    SPINNER.start(`Syncing...`);
-
-    try {
-      await sync(cwd, skeleton, pkgName);
-    } catch (error) {
-      SPINNER.fail();
-      console.error(error);
-
-      await bail();
-    }
-
-    SPINNER.succeed();
-
-    let failed = false;
-
-    SPINNER.start(`Syncing peer dependencies...`);
-
-    try {
-      await install();
-      SPINNER.succeed();
-    } catch (error) {
-      SPINNER.fail();
-      console.error(error);
-
-      failed = true;
-    }
-
-    SPINNER.stop();
-
-    if (failed) log(red(`🥊 Done, but with errors 😥`));
-    else log(`🥊 Done`);
+        `);
 
     process.exit(0);
   })

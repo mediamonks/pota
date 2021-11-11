@@ -11,15 +11,11 @@ type ObjectEntries = <T extends object>(
 
 const typedObjectEntries: ObjectEntries = Object.entries;
 
-const SCOPE = '@pota';
-
-const getPorterDependency = <T extends string>(name: T) => `${SCOPE}/${name}` as const;
-
 const SKELETON_SHORTHANDS = {
-  [getPorterDependency('webpack-skeleton')]: ['webpack'] as const,
-  [getPorterDependency('react-skeleton')]: ['react'] as const,
-  [getPorterDependency('react-base-skeleton')]: ['react-base'] as const,
-  [getPorterDependency('vue-skeleton')]: ['vue'] as const,
+  ['@pota/webpack-skeleton']: ['webpack'] as const,
+  ['@pota/react-skeleton']: ['react'] as const,
+  ['@pota/react-base-skeleton']: ['react-base'] as const,
+  ['@pota/vue-skeleton']: ['vue'] as const,
 };
 
 const INVERTED_SKELETON_SHORTHANDS = Object.fromEntries(
@@ -32,8 +28,6 @@ export const isSkeletonShorthand = (shorthand: string) => shorthand in INVERTED_
 
 export const getSkeletonFromShorthand = (shorthand: string) =>
   INVERTED_SKELETON_SHORTHANDS[shorthand];
-
-export type PackageManager = 'yarn' | 'npm';
 
 export const POTA_CLI = '@pota/cli' as const;
 export const POTA_CLI_BIN = 'pota' as const;

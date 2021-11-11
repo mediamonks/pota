@@ -29,19 +29,21 @@
     "kleur": "^4.1.4",
     "lodash.merge": "^4.6.2",
     "npm-package-arg": "^8.1.5",
-    "ora": "^6.0.1",
     "sade": "^1.7.4",
     "sort-package-json": "^1.52.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
+    "@types/dedent": "^0.7.0",
     "@types/lodash.merge": "^4.6.6",
     "@types/npm-package-arg": "^6.1.1",
-    "@types/sade": "^1.7.3"
+    "@types/sade": "^1.7.3",
+    "dedent": "^0.7.0"
   },
   "engines": {
     "node": ">=14",
-    "npm": ">=7"
+    "npm": ">=7",
+    "yarn": "unsupported"
   },
   "publishConfig": {
     "access": "public"
