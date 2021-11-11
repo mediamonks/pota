@@ -13,8 +13,8 @@ import {
  *
  * @param storeFactory - a function that returns an object representing the store
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export default function createStoreContext<T extends Record<string, unknown>>(Store: {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/naming-convention
+export default function createStoreContext<T extends Record<string, any>>(Store: {
   new (): T;
 }): [FunctionComponent<unknown>, () => T, Context<T>] {
   const context = createContext<T>({} as T); // the initial value is only to satisfy TS and won't be used
