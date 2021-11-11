@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { configure } from "mobx";
 
 import App from './components/unlisted/App';
 import GlobalStyle from './components/unlisted/GlobalStyle';
