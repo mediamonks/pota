@@ -26,7 +26,7 @@
   "peerDependencies": {
     "vue": "^3.2.20",
     "@pota/cli": "^1.0.0-rc.6",
-    "@mediamonks/eslint-config-vue": "^1.0.1",
+    "@mediamonks/eslint-config-vue": "^2.0.0-rc.1",
     "@pota/webpack-skeleton": "^1.0.0-rc.11"
   },
   "engines": {

@@ -25,7 +25,7 @@
     "babel-plugin-named-asset-import": "^0.3.7"
   },
   "peerDependencies": {
-    "@mediamonks/eslint-config-react": "^1.0.2",
+    "@mediamonks/eslint-config-react": "^2.0.0-rc.1",
     "@pota/cli": "^1.0.0-rc.9",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
