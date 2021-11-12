@@ -44,8 +44,10 @@ sade('@pota/create <skeleton> <dir>', true)
       process.exit(1);
     }
 
-    // if the skeleton package is a file path, then resolve it to a relative path
-    if (skeletonPkgDetails.type === 'file') skeleton = relative(cwd, skeleton);
+    if (skeletonPkgDetails.type === 'file') {
+      skeleton = relative(cwd, skeleton);
+      skeletonPkgDetails = npa(skeleton);
+    }
 
     const bail = helpers.createBailer(options['fail-cleanup'] ? cwd : undefined);
 
@@ -66,7 +68,7 @@ sade('@pota/create <skeleton> <dir>', true)
         'install',
         skeleton,
         `--prefix ${cwd}`,
-        '--include=dev',
+        '-D',
         '--no-audit',
         '--no-fund',
       );
