@@ -69,7 +69,7 @@ export async function getSkeletonName(skeletonPkgDetails: NpaResult, packageJson
           );
         }
         case 'file':
-          return version === skeletonPkgDetails.saveSpec;
+          return version === `file:${skeletonPkgDetails.rawSpec}`;
         default:
           return name === skeletonPkgDetails.raw;
       }
