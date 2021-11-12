@@ -13,12 +13,24 @@
   },
   "files": [
     "pota",
+    ".storybook",
+    "storybook-static",
     "public",
     "tsconfig.json",
     "src"
   ],
+  "scripts": {
+    "start-storybook": "start-storybook -p 9001 -s public,storybook-static",
+    "build-storybook": "build-storybook -s public,storybook-static"
+  },
   "dependencies": {
-    "babel-plugin-styled-components": "^1.13.3"
+    "babel-plugin-styled-components": "^1.13.3",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/builder-webpack5": "^6.3.12",
+    "@storybook/manager-webpack5": "^6.3.12",
+    "@storybook/react": "^6.3.12"
   },
   "peerDependencies": {
     "@pota/react-base-skeleton": "^1.0.0-rc.1",
