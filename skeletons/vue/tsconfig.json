@@ -1,4 +1,0 @@
-{
-  "extends": "@pota/webpack-skeleton",
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "./.eslintrc.cjs"],
-}

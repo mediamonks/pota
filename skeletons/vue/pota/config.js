@@ -1,3 +1,4 @@
 export default {
-  extends: "@pota/webpack-skeleton",
+  extends: "@pota/vue-base-skeleton",
+  omit: ['src/App.vue']
 }
