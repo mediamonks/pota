@@ -3,6 +3,5 @@
   "compilerOptions": {
     "jsx": "react-jsx"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["/**/*.del.ts", "/**/*.del.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "./.eslintrc.cjs"]
 }
