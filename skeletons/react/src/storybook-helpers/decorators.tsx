@@ -4,6 +4,7 @@ import theme from '../config/theme';
 import { GlobalStoreProvider } from '../stores/global';
 import GlobalStyle from '../components/unlisted/GlobalStyle';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function themeDecorator(StoryComponent: Story): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
@@ -15,6 +16,7 @@ export function themeDecorator(StoryComponent: Story): JSX.Element {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function globalStoreDecorator(StoryComponent: Story): JSX.Element {
   return (
     <GlobalStoreProvider>
