@@ -2,7 +2,7 @@ import { relative, isAbsolute, resolve } from "path";
 
 import { getNestedFiles, PROJECT_SKELETON } from "@pota/cli/authoring";
 import webpack from "webpack";
-import ora from "ora";
+import logSymbols from "log-symbols";
 
 import * as paths from "../webpack/paths.js";
 
@@ -43,11 +43,13 @@ export const action = async (options) => {
 
   const modules = await getNestedConfigModulesSelf();
 
-  const s = createSpinner(modules[modules.length - 1]?.skeleton);
+  const skeleton = modules[modules.length - 1]?.skeleton;
+
+  console.log(logSymbols.info, `Using ${skeleton === PROJECT_SKELETON ? "local" : skeleton } configuration`);
 
   const config = await createConfig(modules, preprocessOptions(options));
 
-  s.start("Building...");
+  console.log("Building...");
 
   try {
     const stats = await new Promise(async (resolve, reject) =>
@@ -60,9 +62,9 @@ export const action = async (options) => {
 
     console.log(stats);
     console.log();
-    s.succeed("Building Finished 🎉");
+    console.log(logSymbols.success, "Building Finished 🎉");
   } catch (error) {
-    s.fail("Building Failed 😟");
+    console.log(logSymbols.error, "Building Failed 😟");
     console.log();
     console.error(error);
   }
@@ -78,10 +80,6 @@ function preprocessOptions(options) {
 
 function isFunction(value) {
   return typeof value === "function";
-}
-
-export function createSpinner(skeleton) {
-  return ora(`Using ${skeleton === PROJECT_SKELETON ? "local" : `'${skeleton}'`} configuration`).info();
 }
 
 export async function getNestedConfigModulesSelf() {

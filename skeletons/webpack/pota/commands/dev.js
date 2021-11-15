@@ -1,7 +1,10 @@
 import webpack from "webpack";
 import Server from "webpack-dev-server";
+import logSymbols from "log-symbols";
 
-import { getNestedConfigModulesSelf, createSpinner, createConfig } from "./build.js";
+import { PROJECT_SKELETON } from "@pota/cli/authoring";
+
+import { getNestedConfigModulesSelf, createConfig } from "./build.js";
 
 export const description = "Start the development server using webpack.";
 
@@ -31,7 +34,9 @@ export const action = async (options) => {
 
   const modules = await getNestedConfigModulesSelf();
 
-  createSpinner(modules[modules.length - 1]?.skeleton);
+  const skeleton = modules[modules.length - 1]?.skeleton;
+
+  console.log(logSymbols.info, `Using ${skeleton === PROJECT_SKELETON ? "local" : skeleton } configuration`);
 
   const config = await createConfig(modules, options);
 

@@ -48,6 +48,7 @@
     "css-loader": "^6.3.0",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
+    "eslint": "^8.2.0",
     "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^6.3.3",
     "friendly-errors-webpack-plugin": "npm:@soda/friendly-errors-webpack-plugin@^1.8.0",
@@ -57,27 +58,25 @@
     "lint-staged": "^10.5.1",
     "mini-css-extract-plugin": "^2.3.0",
     "npm-run-all": "^4.1.5",
-    "ora": "^6.0.1",
     "postcss": "^8.3.8",
     "postcss-loader": "^6.1.1",
+    "prettier": "^2.4.1",
     "resolve-url-loader": "^4.0.0",
     "sass": "^1.42.1",
     "sass-loader": "^12.1.0",
     "sort-package-json": "^1.52.0",
     "style-loader": "^3.3.0",
     "ts-loader": "^9.2.6",
+    "typescript": "^4.4.4",
     "url-loader": "^4.1.1",
     "webpack": "^5.57.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.3.1",
-    "eslint": "^8.2.0",
-    "prettier": "^2.4.1",
-    "typescript": "^4.4.4"
+    "webpack-dev-server": "^4.3.1"
   },
   "peerDependencies": {
-    "@pota/cli": "^1.0.0-rc.6",
-    "@mediamonks/eslint-config-base": "^2.0.0-alpha.0"
+    "@mediamonks/eslint-config-base": "^2.0.0-alpha.0",
+    "@pota/cli": "^1.0.0-rc.6"
   },
   "engines": {
     "node": ">=14",
@@ -86,5 +85,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "log-symbols": "^5.0.0"
   }
 }
