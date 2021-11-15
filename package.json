@@ -9,7 +9,8 @@
     "skeletons/webpack",
     "skeletons/react",
     "skeletons/react-base",
-    "skeletons/vue"
+    "skeletons/vue",
+    "skeletons/vue-base"
   ],
   "scripts": {
     "format": "prettier \"**/*.{js,ts}\" --write --loglevel warn"
