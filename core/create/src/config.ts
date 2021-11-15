@@ -16,6 +16,7 @@ const SKELETON_SHORTHANDS = {
   ['@pota/react-skeleton']: ['react'] as const,
   ['@pota/react-base-skeleton']: ['react-base'] as const,
   ['@pota/vue-skeleton']: ['vue'] as const,
+  ['@pota/vue-base-skeleton']: ['vue-base'] as const,
 };
 
 const INVERTED_SKELETON_SHORTHANDS = Object.fromEntries(
