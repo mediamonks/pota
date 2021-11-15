@@ -26,6 +26,7 @@ sade('@pota/create <skeleton> <dir>', true)
   .example('npx @pota/create webpack ./project-directory')
   .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
     const pkgName = basename(dir);
+    const originalCwd = resolveUser();
     const cwd = resolveUser(dir);
 
     log(`Creating a new Pota App ${cyan(pkgName)} in ${green(cwd)}.`);
@@ -109,6 +110,7 @@ sade('@pota/create <skeleton> <dir>', true)
       await bail();
     }
 
+    // TODO: include the commands of the skeleton instead of assuming that every skeleton comes with `build` and `dev`
     log();
     log(dedent`
         Initialized a git repository.
@@ -126,7 +128,7 @@ sade('@pota/create <skeleton> <dir>', true)
 
         We suggest that you begin by typing:
 
-          ${cyan('cd')} ${pkgName}
+          ${cyan('cd')} ${relative(originalCwd, cwd)}
           ${cyan(`npm run dev`)}
 
 
