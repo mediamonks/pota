@@ -21,7 +21,7 @@ export function parseOptions(options) {
     mode = IS_PROD_ENV ? "production" : "development",
     analyze = false,
     output = paths.output,
-    ['image-compression']: imageCompression,
+    ['image-compression']: imageCompression = true,
     ['public-url']: publicUrl = "/",
     ['type-check']: typeCheck = true,
     ['source-map']: sourceMap = { "production": 'source-map', 'development': 'eval-source-map' }[mode],
@@ -225,8 +225,16 @@ export default function createConfig(unsafeOptions = {}) {
         // https://github.com/facebookincubator/create-react-app/pull/1180
         {
           test: /\.(svg)(\?.*)?$/,
-          type: "asset/resource",
-          generator: { filename: `static/img/${options.isDev ? "[name]" : "[contenthash]"}[ext][query]` },
+          oneOf: [
+            {
+              resourceQuery: /raw/,
+              type: "asset/source",
+            },
+            {
+              type: "asset/resource",
+              generator: { filename: `static/img/${options.isDev ? "[name]" : "[contenthash]"}[ext][query]` },
+            }
+          ]
         },
 
         {
@@ -258,7 +266,14 @@ export default function createConfig(unsafeOptions = {}) {
       new ErrorPlugin(),
       new webpack.DefinePlugin(env.stringified),
       options.imageCompression && new ImageMinimizerPlugin({
-        minify: ImageMinimizerPlugin.squooshMinify,
+        minimizerOptions: {
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["jpegtran", { progressive: true }],
+            ["optipng", { optimizationLevel: 5 }],
+            ["svgo"],
+          ],
+        },
       }),
       options.isProd && new MiniCssExtractPlugin({
         filename: 'static/css/[contenthash].css',
