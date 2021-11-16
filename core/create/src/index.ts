@@ -12,7 +12,7 @@ import * as helpers from './helpers.js';
 import sync from './sync.js';
 
 const { log } = helpers;
-const { green, cyan, bold } = kleur;
+const { green, cyan } = kleur;
 
 type SadeSkeleton = string;
 type SadeDirectory = string;
