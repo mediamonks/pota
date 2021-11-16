@@ -303,6 +303,7 @@ export default function createConfig(unsafeOptions = {}) {
           {
             from: "static",
             to: `${versionPath}static`,
+            noErrorOnMissing: true,
             globOptions: { ignore: ["**/.*"] },
           },
         ],
