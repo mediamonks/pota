@@ -13,8 +13,22 @@
   },
   "files": [
     "pota",
+    ".storybook",
+    "storybook-static",
     "src"
   ],
+  "scripts": {
+    "start-storybook": "start-storybook -p 9001 -s public,storybook-static",
+    "build-storybook": "build-storybook -s public,storybook-static"
+  },
+  "dependencies": {
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/builder-webpack5": "^6.3.12",
+    "@storybook/manager-webpack5": "^6.3.12",
+    "@storybook/vue3": "^6.3.12"
+  },
   "peerDependencies": {
     "vue-router": "^4.0.12",
     "web-vitals": "^2.1.1",
