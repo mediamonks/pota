@@ -105,7 +105,6 @@ export default function createConfig(unsafeOptions = {}) {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
       alias: {
         "@": paths.source,
-        'mediamonks-webgl': resolve(paths.source, 'src/webgl/lib/'),
       },
     },
 
