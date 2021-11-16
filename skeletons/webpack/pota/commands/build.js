@@ -109,7 +109,7 @@ export async function getNestedConfigModulesSelf() {
   return (await Promise.all(modules)).filter(Boolean);
 }
 
-export async function createConfig(modules, options) {
+export async function createConfig(modules, options = {}) {
   let config = null;
 
   for (const { module } of modules) {
