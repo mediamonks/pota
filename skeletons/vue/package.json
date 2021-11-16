@@ -15,11 +15,14 @@
     "pota",
     ".storybook",
     "storybook-static",
-    "src"
+    "test-utils",
+    "src",
+    "tsconfig.json"
   ],
   "scripts": {
     "start-storybook": "start-storybook -p 9001 -s public,storybook-static",
-    "build-storybook": "build-storybook -s public,storybook-static"
+    "build-storybook": "build-storybook -s public,storybook-static",
+    "test": "jest --config ./test-utils/jest.config.ts"
   },
   "dependencies": {
     "@storybook/addon-actions": "^6.3.12",
@@ -34,7 +37,13 @@
     "web-vitals": "^2.1.1",
     "normalize.css": "^8.0.1",
     "@pota/cli": "^1.0.0-rc.6",
-    "@pota/vue-base-skeleton": "^1.0.0-rc.0"
+    "@pota/vue-base-skeleton": "^1.0.0-rc.0",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.0.2",
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0"
   },
   "engines": {
     "node": ">=14",
