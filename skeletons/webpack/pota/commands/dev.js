@@ -27,6 +27,11 @@ export const options = [
     description: "When disabled, will not do any type checking and ignore TypeScript errors",
     default: true,
   },
+  {
+    option: "--cache",
+    description: "Cache the build output to improve build speed",
+    default: true,
+  },
 ];
 
 export const action = async (options) => {

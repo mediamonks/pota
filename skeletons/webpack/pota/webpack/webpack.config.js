@@ -21,6 +21,7 @@ export function parseOptions(options) {
     mode = IS_PROD_ENV ? "production" : "development",
     analyze = false,
     output = paths.output,
+    cache = true,
     ['image-compression']: imageCompression = true,
     ['public-url']: publicUrl = "/",
     ['type-check']: typeCheck = true,
@@ -33,6 +34,7 @@ export function parseOptions(options) {
     analyze,
     publicUrl,
     imageCompression,
+    cache: cache === "false" ? false : cache,
     sourceMap: sourceMap === "false" ? false : sourceMap,
     typeCheck: typeCheck === "false" ? false : typeCheck,
     isDev: mode === "development",
@@ -80,6 +82,8 @@ export default function createConfig(unsafeOptions = {}) {
     devtool: options.sourceMap,
     context: paths.user,
     entry: paths.entry,
+
+    cache: options.cache && { type: 'filesystem' },
 
     output: {
       path: options.output,
