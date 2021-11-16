@@ -41,6 +41,11 @@ export const options = [
     description: "Cache the build output to improve build speed",
     default: true,
   },
+  {
+    option: "--versioning",
+    description: "Enable static resource versioning",
+    default: false,
+  }
 ];
 
 export const action = async (options) => {

@@ -23,7 +23,7 @@ for (const file of ENV_FILES) {
 // injected into the application via DefinePlugin in webpack configuration.
 const POTA_APP = /^POTA_APP/i;
 
-export default function getUserEnv() {
+export default function getEnv(extra = {}) {
   const raw = Object.keys(process.env)
     .filter((key) => POTA_APP.test(key))
     .reduce(
@@ -31,7 +31,7 @@ export default function getUserEnv() {
         env[key] = process.env[key];
         return env;
       },
-      {}
+      extra
     );
   // Stringify all values so we can feed into webpack DefinePlugin
   const stringified = {

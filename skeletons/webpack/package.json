@@ -15,6 +15,7 @@
     "public",
     "src",
     "pota",
+    "static",
     "gitignore",
     "tsconfig.json",
     ".eslintrc.cjs",
