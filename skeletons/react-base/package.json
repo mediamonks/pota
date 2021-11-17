@@ -12,7 +12,7 @@
     "directory": "skeletons/react-base"
   },
   "files": [
-    "pota",
+    ".pota",
     "public",
     ".eslintrc.cjs",
     "tsconfig.json",
