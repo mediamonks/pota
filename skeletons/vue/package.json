@@ -12,7 +12,7 @@
     "directory": "skeletons/vue"
   },
   "files": [
-    "pota",
+    ".pota",
     ".storybook",
     "storybook-static",
     "test-utils",
