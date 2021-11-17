@@ -23,7 +23,7 @@ export interface PackageJsonShape {
 export const PACKAGE_JSON_FILE = 'package.json' as const;
 
 export const POTA_LOCAL_SKELETON = 'LOCAL';
-export const POTA_DIR = 'pota';
+export const POTA_DIR = '.pota';
 export const POTA_CONFIG_FILE = 'config.js';
 export const POTA_COMMANDS_DIR = 'commands';
 
