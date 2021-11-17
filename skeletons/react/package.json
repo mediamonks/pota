@@ -12,7 +12,7 @@
     "directory": "skeletons/react"
   },
   "files": [
-    "pota",
+    ".pota",
     ".storybook",
     "storybook-static",
     "public",
