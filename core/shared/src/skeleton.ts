@@ -1,11 +1,8 @@
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import type { PotaConfig } from './config.js';
 import { EXCLUDED_FILES, POTA_DIR, POTA_CONFIG_FILE } from './config.js';
 import { Recursive } from './fs.js';
-
-interface GetNestedSkeletonsOptions {
-  dir?: string;
-}
 
 interface SkeletonEntry {
   config: PotaConfig;
@@ -14,17 +11,17 @@ interface SkeletonEntry {
   files: ReadonlyArray<string>;
 }
 
+const selfDir = dirname(fileURLToPath(import.meta.url));
+const modulesDir = 'node_modules';
+const modulesPath = selfDir.substring(0, selfDir.indexOf(modulesDir) + modulesDir.length);
+
 export async function getNestedSkeletons(
-  cwd: string,
-  skeleton: string,
-  options: GetNestedSkeletonsOptions = {},
+  rootSkeleton: string,
+  dir: string = '',
 ): Promise<ReadonlyArray<SkeletonEntry>> {
-  const { dir = '' } = options;
-
   const skeletons: Array<SkeletonEntry> = [];
-  const modulesPath = join(cwd, 'node_modules');
 
-  let currentSkeleton: string | undefined = skeleton;
+  let currentSkeleton: string | undefined = rootSkeleton;
   let currentPath: string;
 
   do {
