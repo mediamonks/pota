@@ -4,5 +4,13 @@ export { description, action } from "@pota/webpack-skeleton/pota/commands/build.
 
 import commonOptions from "../internal/commonOptions.js"
 
-export const options = [...webpackSkeletonOptions,...commonOptions];
+export const options = [
+  ...webpackSkeletonOptions,
+  ...commonOptions,
+  {
+    option: '--vue-prod-devtools',
+    description: 'Toggles support for the Vue Devtools in _production_',
+    default: false,
+  },
+];
 

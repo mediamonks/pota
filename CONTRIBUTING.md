@@ -15,37 +15,10 @@ core/
 skeletons/
   webpack/
   react/
+  react-base/
   vue/
+  vue-base/
 ```
-
-### Package Descriptions
-
-#### [@pota/cli](https://github.com/mediamonks/pota/tree/main/core/cli)
-
-The local CLI package that is used within skeletons and projects to add and run custom commands.
-
-#### [@pota/create](https://github.com/mediamonks/pota/tree/main/core/create)
-
-The global CLI package that handles project creation from skeletons.
-
-#### [@pota/shared](https://github.com/mediamonks/pota/tree/main/core/shared)
-
-A collection of shared utilities used in `@pota/cli` and `@pota/create`
-
-#### [@pota/webpack-skeleton](https://github.com/mediamonks/pota/tree/main/skeletons/webpack)
-
-The official webpack skeleton. It should contain the base (but best) webpack setup and commands to
-execute it.
-
-#### [@pota/react-skeleton](https://github.com/mediamonks/pota/tree/main/skeletons/react)
-
-The official react skeleton. It extends the `@pota/webpack-skeleton` and contains the best agreed
-React setup.
-
-#### [@pota/vue-skeleton](https://github.com/mediamonks/pota/tree/main/skeletons/vue)
-
-The official vue skeleton. It extends the `@pota/webpack-skeleton` and contains the best agreed Vue
-setup.
 
 # FAQ
 

@@ -6,7 +6,7 @@ export const options = [
   ...webpackSkeletonOptions,
   {
     option: '--profile',
-    description: 'The public url',
+    description: 'Toggles support for React Devtools in _production_',
   },
 ];
 

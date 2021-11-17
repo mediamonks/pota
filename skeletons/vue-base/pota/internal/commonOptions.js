@@ -1,13 +1,7 @@
-
 export default [
   {
     option: '--vue-options-api',
-    description: 'Toggle Vue Options API',
+    description: 'Toggles the Vue Options API (https://v3.vuejs.org/api/options-api).',
     default: false,
-  },
-  {
-    option: '--vue-prod-devtools',
-    description: 'Allow DevTools usage in production builds',
-    default: false,
-  },
+  }
 ];

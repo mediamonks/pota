@@ -10,40 +10,41 @@ export const description = "Build the source directory using webpack.";
 
 export const options = [
   {
-    option: "--public-url",
-    description: `The URL from which static assets are referenced from`,
-    default: "/",
-  },
-  {
-    option: "--output",
-    description: "The output directory",
-    default: relative(paths.user, paths.output),
-  },
-  {
-    option: "--mode",
-    description: "The webpack mode",
-  },
-  {
-    option: "--source-map",
-    description: "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
-  },
-  {
     option: "--analyze",
-    description: "Build and then analyze the build output",
-  },
-  {
-    option: "--type-check",
-    description: "When disabled, will not do any type checking and ignore TypeScript errors",
-    default: true,
+    description: "When enabled, will open a bundle report after bundling.",
   },
   {
     option: "--cache",
-    description: "Cache the build output to improve build speed",
+    description: "Toggles webpack's caching behavior. (https://webpack.js.org/configuration/cache/)",
     default: true,
   },
   {
+    option: "--mode",
+    description: "Override webpack's mode. (https://webpack.js.org/configuration/mode) ",
+  },
+  {
+    option: "--output",
+    description: "The build output directory.",
+    default: relative(paths.user, paths.output),
+  },
+  {
+    option: "--source-map",
+    description: "Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. (https://webpack.js.org/configuration/devtool/#devtool)",
+  },
+  {
+    option: "--public-url",
+    description: "The location of static assets on your production server.",
+    default: "/",
+  },
+  {
+    option: "--type-check",
+    description: "When disabled, will ignore type related errors.",
+    default: true,
+  },
+
+  {
     option: "--versioning",
-    description: "Enable static resource versioning",
+    description: "When enabled, will copy assets in ./static to a versioned directory in the output (e.g. build/version/v2/static/...).",
     default: false,
   }
 ];

@@ -1,44 +1,20 @@
-<div align="center">
-  <img src="./logo.png" alt="Pota">
-</div>
+# `@pota/create` ![downloads](https://badgen.now.sh/npm/dm/@pota/create)
 
-<br />
+<div align="center">The starting point for new Pota-powered projects.</div>
 
-<div align="center">
-  <a href="https://github.com/mediamonks/pota/tree/main/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-green.svg" alt="PRs Welcome" />
-  </a>
-  <a href="https://nodejs.org/en/about/releases/">
-    <img src="https://img.shields.io/node/v/@pota/create.svg" alt="node compatibility">
-  </a>
-  <a href="https://npmjs.org/package/@pota/cli">
-    <img src="https://badgen.now.sh/npm/dm/@pota/cli" alt="downloads" />
-  </a>
-</div>
+## Usage ✨
 
-<div align="center">The <b>Pota</b> (ポーター, Japanese for "porter") for your projects</div>
-<hr />
-<br />
-
-<b>Pota</b> is a project boot-strapper tool that supports the creation and usage of <b>nested
-skeletons</b>, alleviating the headache of maintaining multiple skeletons and upgrading the projects
-that use them.
-
-<br />
-
-> pick a skeleton from below and start hacking
+To create a new project you can use one of the following methods:
 
 ```bash
 npm init @pota react my-react-app
 ```
 
-> with npx
-
 ```bash
 npx @pota/create vue my-vue-app
 ```
 
-## Official Skeletons 📚
+Below is a list of all of the officially supported skeletons:
 
 | Skeleton                                     | Shorthand    | Version                                                                                              |
 | -------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------- |
@@ -48,7 +24,31 @@ npx @pota/create vue my-vue-app
 | [@pota/vue-skeleton](skeletons/vue)          | `vue`        | ![vue-skeleton version](https://img.shields.io/npm/v/@pota/vue-skeleton.svg?label=%20)               |
 | [@pota/vue-base-skeleton](skeletons/vue)     | `vue-base`   | ![vue-base-skeleton version](https://img.shields.io/npm/v/@pota/vue-base-skeleton.svg?label=%20)     |
 
-## Contributing
+You are by no means limited to the official skeletons. `@pota/create` supports _any_ npm package as
+a skeleton, as long as it includes a `.pota/config.js` file. This also means that skeletons can be
+git repositories, local folders and anything
+[npm supports as a dependency](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#dependencies).
 
-We appreciate other great minds working Pota and making it better for all. See
-[CONTRIBUTING.md](./CONTRIBUTING.md) for more information on how to get started.
+> example of a repository skeleton
+
+```bash
+npm init @pota git@github.com:{user}/{repo}#{branch} my-app
+```
+
+> example of a folder skeleton
+
+```bash
+npx @pota/create file:../this-is-my-local-skeleton my-app
+```
+
+## Skeleton Configuration 🔧
+
+_hidden TODOs_
+
+<!--
+- TODO: how to use `.pota`
+- TODO: what are the options of `.pota/config.js`
+- TODO: describe how skeleton dependencies are processed
+- TODO: describe how skeleton source is synchronized
+- TODO: describe how nested skeletons are handled
+-->

@@ -10,6 +10,11 @@ export const description = "Start the development server using webpack.";
 
 export const options = [
   {
+    option: "--cache",
+    description: "Cache the build output to improve build speed",
+    default: true,
+  },
+  {
     option: "--https",
     description: `Enables the server's listening socket for TLS (by default, dev server will be served over HTTP)`,
     default: false,
@@ -25,11 +30,6 @@ export const options = [
   {
     option: "--type-check",
     description: "When disabled, will not do any type checking and ignore TypeScript errors",
-    default: true,
-  },
-  {
-    option: "--cache",
-    description: "Cache the build output to improve build speed",
     default: true,
   },
 ];
