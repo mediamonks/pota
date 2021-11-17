@@ -94,7 +94,7 @@ function isFunction(value) {
 }
 
 export async function getNestedConfigModulesSelf() {
-  const files = await getNestedFiles("pota/webpack/webpack.config.js");
+  const files = await getNestedFiles(".pota/webpack/webpack.config.js");
   const modules = files.map(async ({ file, skeleton }) => {
     try {
       const module = (await import(file)).default;

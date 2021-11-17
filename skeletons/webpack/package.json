@@ -14,7 +14,7 @@
   "files": [
     "public",
     "src",
-    "pota",
+    ".pota",
     "static",
     "gitignore",
     "tsconfig.json",
