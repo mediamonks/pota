@@ -1,6 +1,6 @@
 {
   "name": "@pota/cli",
-  "version": "1.0.0-rc.9",
+  "version": "1.0.0-rc.10",
   "description": "Create Pota Apps with no configuration",
   "type": "module",
   "bin": {
