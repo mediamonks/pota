@@ -30,7 +30,9 @@ export async function getCommandModules(skeleton: string) {
   const cwd = getCWD();
 
   // find all nested skeletons
-  const skeletons: Array<Skeleton> = Array.from(await getNestedSkeletons(skeleton, dir)).reverse();
+  const skeletons: Array<Skeleton> = Array.from(
+    await getNestedSkeletons(cwd, skeleton, dir),
+  ).reverse();
 
   try {
     const localSkeleton = {

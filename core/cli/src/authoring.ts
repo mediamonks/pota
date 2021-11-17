@@ -13,7 +13,7 @@ export async function getNestedFiles(filepath: string) {
 
   if (!pkg.pota) throw new Error(`Could not determine the skeleton in '${cwd}'`);
 
-  const nestedFiles = (await getNestedSkeletons(pkg.pota, dirname(filepath)))
+  const nestedFiles = (await getNestedSkeletons(cwd, pkg.pota, dirname(filepath)))
     .map(({ skeleton, path, files }) => ({
       skeleton,
       file: files.some((filename) => filepath.endsWith(filename)) ? resolve(path, filepath) : null,
