@@ -90,7 +90,7 @@ async function copy(src: string, dst: string) {
 }
 
 export default async function sync(targetPath: string, skeleton: string, pkgName: string) {
-  const nestedSkeletons = await getNestedSkeletons(targetPath, skeleton);
+  const nestedSkeletons = await getNestedSkeletons(skeleton);
 
   const pkg = await readPackageJson(targetPath);
   pkg.name = pkgName;
