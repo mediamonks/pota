@@ -1,6 +1,6 @@
 {
   "name": "@pota/create",
-  "version": "1.0.0-rc.18",
+  "version": "1.0.0-rc.19",
   "description": "Create Pota Apps with no configuration",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
