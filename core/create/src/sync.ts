@@ -1,15 +1,17 @@
 import { join, dirname, basename, extname } from 'path';
-import { copyFile, mkdir } from 'fs/promises';
+import { copyFile, mkdir, writeFile } from 'fs/promises';
 
 // @ts-ignore TypeScript is being weird
 import merge from 'lodash.merge';
 import { sortPackageJson } from 'sort-package-json';
-import type { PackageJsonShape } from '@pota/shared/config';
+import { PackageJsonShape, POTA_CONFIG_FILE } from '@pota/shared/config';
 import { PotaConfig, PACKAGE_JSON_FILE, POTA_COMMANDS_DIR, POTA_DIR } from '@pota/shared/config';
 import { getNestedSkeletons } from '@pota/shared/skeleton';
 import { exists, readPackageJson, writePackageJson } from '@pota/shared/fs';
 
 import { POTA_CLI, POTA_CLI_BIN } from './config.js';
+// @ts-ignore TypeScript is being weird
+import dedent from 'dedent';
 
 function addFileAsScript(pkg: PackageJsonShape, file: string) {
   const command = basename(file, extname(file));
@@ -81,6 +83,24 @@ async function mergeSkeleton(pkg: PackageJsonShape, path: string, config: PotaCo
   }
 }
 
+async function createPotaDir(path: string, skeleton: string) {
+  path = join(path, POTA_DIR);
+
+  // create in-project pota directoru
+  await mkdir(path);
+
+  path = join(path, POTA_CONFIG_FILE);
+
+  // add config file with the extended skeleton
+  await writeFile(
+    path,
+    dedent`
+       export default {
+         extends: "${skeleton}"
+       };`,
+  );
+}
+
 async function copy(src: string, dst: string) {
   // create destination directories if they don't exist
   const dir = dirname(dst);
@@ -90,7 +110,7 @@ async function copy(src: string, dst: string) {
 }
 
 export default async function sync(targetPath: string, skeleton: string, pkgName: string) {
-  const nestedSkeletons = await getNestedSkeletons(skeleton);
+  const nestedSkeletons = await getNestedSkeletons(targetPath, skeleton);
 
   const pkg = await readPackageJson(targetPath);
   pkg.name = pkgName;
@@ -117,6 +137,8 @@ export default async function sync(targetPath: string, skeleton: string, pkgName
   for (const [file, { src, dst }] of fileMap.entries()) {
     if (!omits.includes(file)) await copy(src, dst);
   }
+
+  await createPotaDir(targetPath, skeleton);
 
   await writePackageJson(sortPackageJson(pkg), targetPath);
 }
