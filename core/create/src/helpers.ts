@@ -59,14 +59,15 @@ export async function getSkeletonName(skeletonPkgDetails: NpaResult, packageJson
     .find(([name, version]) => {
       switch (skeletonPkgDetails.type) {
         case 'git': {
-          const { gitCommittish, hosted } = skeletonPkgDetails;
-          const { user, type, project } = hosted!;
+          const { user, type, project } = skeletonPkgDetails.hosted!;
 
           // github:mediamonks/pota#feature
-          return (
-            version === `${type}:${user}/${project}#${gitCommittish}` ||
-            version === skeletonPkgDetails.rawSpec
-          );
+          let shortName = `${type}:${user}/${project}`;
+          if (skeletonPkgDetails.gitCommittish) {
+            shortName += `#${skeletonPkgDetails.gitCommittish}`;
+          }
+
+          return version === shortName || version === skeletonPkgDetails.rawSpec;
         }
         case 'file':
           return version === `file:${skeletonPkgDetails.rawSpec}`;
