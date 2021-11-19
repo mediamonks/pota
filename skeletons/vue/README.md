@@ -1,7 +1,10 @@
 # vue-skeleton [![downloads](https://badgen.now.sh/npm/dm/@pota/vue-skeleton)](https://npmjs.org/package/@pota/vue-skeleton) ![extends](https://badgen.net/badge/extends/@pota%2Fvue-base-skeleton/blue)
 
+<p align="center">
+    <img src="./logo.png" alt="Vue skeleton" />
+</p>
+
 <div align="center">The <b>de-facto Vue skeleton</b> for new projects.</div>
-<br />
 
 ## Setup 🚀
 
