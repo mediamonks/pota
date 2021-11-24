@@ -58,14 +58,7 @@ export default function createConfig(unsafeOptions = {}) {
     return [
       options.isDev ? "style-loader" : MiniCssExtractPlugin.loader,
       { loader: "css-loader", options: { importLoaders: preProcessor ? 3 : 1 } },
-      {
-        loader: "postcss-loader",
-        options: {
-          postcssOptions: {
-            plugins: ["autoprefixer"],
-          },
-        },
-      },
+      { loader: "postcss-loader" },
       ...(preProcessor ? [{ loader: "resolve-url-loader" }, { loader: preProcessor }] : []),
     ];
   }

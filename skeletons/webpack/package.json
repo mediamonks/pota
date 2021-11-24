@@ -23,6 +23,7 @@
     ".huskyrc",
     ".nvmrc",
     ".prettierrc",
+    ".postcssrc.cjs",
     "bitbucket-pipelines.yml",
     "lint-staged.config.js"
   ],
