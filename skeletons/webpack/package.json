@@ -29,12 +29,12 @@
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=development webpack -c webpack/webpack.config.js",
-    "check-types": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
+    "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
     "dev": "cross-env NODE_ENV=development webpack serve -c webpack/webpack.config.js",
-    "fix": "npm-run-all fix:*",
+    "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
-    "fix:prettier": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
-    "lint": "npm-run-all lint:*",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
+    "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
   },
   "browserslist": [
