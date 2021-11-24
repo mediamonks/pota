@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import ErrorPlugin from "friendly-errors-webpack-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
 import babelConfig from "./babel.config.js";
@@ -106,6 +107,10 @@ export default function createConfig(unsafeOptions = {}) {
     },
 
     optimization: {
+      minimizer: [
+        '...', // This will make sure to include webpack's default minimizer
+        new CssMinimizerPlugin(),
+      ],
       minimize: options.isProd,
       emitOnErrors: options.isProd,
       moduleIds: options.isProd ? "deterministic" : "named",
