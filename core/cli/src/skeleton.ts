@@ -1,12 +1,7 @@
-import { readPackageJson, getCWD } from '@pota/shared/fs';
+import { getCWD } from '@pota/shared/fs';
+import { getSkeletonFromPath } from '@pota/shared/skeleton';
 
 export async function getSkeletonName() {
-  if (!process.env.POTA_SKELETON) {
-    const pkg = await readPackageJson(getCWD());
-
-    if (pkg?.pota) process.env.POTA_SKELETON = pkg.pota;
-  }
-
   // TODO: throw error if the pota skeleton isn't installed
-  return process.env.POTA_SKELETON;
+  return process.env.POTA_SKELETON || (await getSkeletonFromPath(getCWD()));
 }

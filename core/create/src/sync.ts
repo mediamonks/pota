@@ -114,7 +114,6 @@ export default async function sync(targetPath: string, skeleton: string, pkgName
 
   const pkg = await readPackageJson(targetPath);
   pkg.name = pkgName;
-  pkg.pota = skeleton;
 
   const commandsDir = join(POTA_DIR, POTA_COMMANDS_DIR);
 

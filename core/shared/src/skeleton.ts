@@ -3,6 +3,16 @@ import type { PotaConfig } from './config.js';
 import { EXCLUDED_FILES, POTA_DIR, POTA_CONFIG_FILE } from './config.js';
 import { Recursive } from './fs.js';
 
+export const getPotaConfigPath = (rootPath: string) => join(rootPath, POTA_DIR, POTA_CONFIG_FILE);
+
+export async function getPotaConfig(rootPath: string): Promise<PotaConfig> {
+  return (await import(getPotaConfigPath(rootPath))).default;
+}
+
+export async function getSkeletonFromPath(path: string) {
+  return (await getPotaConfig(path)).extends;
+}
+
 interface SkeletonEntry {
   config: PotaConfig;
   skeleton: string;
@@ -24,7 +34,7 @@ export async function getNestedSkeletons(
 
   do {
     currentPath = join(modulesPath, currentSkeleton);
-    const config = (await import(join(currentPath, POTA_DIR, POTA_CONFIG_FILE))).default;
+    const config = await getPotaConfig(currentPath);
 
     if (config) {
       // recursively read all of the files in the skeleton

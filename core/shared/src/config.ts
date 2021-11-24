@@ -10,7 +10,6 @@ export interface PackageJsonShape {
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
-  pota?: string;
   files?: ReadonlyArray<string>;
   publishConfig?: Record<string, unknown>;
   repository?: Record<string, string>;
