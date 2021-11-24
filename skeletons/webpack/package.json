@@ -1,8 +1,6 @@
 {
   "name": "@pota/webpack-skeleton",
   "version": "1.0.0-rc.27",
-  "author": "Paul <p.simkevi@gmail.com>",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -11,6 +9,8 @@
     "url": "https://github.com/mediamonks/pota.git",
     "directory": "skeletons/webpack"
   },
+  "author": "Paul <p.simkevi@gmail.com>",
+  "type": "module",
   "files": [
     "public",
     "src",
@@ -28,14 +28,19 @@
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=development webpack -c webpack/webpack.config.js",
-    "dev": "cross-env NODE_ENV=development webpack serve -c webpack/webpack.config.js",
     "check-types": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
+    "dev": "cross-env NODE_ENV=development webpack serve -c webpack/webpack.config.js",
     "fix": "npm-run-all fix:*",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "fix:prettier": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
     "lint": "npm-run-all lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
   },
+  "browserslist": [
+    "last 2 versions",
+    "not ie <= 11, not ie_mob <= 11",
+    "not dead"
+  ],
   "dependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
@@ -78,6 +83,9 @@
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.3.1"
   },
+  "devDependencies": {
+    "log-symbols": "^5.0.0"
+  },
   "peerDependencies": {
     "@mediamonks/eslint-config-base": "^2.0.0-alpha.0",
     "@pota/cli": "^1.0.0-rc.6"
@@ -89,8 +97,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
-    "log-symbols": "^5.0.0"
   }
 }

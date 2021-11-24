@@ -7,7 +7,6 @@ export default {
         useBuiltIns: "entry",
         // Set the corejs version we are using to avoid warnings in console
         corejs: 3,
-        targets: { esmodules: true },
       },
     ],
   ],
