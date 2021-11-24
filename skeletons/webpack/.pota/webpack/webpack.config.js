@@ -51,14 +51,13 @@ export default function createConfig(unsafeOptions = {}) {
 
   const env = getEnv({
     PUBLIC_URL: options.publicUrl,
-    VERSIONED_STATIC: `${versionPath}static/`
+    VERSIONED_STATIC: `${versionPath}static/`,
   });
 
-  function getStyleLoaders(cssOptions, preProcessor) {
+  function getStyleLoaders(preProcessor) {
     return [
-      options.isDev && "style-loader",
-      options.isProd && MiniCssExtractPlugin.loader,
-      { loader: "css-loader", options: cssOptions },
+      options.isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+      { loader: "css-loader", options: { importLoaders: preProcessor ? 3 : 1 } },
       {
         loader: "postcss-loader",
         options: {
@@ -68,9 +67,8 @@ export default function createConfig(unsafeOptions = {}) {
         },
       },
       ...(preProcessor ? [{ loader: "resolve-url-loader" }, { loader: preProcessor }] : []),
-    ].filter(Boolean);
+    ];
   }
-
 
   /**
    * @type {import('webpack').Configuration}
@@ -198,7 +196,7 @@ export default function createConfig(unsafeOptions = {}) {
         // of CSS.
         {
           test: /\.css$/,
-          use: getStyleLoaders({ importLoaders: 1 }),
+          use: getStyleLoaders(),
           // Don't consider CSS imports dead code even if the
           // containing package claims to have no side effects.
           // Remove this when webpack adds a warning or an error for this.
@@ -211,7 +209,7 @@ export default function createConfig(unsafeOptions = {}) {
         // extensions .module.scss or .module.sass
         {
           test: /\.(scss|sass)$/,
-          use: getStyleLoaders({ importLoaders: 3 }, "sass-loader"),
+          use: getStyleLoaders("sass-loader"),
           // Don't consider CSS imports dead code even if the
           // containing package claims to have no side effects.
           // Remove this when webpack adds a warning or an error for this.
