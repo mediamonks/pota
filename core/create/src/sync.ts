@@ -54,7 +54,7 @@ function filterObject<T extends Record<string, any>>(o: T, fields: ReadonlyArray
 async function mergeSkeleton(pkg: PackageJsonShape, path: string, config: PotaConfig) {
   const skeletonPkg = await readPackageJson(path);
 
-  const { name: skeleton, version, peerDependencies = {} } = skeletonPkg;
+  const { peerDependencies = {} } = skeletonPkg;
 
   for (const field of IGNORED_PACKAGE_FIELDS) {
     delete skeletonPkg[field];
@@ -68,8 +68,10 @@ async function mergeSkeleton(pkg: PackageJsonShape, path: string, config: PotaCo
 
   // place the skeleton package in `devDependencies`
   pkg.devDependencies ??= {};
-  // TODO: this semver chevron ain't great, chief
-  pkg.devDependencies[skeleton!] = `^${version!}`;
+
+  if (config.extends && config.extends in peerDependencies) {
+    pkg.devDependencies[config.extends] = peerDependencies[config.extends];
+  }
 
   for (const [dep, version] of Object.entries(peerDependencies)) {
     // place the `@pota/cli` (if it exists) package in `devDependencies`
