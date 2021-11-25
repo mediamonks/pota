@@ -94,12 +94,7 @@ export default function createConfig(unsafeOptions = {}) {
       strictModuleErrorHandling: true,
     },
 
-    resolveLoader: {
-      modules: [paths.userNodeModules, paths.skeletonNodeModules],
-    },
-
     resolve: {
-      modules: [paths.userNodeModules, paths.skeletonNodeModules],
       extensions: [".js", ".jsx", ".ts", ".tsx"],
       alias: {
         "@": paths.source,
