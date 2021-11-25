@@ -1,11 +1,12 @@
-import { relative, basename } from 'path';
+import { relative, basename, resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import npa from 'npm-package-arg';
 import sade from 'sade';
 import kleur from 'kleur';
 // @ts-ignore TypeScript is being weird
 import dedent from 'dedent';
-import { resolveUser } from '@pota/shared/fs';
+import { readPackageJson, resolveUser } from '@pota/shared/fs';
 
 import { isSkeletonShorthand, getSkeletonFromShorthand } from './config.js';
 import * as helpers from './helpers.js';
@@ -20,7 +21,10 @@ interface SadeOptions {
   'fail-cleanup': boolean;
 }
 
+const selfPackageJsonPath = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'package.json');
+
 sade('@pota/create <skeleton> <dir>', true)
+  .version((await readPackageJson(selfPackageJsonPath)).version ?? 'N/A')
   .describe('Create Pota project')
   .option('--fail-cleanup', 'Cleanup after failing initialization', true)
   .example('npx @pota/create webpack ./project-directory')
