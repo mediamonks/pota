@@ -73,12 +73,13 @@ async function mergeSkeleton(pkg: PackageJsonShape, path: string, config: PotaCo
     pkg.devDependencies[config.extends] = peerDependencies[config.extends];
   }
 
+  // place the pota cli package in `devDependencies` if the skeleton is using it
+  if (POTA_CLI in peerDependencies) pkg.devDependencies[POTA_CLI] = peerDependencies[POTA_CLI];
+
   for (const [dep, version] of Object.entries(peerDependencies)) {
-    // place the `@pota/cli` (if it exists) package in `devDependencies`
-    if (dep === POTA_CLI) pkg.devDependencies[POTA_CLI] = peerDependencies[POTA_CLI];
-    // this `else if` condition makes sure that the dependency isn't defined in `devDependencies`
+    // make sure that the dependency isn't defined in `devDependencies`
     // which might me the case for extended skeletons defined in `peerDependencies`
-    else if (!(dep in pkg.devDependencies)) {
+    if (!(dep in pkg.devDependencies)) {
       pkg.dependencies ??= {};
       pkg.dependencies[dep] = version;
     }
