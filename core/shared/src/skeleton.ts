@@ -1,9 +1,11 @@
 import { join } from 'path';
+import { pathToFileURL } from 'url';
 import type { PotaConfig } from './config.js';
 import { EXCLUDED_FILES, POTA_DIR, POTA_CONFIG_FILE } from './config.js';
 import { Recursive } from './fs.js';
 
-export const getPotaConfigPath = (rootPath: string) => join(rootPath, POTA_DIR, POTA_CONFIG_FILE);
+export const getPotaConfigPath = (rootPath: string) =>
+  pathToFileURL(join(rootPath, POTA_DIR, POTA_CONFIG_FILE)).toString();
 
 export async function getPotaConfig(rootPath: string): Promise<PotaConfig> {
   return (await import(getPotaConfigPath(rootPath))).default;
