@@ -1,4 +1,5 @@
 import { join, extname, basename } from 'path';
+import { pathToFileURL } from "url";
 import { readdir } from 'fs/promises';
 
 import { getNestedSkeletons } from '@pota/shared/skeleton';
@@ -72,7 +73,7 @@ export async function getCommandModules(skeleton: string) {
       // import the modules
       .map(async ({ modulePath, ...rest }) => ({
         ...rest,
-        ...((await import(modulePath)) as CommandModule),
+        ...((await import(pathToFileURL(modulePath).toString())) as CommandModule),
       })),
   );
 }
