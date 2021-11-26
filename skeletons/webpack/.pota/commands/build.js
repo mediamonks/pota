@@ -1,4 +1,5 @@
 import { relative, isAbsolute, resolve } from "path";
+import { pathToFileURL } from "url";
 
 import { getNestedFiles, PROJECT_SKELETON } from "@pota/cli/authoring";
 import webpack from "webpack";
@@ -15,7 +16,8 @@ export const options = [
   },
   {
     option: "--cache",
-    description: "Toggles webpack's caching behavior. (https://webpack.js.org/configuration/cache/)",
+    description:
+      "Toggles webpack's caching behavior. (https://webpack.js.org/configuration/cache/)",
     default: true,
   },
   {
@@ -29,7 +31,8 @@ export const options = [
   },
   {
     option: "--source-map",
-    description: "Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. (https://webpack.js.org/configuration/devtool/#devtool)",
+    description:
+      "Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
     option: "--public-url",
@@ -44,9 +47,10 @@ export const options = [
 
   {
     option: "--versioning",
-    description: "When enabled, will copy assets in ./static to a versioned directory in the output (e.g. build/version/v2/static/...).",
+    description:
+      "When enabled, will copy assets in ./static to a versioned directory in the output (e.g. build/version/v2/static/...).",
     default: false,
-  }
+  },
 ];
 
 export const action = async (options) => {
@@ -56,7 +60,10 @@ export const action = async (options) => {
 
   const skeleton = modules[modules.length - 1]?.skeleton;
 
-  console.log(logSymbols.info, `Using ${skeleton === PROJECT_SKELETON ? "local" : skeleton } configuration`);
+  console.log(
+    logSymbols.info,
+    `Using ${skeleton === PROJECT_SKELETON ? "local" : skeleton} configuration`
+  );
 
   const config = await createConfig(modules, preprocessOptions(options));
 
@@ -97,12 +104,12 @@ export async function getNestedConfigModulesSelf() {
   const files = await getNestedFiles(".pota/webpack/webpack.config.js");
   const modules = files.map(async ({ file, skeleton }) => {
     try {
-      const module = (await import(file)).default;
+      const module = (await import(pathToFileURL(file).toString())).default;
 
       if (isFunction(module)) return { module, skeleton };
 
       // TODO: handle skeleton module errors
-    } catch (error) { }
+    } catch (error) {}
 
     return null;
   });
