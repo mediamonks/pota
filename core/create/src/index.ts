@@ -70,6 +70,8 @@ sade('@pota/create <skeleton> <dir>', true)
       skeletonPkgDetails = npa(skeleton);
     }
 
+    console.log({ skeletonPkgDetails });
+
     const bail = helpers.createBailer(options['fail-cleanup'] ? cwd : undefined);
 
     try {
@@ -109,12 +111,21 @@ sade('@pota/create <skeleton> <dir>', true)
         '--no-fund',
         '--prefer-offline',
       );
+    } catch (error) {
+      console.error(error);
 
+      await bail();
+    }
+
+    let initializedGit = false;
+
+    try {
       // create branch under the name `main` and create initial commit
       try {
         await helpers.command('git init -b main');
         await helpers.command('git add .');
         await helpers.command('git commit -m "Initial commit from @pota/create"');
+        initializedGit = true;
       } catch (error) {
         // if `-b main` isn't supported fallback to renaming the branch
         if ((error as { code: number }).code === 129) {
@@ -122,19 +133,20 @@ sade('@pota/create <skeleton> <dir>', true)
           await helpers.command('git add .');
           await helpers.command('git commit -m "Initial commit from @pota/create"');
           await helpers.command('git branch master -m main');
+          initializedGit = true;
         } else throw error;
       }
     } catch (error) {
       console.error(error);
-
-      await bail();
     }
 
     // TODO: include the commands of the skeleton instead of assuming that every skeleton comes with `build` and `dev`
     log();
+    if (initializedGit) {
+      log('Initialized a git repository.');
+      log();
+    }
     log(dedent`
-        Initialized a git repository.
-
         🚀🚀🚀 ${green('SUCCESS')} 🚀🚀🚀
         Created ${cyan(pkgName)} at ${green(cwd)}
 
