@@ -1,11 +1,11 @@
 import { relative, isAbsolute, resolve } from "path";
-import { pathToFileURL } from "url";
 
-import { getNestedFiles, PROJECT_SKELETON } from "@pota/cli/authoring";
+import { PROJECT_SKELETON } from "@pota/cli/authoring";
 import webpack from "webpack";
 import logSymbols from "log-symbols";
 
 import * as paths from "../webpack/paths.js";
+import { createConfig, getNestedConfigs } from "../webpack/util.js";
 
 export const description = "Build the source directory using webpack.";
 
@@ -56,7 +56,7 @@ export const options = [
 export const action = async (options) => {
   process.env.NODE_ENV = "production";
 
-  const modules = await getNestedConfigModulesSelf();
+  const modules = await getNestedConfigs();
 
   const skeleton = modules[modules.length - 1]?.skeleton;
 
@@ -96,34 +96,3 @@ function preprocessOptions(options) {
   return options;
 }
 
-function isFunction(value) {
-  return typeof value === "function";
-}
-
-export async function getNestedConfigModulesSelf() {
-  const files = await getNestedFiles(".pota/webpack/webpack.config.js");
-  const modules = files.map(async ({ file, skeleton }) => {
-    try {
-      const module = (await import(pathToFileURL(file).toString())).default;
-
-      if (isFunction(module)) return { module, skeleton };
-
-      // TODO: handle skeleton module errors
-    } catch (error) {}
-
-    return null;
-  });
-
-  return (await Promise.all(modules)).filter(Boolean);
-}
-
-export async function createConfig(modules, options = {}) {
-  let config = null;
-
-  for (const { module } of modules) {
-    if (config === null) config = await module(options);
-    else config = await module(config, options);
-  }
-
-  return config;
-}

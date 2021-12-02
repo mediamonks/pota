@@ -4,7 +4,7 @@ import logSymbols from "log-symbols";
 
 import { PROJECT_SKELETON } from "@pota/cli/authoring";
 
-import { getNestedConfigModulesSelf, createConfig } from "./build.js";
+import { createConfig, getNestedConfigs } from "../webpack/util.js";
 
 export const description = "Start the development server using webpack.";
 
@@ -37,7 +37,7 @@ export const options = [
 export const action = async (options) => {
   process.env.NODE_ENV = "development";
 
-  const modules = await getNestedConfigModulesSelf();
+  const modules = await getNestedConfigs();
 
   const skeleton = modules[modules.length - 1]?.skeleton;
 
