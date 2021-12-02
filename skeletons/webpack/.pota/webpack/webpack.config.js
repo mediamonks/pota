@@ -25,7 +25,7 @@ export function parseOptions(options) {
     cache = true,
     versioning = false,
     ["image-compression"]: imageCompression = true,
-    ["public-url"]: publicUrl = "/",
+    ["public-path"]: publicPath = "/",
     ["type-check"]: typeCheck = true,
     ["source-map"]: sourceMap = { production: "source-map", development: "eval-source-map" }[mode],
   } = options;
@@ -34,7 +34,7 @@ export function parseOptions(options) {
     mode,
     output,
     analyze,
-    publicUrl,
+    publicPath,
     versioning,
     imageCompression,
     cache: cache === "false" ? false : cache,
@@ -51,7 +51,7 @@ export default function createConfig(unsafeOptions = {}) {
   const versionPath = options.versioning ? `version/${process.env.VERSION ?? Date.now()}/` : "";
 
   const env = getEnv({
-    PUBLIC_URL: options.publicUrl,
+    PUBLIC_PATH: options.publicPath,
     VERSIONED_STATIC: `${versionPath}static/`,
   });
 
@@ -83,7 +83,7 @@ export default function createConfig(unsafeOptions = {}) {
 
     output: {
       path: options.output,
-      publicPath: options.publicUrl,
+      publicPath: options.publicPath,
       filename: `${versionPath}static/chunks/[name]${options.isDev ? "" : ".[contenthash]"}.js`,
       chunkFilename: `${versionPath}static/chunks/[name]${
         options.isDev ? "" : ".[contenthash]"

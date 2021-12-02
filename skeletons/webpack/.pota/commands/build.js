@@ -35,7 +35,7 @@ export const options = [
       "Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
-    option: "--public-url",
+    option: "--public-path",
     description: "The location of static assets on your production server.",
     default: "/",
   },
