@@ -8,5 +8,5 @@ import routes from './routes';
  */
 export default [
   // vue-router
-  createRouter({ routes, history: createWebHistory(process.env.PUBLIC_URL) }),
+  createRouter({ routes, history: createWebHistory(process.env.PUBLIC_PATH) }),
 ] as ReadonlyArray<Plugin>;
