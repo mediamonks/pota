@@ -1,5 +1,5 @@
 import { join, extname, basename } from 'path';
-import { pathToFileURL } from "url";
+import { pathToFileURL } from 'url';
 import { readdir } from 'fs/promises';
 
 import { getNestedSkeletons } from '@pota/shared/skeleton';
