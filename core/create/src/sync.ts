@@ -17,7 +17,7 @@ function addFileAsScript(pkg: PackageJsonShape, file: string) {
   const command = basename(file, extname(file));
 
   pkg.scripts ??= {};
-  pkg.scripts[command] = `${POTA_CLI_BIN} ${command}`;
+  pkg.scripts[command] ??= `${POTA_CLI_BIN} ${command}`;
 }
 
 const IGNORED_PACKAGE_FIELDS: ReadonlyArray<keyof PackageJsonShape> = [
