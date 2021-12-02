@@ -45,5 +45,7 @@ export const action = async (options) => {
 
   const config = await createConfig(modules, options);
 
-  await new Server({ ...config.devServer, https: options.https }, webpack(config)).start();
+  const { devServer } = Array.isArray(config) ? config[0] : config;
+
+  await new Server({ ...devServer, https: options.https }, webpack(config)).start();
 };
