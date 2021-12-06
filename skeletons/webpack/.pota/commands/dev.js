@@ -20,8 +20,8 @@ export const options = [
     default: false,
   },
   {
-    option: "--mode",
-    description: "The webpack mode",
+    option: "--prod",
+    description: "Sets the NODE_ENV to 'production'.",
   },
   {
     option: "--source-map",
@@ -35,7 +35,7 @@ export const options = [
 ];
 
 export const action = async (options) => {
-  process.env.NODE_ENV = "development";
+  process.env.NODE_ENV = options.prod ? "production" : "development";
 
   const modules = await getNestedConfigs();
 
