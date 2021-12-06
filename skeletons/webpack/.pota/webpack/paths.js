@@ -10,7 +10,7 @@ export const skeletonNodeModules = resolve(self, "../node_modules");
 
 // Paths relative to the user
 export const source = resolve(user, "./src");
-export const output = resolve(user, "./out");
+export const output = resolve(user, "./dist");
 export const publicDir = resolve(user, "./public");
 export const userNodeModules = resolve(user, "node_modules");
 
