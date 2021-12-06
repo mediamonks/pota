@@ -23,6 +23,7 @@ pids
 *.pid.lock
 
 build
+dist
 
 # Dependency directories
 node_modules/
