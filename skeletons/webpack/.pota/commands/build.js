@@ -15,6 +15,10 @@ export const options = [
     description: "When enabled, will open a bundle report after bundling.",
   },
   {
+    option: "--watch",
+    description: "Run build and watch for changes.",
+  },
+  {
     option: "--cache",
     description:
       "Toggles webpack's caching behavior. (https://webpack.js.org/configuration/cache/)",
@@ -68,23 +72,25 @@ export const action = async (options) => {
 
   console.log("Building...");
 
-  try {
-    const stats = await new Promise(async (resolve, reject) =>
-      webpack(config, (error, stats) => {
-        if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
+  const compiler = webpack(config);
 
-        return error ? reject(error) : resolve(stats?.toString({ colors: true, chunks: false }));
-      })
-    );
-
-    console.log(stats);
-    console.log();
-    console.log(logSymbols.success, "Building Finished 🎉");
-  } catch (error) {
-    console.log(logSymbols.error, "Building Failed 😟");
-    console.log();
-    console.error(error);
+  if (options.watch) {
+    compiler.watch(undefined, (...watchArgs) => buildFinish(...watchArgs));
+    return;
   }
+
+  compiler.run((...runArgs) =>
+    buildFinish(...runArgs, () => {
+      console.log();
+      console.log(logSymbols.info, "Closing compiler...");
+      compiler.close((error) => {
+        if (error) {
+          console.error(logSymbols.error, "Error occured closing the compiler 😕");
+          console.error(error);
+        }
+      });
+    })
+  );
 };
 
 function preprocessOptions(options) {
@@ -95,3 +101,11 @@ function preprocessOptions(options) {
   return options;
 }
 
+function buildFinish(error, stats, onFinish) {
+  if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
+
+  if (error) console.error(error);
+  else console.log(stats?.toString({ colors: true, chunks: false }));
+
+  onFinish?.();
+}
