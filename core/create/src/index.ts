@@ -70,8 +70,6 @@ sade('@pota/create <skeleton> <dir>', true)
       skeletonPkgDetails = npa(skeleton);
     }
 
-    console.log({ skeletonPkgDetails });
-
     const bail = helpers.createBailer(options['fail-cleanup'] ? cwd : undefined);
 
     try {
