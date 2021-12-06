@@ -20,6 +20,12 @@ export const options = [
     default: false,
   },
   {
+    option: "--open",
+    description:
+      "Allows to configure dev server to open the browser after the server has been started.",
+    default: true,
+  },
+  {
     option: "--prod",
     description: "Sets the NODE_ENV to 'production'.",
   },
@@ -41,11 +47,17 @@ export const action = async (options) => {
 
   const skeleton = modules[modules.length - 1]?.skeleton;
 
-  console.log(logSymbols.info, `Using ${skeleton === PROJECT_SKELETON ? "local" : skeleton } configuration`);
+  console.log(
+    logSymbols.info,
+    `Using ${skeleton === PROJECT_SKELETON ? "local" : skeleton} configuration`
+  );
 
   const config = await createConfig(modules, options);
 
   const { devServer } = Array.isArray(config) ? config[0] : config;
 
-  await new Server({ ...devServer, https: options.https }, webpack(config)).start();
+  await new Server(
+    { ...devServer, https: options.https, open: options.open },
+    webpack(config)
+  ).start();
 };
