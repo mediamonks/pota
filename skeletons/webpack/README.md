@@ -38,7 +38,7 @@ npm run build # or npx pota build
 | **`output`**            | `{String}`                                                                    | `./build`                                                            | The build output directory.                                                        |
 | **`source-map`**        | `{false\|`[devtool](https://webpack.js.org/configuration/devtool/#devtool)`}` | `source-map` (production), `eval-source-map` (development)           | Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. |
 | **`public-path`**       | `{String}`                                                                    | `/`                                                                  | The location of static assets on your production server.                           |
-| **`type-check`**        | `{Boolean}`                                                                   | `true`                                                               | When disabled, will ignore type related errors.                                    |
+| **`typecheck`**         | `{Boolean}`                                                                   | `true`                                                               | When disabled, will ignore type related errors.                                    |
 | **`versioning`**        | `{Boolean}`                                                                   | `false`                                                              | When enabled, will copy assets in `./static` to a versioned directory in the output (e.g. `build/version/v2/static/...`).                      |
 
 
@@ -57,7 +57,7 @@ npm run dev # or npx pota dev
 | **`image-compression`** | `{Boolean}`                                                                   | `true`                                                               | Toggles image compression.                                                         |
 | **`prod`**              | `{Boolean}`                                                                   | `false`                                                              | Sets NODE_ENV to 'production'.                                                     |
 | **`source-map`**        | `{false\|`[devtool](https://webpack.js.org/configuration/devtool/#devtool)`}` | `source-map` (production), `eval-source-map` (development)           | Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. |
-| **`type-check`**        | `{Boolean}`                                                                   | `true`                                                               | Toggles checking for type related errors.                                          |
+| **`typecheck`**         | `{Boolean}`                                                                   | `true`                                                               | Toggles checking for type related errors.                                          |
 
 <br />
 
@@ -76,10 +76,10 @@ Non-Pota scripts defined in `"scripts"` of `package.json` and are runnable using
 
 | Script             | Description                                                                |
 | ------------------ | -------------------------------------------------------------------------- |
-| **`check-types`**  | Checks for type errors and unused variables/types in the source directory. |
-| **`fix`**          | Executes all `fix:*` commands in sequence.                                 |
+| **`typecheck`**    | Checks for type errors and unused variables/types in the source directory. |
+| **`fix`**          | Executes all `fix:*` and `format commands in sequence.                     |
 | **`fix:eslint`**   | Executes `eslint:lint` and fixes fixable errors.                           |
-| **`fix:prettier`** | Formats the source files using `prettier`.                                 |
+| **`format`**       | Formats the source files using `prettier`.                                 |
 | **`lint`**         | Executes all `lint:*` commands in sequence.                                |
 | **`lint:eslint`**  | Lints the source files using `eslint`.                                     |
 

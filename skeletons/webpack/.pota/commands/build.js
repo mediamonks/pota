@@ -40,11 +40,10 @@ export const options = [
     default: "/",
   },
   {
-    option: "--type-check",
+    option: "--typecheck",
     description: "When disabled, will ignore type related errors.",
     default: true,
   },
-
   {
     option: "--versioning",
     description:

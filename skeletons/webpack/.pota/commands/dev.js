@@ -28,7 +28,7 @@ export const options = [
     description: "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
-    option: "--type-check",
+    option: "--typecheck",
     description: "When disabled, will not do any type checking and ignore TypeScript errors",
     default: true,
   },
