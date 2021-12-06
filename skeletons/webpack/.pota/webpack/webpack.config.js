@@ -19,7 +19,6 @@ const IS_PROD_ENV = process.env.NODE_ENV === "production" || !IS_DEV_ENV;
 
 export function parseOptions(options) {
   const {
-    mode = IS_PROD_ENV ? "production" : "development",
     analyze = false,
     output = paths.output,
     cache = true,
@@ -27,21 +26,20 @@ export function parseOptions(options) {
     ["image-compression"]: imageCompression = true,
     ["public-path"]: publicPath = "/",
     ["type-check"]: typeCheck = true,
-    ["source-map"]: sourceMap = { production: "source-map", development: "eval-source-map" }[mode],
+    ["source-map"]: sourceMap = true,
   } = options;
 
   return {
-    mode,
     output,
     analyze,
     publicPath,
     versioning,
     imageCompression,
     cache: cache === "false" ? false : cache,
-    sourceMap: sourceMap === "false" ? false : sourceMap,
+    sourceMap: sourceMap === "false" ? false : IS_DEV_ENV ? "source-map" : "eval-source-map",
     typeCheck: typeCheck === "false" ? false : typeCheck,
-    isDev: mode === "development",
-    isProd: mode === "production",
+    isDev: IS_DEV_ENV,
+    isProd: IS_PROD_ENV
   };
 }
 
@@ -71,7 +69,7 @@ export default function createConfig(unsafeOptions = {}) {
     stats: "none",
     name: "pota-webpack",
     target: "web",
-    mode: options.mode,
+    mode: options.isDev ? "development" : "production",
     // will bail compilation on the first error,
     // instead of the default behavior of tolerating the error
     bail: options.isProd,

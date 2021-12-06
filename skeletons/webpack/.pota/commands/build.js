@@ -21,8 +21,8 @@ export const options = [
     default: true,
   },
   {
-    option: "--mode",
-    description: "Override webpack's mode. (https://webpack.js.org/configuration/mode) ",
+    option: "--debug",
+    description: "Sets NODE_ENV to 'development'.",
   },
   {
     option: "--output",
@@ -54,7 +54,7 @@ export const options = [
 ];
 
 export const action = async (options) => {
-  process.env.NODE_ENV = "production";
+  process.env.NODE_ENV = options.debug ? "development" : "production";
 
   const modules = await getNestedConfigs();
 
