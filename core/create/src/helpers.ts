@@ -1,10 +1,10 @@
 import { exec, SpawnOptions } from 'child_process';
-import { rm, mkdir } from 'fs/promises';
+import { rm } from 'fs/promises';
 
 import type { Result as NpaResult } from 'npm-package-arg';
 import crossSpawn from 'cross-spawn';
 import kleur from 'kleur';
-import { readPackageJson, isDirectoryAvailable } from '@pota/shared/fs';
+import { readPackageJson } from '@pota/shared/fs';
 
 const { green, cyan } = kleur;
 
@@ -44,11 +44,6 @@ export function createBailer(dir?: string) {
 
     process.exit(1);
   };
-}
-
-export async function createDir(path: string) {
-  if (await isDirectoryAvailable(path)) await mkdir(path, { recursive: true });
-  else throw new Error(`${green(path)} already exists, please specify a different directory`);
 }
 
 export async function getSkeletonName(skeletonPkgDetails: NpaResult, packageJsonPath: string) {

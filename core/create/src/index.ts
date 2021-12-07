@@ -1,12 +1,13 @@
 import { relative, basename, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { mkdir } from 'fs/promises';
 
 import npa from 'npm-package-arg';
 import sade from 'sade';
 import kleur from 'kleur';
 // @ts-ignore TypeScript is being weird
 import dedent from 'dedent';
-import { readPackageJson, resolveUser } from '@pota/shared/fs';
+import { readPackageJson, resolveUser, isDirectoryAvailable } from '@pota/shared/fs';
 
 import { isSkeletonShorthand, getSkeletonFromShorthand } from './config.js';
 import * as helpers from './helpers.js';
@@ -65,6 +66,13 @@ sade('@pota/create <skeleton> <dir>', true)
       process.exit(1);
     }
 
+    // check if directory is available
+    if (!(await isDirectoryAvailable(cwd))) {
+      console.error(`${green(cwd)} already exists, please specify a different directory`);
+
+      process.exit(1);
+    }
+
     if (skeletonPkgDetails.type === 'file') {
       skeleton = relative(cwd, skeleton);
       skeletonPkgDetails = npa(skeleton);
@@ -74,7 +82,7 @@ sade('@pota/create <skeleton> <dir>', true)
 
     try {
       // create project directory
-      await helpers.createDir(cwd);
+      await mkdir(cwd, { recursive: true });
 
       // change directory into current working directory (the project directory)
       process.chdir(cwd);
