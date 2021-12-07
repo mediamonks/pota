@@ -59,13 +59,16 @@
     "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^6.3.3",
     "friendly-errors-webpack-plugin": "npm:@soda/friendly-errors-webpack-plugin@^1.8.0",
+    "get-port": "^6.0.0",
     "html-webpack-plugin": "^5.3.2",
     "husky": "^4.3.0",
     "image-minimizer-webpack-plugin": "^2.2.0",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^9.0.0",
+    "kleur": "^4.1.4",
     "lint-staged": "^10.5.1",
+    "log-symbols": "^5.0.0",
     "mini-css-extract-plugin": "^2.3.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.3.8",
@@ -82,8 +85,7 @@
     "webpack": "^5.57.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.3.1",
-    "log-symbols": "^5.0.0"
+    "webpack-dev-server": "^4.3.1"
   },
   "peerDependencies": {
     "@mediamonks/eslint-config-base": "^2.0.0-alpha.0",
