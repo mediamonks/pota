@@ -137,7 +137,9 @@ export default async function sync(targetPath: string, skeleton: string, pkgName
   }
 
   for (const [file, { src, dst }] of fileMap.entries()) {
-    if (!omits.includes(file)) await copy(src, dst);
+    if (!omits.some((omit) => omit === file || dirname(file).startsWith(omit))) {
+      await copy(src, dst);
+    }
   }
 
   await createPotaDir(targetPath, skeleton);
