@@ -85,6 +85,7 @@ Non-Pota scripts defined in `"scripts"` of `package.json` and are runnable using
 | **`format`**       | Formats the source files using `prettier`.                                 |
 | **`lint`**         | Executes all `lint:*` commands in sequence.                                |
 | **`lint:eslint`**  | Lints the source files using `eslint`.                                     |
+| **`rsync`**        | Synchronizes (uploads) `dist/` files to a remote server.                    |
 
 <hr />
 
@@ -143,6 +144,16 @@ Non-Pota scripts defined in `"scripts"` of `package.json` and are runnable using
 <hr />
 
 ### Deployment
+
+#### Remote Sync
+
+For simple deployments, when you just want to upload your files to a remote server, you can use the `rsync` script.
+
+Note: before using the `rsync` script, make sure to configure a host in in the "package.json"
+```bash
+npm pkg set config.host="github.com"
+```
+
 
 *hidden TODOs*
 <!--

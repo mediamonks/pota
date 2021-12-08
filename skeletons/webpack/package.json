@@ -27,15 +27,17 @@
     "bitbucket-pipelines.yml",
     "lint-staged.config.js"
   ],
+  "config": {
+    "host": "TODO: Add a host name."
+  },
   "scripts": {
-    "build": "cross-env NODE_ENV=development webpack -c webpack/webpack.config.js",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
-    "dev": "cross-env NODE_ENV=development webpack serve -c webpack/webpack.config.js",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "format": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
     "lint": "run-s lint:*",
-    "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache"
+    "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
+    "rsync": "cross-env rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete-after"
   },
   "browserslist": [
     "last 2 versions",
