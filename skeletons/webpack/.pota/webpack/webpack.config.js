@@ -25,7 +25,7 @@ export function parseOptions(options) {
     versioning = false,
     ["image-compression"]: imageCompression = true,
     ["public-path"]: publicPath = "/",
-    ["type-check"]: typeCheck = true,
+    ["typecheck"]: typeCheck = true,
     ["source-map"]: sourceMap = true,
   } = options;
 
