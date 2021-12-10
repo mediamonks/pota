@@ -35,10 +35,6 @@
     "web-vitals": "^2.1.1",
     "@pota/webpack-skeleton": "^1.0.0-rc.17"
   },
-  "engines": {
-    "node": ">=14",
-    "npm": ">=7"
-  },
   "publishConfig": {
     "access": "public"
   }

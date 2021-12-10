@@ -46,10 +46,6 @@
     "vue-router": "^4.0.12",
     "web-vitals": "^2.1.1"
   },
-  "engines": {
-    "node": ">=14",
-    "npm": ">=7"
-  },
   "publishConfig": {
     "access": "public"
   }
