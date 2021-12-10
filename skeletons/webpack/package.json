@@ -94,7 +94,7 @@
     "@pota/cli": "^1.0.0-rc.6"
   },
   "engines": {
-    "node": ">=14",
+    "node": ">=16",
     "npm": ">=7",
     "yarn": "unsupported"
   },
