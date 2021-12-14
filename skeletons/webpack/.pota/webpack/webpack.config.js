@@ -26,7 +26,7 @@ export function parseOptions(options) {
     ["image-compression"]: imageCompression = true,
     ["public-path"]: publicPath = "/",
     ["typecheck"]: typeCheck = true,
-    ["source-map"]: sourceMap = true,
+    ["source-map"]: sourceMap = IS_PROD_ENV ? "source-map" : "eval-source-map",
   } = options;
 
   return {
@@ -35,11 +35,11 @@ export function parseOptions(options) {
     publicPath,
     versioning,
     imageCompression,
-    cache: cache === "false" ? false : cache,
-    sourceMap: sourceMap === "false" ? false : IS_DEV_ENV ? "source-map" : "eval-source-map",
-    typeCheck: typeCheck === "false" ? false : typeCheck,
+    cache,
+    sourceMap,
+    typeCheck,
     isDev: IS_DEV_ENV,
-    isProd: IS_PROD_ENV
+    isProd: IS_PROD_ENV,
   };
 }
 
@@ -101,7 +101,7 @@ export default function createConfig(unsafeOptions = {}) {
 
     optimization: {
       minimizer: [
-        '...', // This will make sure to include webpack's default minimizer
+        "...", // This will make sure to include webpack's default minimizer
         new CssMinimizerPlugin(),
       ],
       minimize: options.isProd,
