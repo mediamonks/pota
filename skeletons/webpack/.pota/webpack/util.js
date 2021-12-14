@@ -19,7 +19,10 @@ export async function getNestedConfigs() {
       if (isFunction(module)) return { module, skeleton };
 
       // TODO: handle skeleton module errors
-    } catch (error) {}
+    } catch (error) {
+      console.warn(`Error occured importing '${file}':`)
+      console.warn(error);
+    }
 
     return null;
   });
