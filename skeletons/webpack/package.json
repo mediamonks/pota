@@ -22,6 +22,7 @@
     ".editorconfig",
     ".huskyrc",
     ".nvmrc",
+    ".npmrc",
     ".prettierrc",
     ".postcssrc.cjs",
     "bitbucket-pipelines.yml",
