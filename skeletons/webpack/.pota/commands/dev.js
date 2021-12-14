@@ -2,6 +2,7 @@ import webpack from "webpack";
 import Server from "webpack-dev-server";
 import logSymbols from "log-symbols";
 import getPort, { portNumbers } from "get-port";
+import { resolve } from "path";
 
 import kleur from "kleur";
 
@@ -9,6 +10,7 @@ const { green, cyan, red } = kleur;
 
 import { PROJECT_SKELETON } from "@pota/cli/authoring";
 
+import * as paths from "../webpack/paths.js";
 import { createConfig, getNestedConfigs } from "../webpack/util.js";
 
 export const description = "Start the development server using webpack.";
@@ -41,11 +43,13 @@ export const options = [
   },
   {
     option: "--source-map",
-    description: "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
+    description:
+      "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
     option: "--typecheck",
-    description: "When disabled, will not do any type checking and ignore TypeScript errors",
+    description:
+      "When disabled, will not do any type checking and ignore TypeScript errors",
     default: true,
   },
 ];
@@ -59,16 +63,22 @@ export const action = async (options) => {
 
   console.log(
     logSymbols.info,
-    `Using ${cyan(skeleton === PROJECT_SKELETON ? "local" : skeleton)} configuration`
+    `Using ${cyan(
+      skeleton === PROJECT_SKELETON ? "local" : skeleton
+    )} configuration`
   );
 
   if (typeof options.port === "number") {
-    const availablePort = await getPort({ port: portNumbers(options.port, options.port + 100) });
+    const availablePort = await getPort({
+      port: portNumbers(options.port, options.port + 100),
+    });
 
     if (availablePort !== options.port) {
       console.log(
         logSymbols.warning,
-        `Port ${red(options.port)} is unavailable, using ${green(availablePort)} as a fallback.`
+        `Port ${red(options.port)} is unavailable, using ${green(
+          availablePort
+        )} as a fallback.`
       );
 
       options.port = availablePort;
@@ -81,8 +91,38 @@ export const action = async (options) => {
 
   const { devServer } = Array.isArray(config) ? config[0] : config;
 
+  const proxySetup = await loadProxySetup();
+
   await new Server(
-    { ...devServer, https: options.https, open: options.open, port: options.port },
+    {
+      ...devServer,
+      https: options.https,
+      open: options.open,
+      port: options.port,
+      ...(proxySetup && {
+        onBeforeSetupMiddleware(devServer) {
+          proxySetup(devServer.app);
+        },
+      }),
+    },
     webpack(config)
   ).start();
 };
+
+async function loadProxySetup() {
+  try {
+    const setup = (await import(resolve(paths.user, "setupProxy.js"))).default;
+
+    if (typeof setup !== "function") {
+      throw new Error("`setupProxy.js` should export default a function.");
+    }
+
+    return setup;
+  } catch (error) {
+    if (error.code !== "ERR_MODULE_NOT_FOUND") {
+      console.warn(error);
+    }
+
+    return null;
+  }
+}
