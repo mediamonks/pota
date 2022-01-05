@@ -1,8 +1,9 @@
+import { resolve } from "path";
+
 import webpack from "webpack";
 import Server from "webpack-dev-server";
 import logSymbols from "log-symbols";
 import getPort, { portNumbers } from "get-port";
-import { resolve } from "path";
 
 import kleur from "kleur";
 
@@ -43,13 +44,11 @@ export const options = [
   },
   {
     option: "--source-map",
-    description:
-      "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
+    description: "The source map type (https://webpack.js.org/configuration/devtool/#devtool)",
   },
   {
     option: "--typecheck",
-    description:
-      "When disabled, will not do any type checking and ignore TypeScript errors",
+    description: "When disabled, will not do any type checking and ignore TypeScript errors",
     default: true,
   },
 ];
@@ -61,53 +60,63 @@ export const action = async (options) => {
 
   const skeleton = modules[modules.length - 1]?.skeleton;
 
+  const port = await parsePort(options);
+
   console.log(
     logSymbols.info,
-    `Using ${cyan(
-      skeleton === PROJECT_SKELETON ? "local" : skeleton
-    )} configuration`
+    `Using ${cyan(skeleton === PROJECT_SKELETON ? "local" : skeleton)} configuration`
   );
 
-  if (typeof options.port === "number") {
-    const availablePort = await getPort({
-      port: portNumbers(options.port, options.port + 100),
-    });
-
-    if (availablePort !== options.port) {
-      console.log(
-        logSymbols.warning,
-        `Port ${red(options.port)} is unavailable, using ${green(
-          availablePort
-        )} as a fallback.`
-      );
-
-      options.port = availablePort;
-    }
+  if (port !== options.port) {
+    console.log(
+      logSymbols.warning,
+      `Port ${red(options.port)} is unavailable, using ${green(port)} as a fallback.`
+    );
   }
 
   console.log(); // spacing
 
   const config = await createConfig(modules, options);
 
-  const { devServer } = Array.isArray(config) ? config[0] : config;
-
   const proxySetup = await loadProxySetup();
 
-  await new Server(
-    {
-      ...devServer,
-      https: options.https,
-      open: options.open,
-      port: options.port,
-      ...(proxySetup && {
-        onBeforeSetupMiddleware(devServer) {
-          proxySetup(devServer.app);
-        },
-      }),
-    },
-    webpack(config)
-  ).start();
+  const finalDevServerConfig = {
+    ...getDevServerConfig(config),
+    port,
+    https: options.https,
+    open: options.open,
+    ...(proxySetup && {
+      setupMiddlewares(middlewares, devServer) {
+        if (!devServer) throw new Error("webpack-dev-server is not defined");
+
+        middlewares.push(proxySetup(devServer.app));
+
+        return middlewares;
+      },
+    }),
+  };
+
+  const compiler = await createCompiler(config);
+
+  if (!compiler) return;
+
+  const server = new Server(finalDevServerConfig, compiler);
+
+  console.log(cyan("Starting the development server..."));
+  console.log(); // spacing
+
+  await server.start();
 };
+
+async function parsePort(options) {
+  if (!typeof options.port === "number") return undefined;
+
+  return getPort({ port: portNumbers(options.port, options.port + 100) });
+}
+
+function getDevServerConfig(config) {
+  return (Array.isArray(config) ? config : [config]).find(({ devServer }) => devServer).devServer;
+}
 
 async function loadProxySetup() {
   try {
@@ -119,10 +128,20 @@ async function loadProxySetup() {
 
     return setup;
   } catch (error) {
-    if (error.code !== "ERR_MODULE_NOT_FOUND") {
-      console.warn(error);
-    }
+    if (error.code !== "ERR_MODULE_NOT_FOUND") console.warn(error);
 
+    return null;
+  }
+}
+
+async function createCompiler(config) {
+  try {
+    return webpack(config);
+  } catch (error) {
+    console.error(red("Failed to initialize compiler."));
+    console.log();
+    console.error(error.message || error);
+    console.log();
     return null;
   }
 }
