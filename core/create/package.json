@@ -4,7 +4,7 @@
   "description": "Create Pota Apps with no configuration",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
-  "bin": "./bin/create-pota.js",
+  "bin": "./bin/create-pota.cjs",
   "files": [
     "lib",
     "bin"

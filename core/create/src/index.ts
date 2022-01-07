@@ -13,24 +13,8 @@ import { isSkeletonShorthand, getSkeletonFromShorthand } from './config.js';
 import * as helpers from './helpers.js';
 import sync from './sync.js';
 
-// @ts-ignore TypeScript is being weird
-import semverSatisfies from 'semver/functions/satisfies.js';
-
 const { log } = helpers;
-const { green, cyan, red } = kleur;
-
-const version = (await helpers.command('npm -v', false))?.trim();
-
-if (version && !semverSatisfies(version, '>=7')) {
-  console.error(
-    dedent`
-      You are running ${red(`npm ${version}`)}
-      @pota/create requires ${green('npm 7 or higher')}.
-      Please update your version of npm.
-      `,
-  );
-  process.exit(1);
-}
+const { green, cyan } = kleur;
 
 type SadeSkeleton = string;
 type SadeDirectory = string;
