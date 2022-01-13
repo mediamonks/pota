@@ -12,7 +12,8 @@
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "exports": {
-    ".": "./.pota/config.js"
+    ".": "./.pota/config.js",
+    "./.pota/paths.js": "./.pota/paths.js"
   },
   "files": [
     "public",
