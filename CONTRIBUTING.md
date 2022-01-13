@@ -10,7 +10,7 @@ Please look through this document for insights in how the project is setup and h
 core/
   cli/
   create/
-  shared/
+  authoring/
 
 skeletons/
   webpack/

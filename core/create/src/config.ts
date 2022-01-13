@@ -29,6 +29,3 @@ export const isSkeletonShorthand = (shorthand: string) => shorthand in INVERTED_
 
 export const getSkeletonFromShorthand = (shorthand: string) =>
   INVERTED_SKELETON_SHORTHANDS[shorthand];
-
-export const POTA_CLI = '@pota/cli' as const;
-export const POTA_CLI_BIN = 'pota' as const;

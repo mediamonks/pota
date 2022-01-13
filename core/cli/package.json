@@ -28,8 +28,9 @@
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {
-    "@pota/shared": "^2.0.0",
-    "sade": "^1.7.4"
+    "@pota/authoring": "^1.0.0",
+    "sade": "^1.7.4",
+    "tsm": "^2.2.1"
   },
   "devDependencies": {
     "@types/sade": "^1.7.3"

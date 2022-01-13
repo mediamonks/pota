@@ -2,9 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "lib"
+    "outDir": "lib",
+    "allowJs": true
   },
+  "include": ["/**/*.ts", "/**/*.cjs"],
   "references": [
-    { "path": "../shared" }
+    { "path": "../authoring" }
   ]
 }

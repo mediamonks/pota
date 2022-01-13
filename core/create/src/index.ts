@@ -1,13 +1,12 @@
 import { relative, basename, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { mkdir } from 'fs/promises';
+import { access, mkdir } from 'fs/promises';
 
 import npa from 'npm-package-arg';
 import sade from 'sade';
 import kleur from 'kleur';
 // @ts-ignore TypeScript is being weird
 import dedent from 'dedent';
-import { readPackageJson, resolveUser, isDirectoryAvailable } from '@pota/shared/fs';
 
 import { isSkeletonShorthand, getSkeletonFromShorthand } from './config.js';
 import * as helpers from './helpers.js';
@@ -20,19 +19,27 @@ type SadeSkeleton = string;
 type SadeDirectory = string;
 interface SadeOptions {
   'fail-cleanup': boolean;
+  'pota-dot-dir': boolean;
+  'add-pota-cli': boolean;
 }
 
 const selfPackageJsonPath = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'package.json');
 
 sade('@pota/create <skeleton> <dir>', true)
-  .version((await readPackageJson(selfPackageJsonPath)).version ?? 'N/A')
+  .version((await helpers.readPackageJson(selfPackageJsonPath)).version ?? 'N/A')
   .describe('Create Pota project')
   .option('--fail-cleanup', 'Cleanup after failing initialization', true)
+  .option('--pota-dot-dir', "Adds the '.pota' directory in the project", true)
+  .option(
+    '--add-pota-cli',
+    "Adds the '@pota/cli' dependency and skeleton commands as scripts",
+    true,
+  )
   .example('npx @pota/create webpack ./project-directory')
   .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
     const pkgName = basename(dir);
-    const originalCwd = resolveUser();
-    const cwd = resolveUser(dir);
+    const originalCwd = process.cwd();
+    const cwd = resolve(process.cwd(), dir);
 
     log(`Creating a new Pota App ${cyan(pkgName)} in ${green(cwd)}.`);
 
@@ -51,11 +58,13 @@ sade('@pota/create <skeleton> <dir>', true)
     }
 
     // check if directory is available
-    if (!(await isDirectoryAvailable(cwd))) {
+    try {
+      await access(cwd);
+
       console.error(`${green(cwd)} already exists, please specify a different directory`);
 
       process.exit(1);
-    }
+    } catch {}
 
     if (skeletonPkgDetails.type === 'file') {
       skeleton = relative(cwd, skeleton);
@@ -73,13 +82,16 @@ sade('@pota/create <skeleton> <dir>', true)
 
       const visualName = skeletonPkgDetails.type === 'file' ? basename(skeleton) : skeleton;
 
-      log(`Installing ${cyan(visualName)}, this might take a while...`);
+      if (options['add-pota-cli'])
+        log(`Installing ${cyan(visualName)} and ${cyan('@pota/cli')}, this might take a while...`);
+      else log(`Installing ${cyan(visualName)}, this might take a while...`);
       log();
 
       await helpers.spawn(
         'npm',
         'install',
         skeleton,
+        options['add-pota-cli'] ? '@pota/cli' : '',
         `--prefix ${cwd}`,
         '-D',
         '--no-audit',
@@ -89,7 +101,10 @@ sade('@pota/create <skeleton> <dir>', true)
       log();
       console.log(`Setting up project structure...`);
 
-      await sync(cwd, await helpers.getSkeletonName(skeletonPkgDetails, cwd), pkgName);
+      await sync(cwd, await helpers.getSkeletonName(skeletonPkgDetails, cwd), pkgName, {
+        potaDir: options['pota-dot-dir'],
+        addCLI: options['add-pota-cli'],
+      });
 
       console.log(`Installing remaining peer dependencies...`);
 

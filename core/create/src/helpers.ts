@@ -1,10 +1,11 @@
 import { exec, SpawnOptions } from 'child_process';
-import { rm } from 'fs/promises';
+import { PackageJsonShape } from '@pota/authoring';
+import { readdir, rm, readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 
 import type { Result as NpaResult } from 'npm-package-arg';
 import crossSpawn from 'cross-spawn';
 import kleur from 'kleur';
-import { readPackageJson } from '@pota/shared/fs';
 
 const { green, cyan } = kleur;
 
@@ -44,6 +45,53 @@ export function createBailer(dir?: string) {
 
     process.exit(1);
   };
+}
+
+function normalizePackagePath(path: string, filename: string = 'package.json') {
+  if (!path.endsWith(filename)) {
+    return join(path, filename);
+  }
+
+  return path;
+}
+
+const READ_CACHE = new Map<string, PackageJsonShape>();
+
+export async function readPackageJson(path: string) {
+  path = normalizePackagePath(path);
+
+  if (!READ_CACHE.has(path)) {
+    const json: PackageJsonShape = JSON.parse(await readFile(path, { encoding: 'utf8' }));
+
+    READ_CACHE.set(path, json);
+  }
+
+  return READ_CACHE.get(path)!;
+}
+
+export async function writePackageJson(object: PackageJsonShape, path: string) {
+  path = normalizePackagePath(path);
+
+  await writeFile(path, JSON.stringify(object, null, 2), { encoding: 'utf8' });
+}
+
+export class Recursive {
+  static async readdir(dir: string) {
+    const files = await readdir(dir, { withFileTypes: true });
+    const finalFiles: Array<string> = [];
+
+    for (const file of files) {
+      if (file.isFile()) finalFiles.push(file.name);
+      else if (file.isDirectory()) {
+        // sub files come in relative to `file.name`
+        const subFiles = await Recursive.readdir(join(dir, file.name));
+        // we have to prepend the `file.name` so the path is always relative to `dir`
+        finalFiles.push(...subFiles.map((filename) => join(file.name, filename)));
+      }
+    }
+
+    return finalFiles;
+  }
 }
 
 export async function getSkeletonName(skeletonPkgDetails: NpaResult, packageJsonPath: string) {

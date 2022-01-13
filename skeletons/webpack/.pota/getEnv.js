@@ -1,10 +1,11 @@
-import { resolve } from "path";
-import { existsSync } from "fs";
-import * as paths from "./paths.js";
+import { resolve } from 'path';
+import { existsSync } from 'fs';
+
+import * as paths from './paths.js';
 
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const ENV_FILES = [`.env.${process.env.NODE_ENV}.local`, `.env.local`, `.env`].map((file) =>
-  resolve(paths.user, file)
+  resolve(paths.user, file),
 );
 
 // Load environment variables from .env* files. Suppress warnings using silent
@@ -14,7 +15,10 @@ const ENV_FILES = [`.env.${process.env.NODE_ENV}.local`, `.env.local`, `.env`].m
 // https://github.com/motdotla/dotenv-expand
 for (const file of ENV_FILES) {
   if (existsSync(file)) {
-    const [{ default: dotEnvExpand }, { default: dotenv }] = await Promise.all([import("dotenv-expand"), import("dotenv")]);
+    const [{ default: dotEnvExpand }, { default: dotenv }] = await Promise.all([
+      import('dotenv-expand'),
+      import('dotenv'),
+    ]);
 
     dotEnvExpand(dotenv.config({ path: file }));
   }
@@ -26,16 +30,13 @@ const POTA_APP = /^POTA_APP/i;
 export default function getEnv(extra = {}) {
   const raw = Object.keys(process.env)
     .filter((key) => POTA_APP.test(key))
-    .reduce(
-      (env, key) => {
-        env[key] = process.env[key];
-        return env;
-      },
-      extra
-    );
+    .reduce((env, key) => {
+      env[key] = process.env[key];
+      return env;
+    }, extra);
   // Stringify all values so we can feed into webpack DefinePlugin
   const stringified = {
-    "process.env": Object.keys(raw).reduce((env, key) => {
+    'process.env': Object.keys(raw).reduce((env, key) => {
       env[key] = JSON.stringify(raw[key]);
       return env;
     }, {}),

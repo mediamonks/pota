@@ -1,21 +1,19 @@
 {
-  "name": "@pota/shared",
-  "version": "2.1.1",
-  "description": "@pota shared utility package",
+  "name": "@pota/authoring",
+  "version": "1.0.0",
+  "description": "pota skeleton authoring package",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "files": [
     "lib"
   ],
   "exports": {
-    "./config": "./lib/config.js",
-    "./fs": "./lib/fs.js",
-    "./skeleton": "./lib/skeleton.js"
+    ".": "./lib/main.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mediamonks/pota.git",
-    "directory": "core/shared"
+    "directory": "core/authoring"
   },
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"

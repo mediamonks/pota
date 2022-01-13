@@ -1,21 +1,21 @@
-import { resolve } from "path";
+import { resolve } from 'path';
 
-import webpack from "webpack";
-import HTMLPlugin from "html-webpack-plugin";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
-import CopyPlugin from "copy-webpack-plugin";
-import ErrorPlugin from "friendly-errors-webpack-plugin";
-import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import webpack from 'webpack';
 
-import babelConfig from "./babel.config.js";
-import * as paths from "./paths.js";
-import getEnv from "./getEnv.js";
-import ImageMinimizerPlugin from "image-minimizer-webpack-plugin";
+import HTMLPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import ErrorPlugin from 'friendly-errors-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-const IS_DEV_ENV = process.env.NODE_ENV === "development";
-const IS_PROD_ENV = process.env.NODE_ENV === "production" || !IS_DEV_ENV;
+import * as paths from './paths.js';
+import getEnv from './getEnv.js';
+
+const IS_DEV_ENV = process.env.NODE_ENV === 'development';
+const IS_PROD_ENV = process.env.NODE_ENV === 'production' || !IS_DEV_ENV;
 
 export function parseOptions(options) {
   const {
@@ -23,10 +23,10 @@ export function parseOptions(options) {
     output = paths.output,
     cache = true,
     versioning = false,
-    ["image-compression"]: imageCompression = true,
-    ["public-path"]: publicPath = "/",
-    ["typecheck"]: typeCheck = true,
-    ["source-map"]: sourceMap = IS_PROD_ENV ? "source-map" : "eval-source-map",
+    ['image-compression']: imageCompression = true,
+    ['public-path']: publicPath = '/',
+    ['typecheck']: typeCheck = true,
+    ['source-map']: sourceMap = IS_PROD_ENV ? 'source-map' : 'eval-source-map',
   } = options;
 
   return {
@@ -43,10 +43,10 @@ export function parseOptions(options) {
   };
 }
 
-export default function createConfig(unsafeOptions = {}) {
+export default async function createConfig(unsafeOptions, babelConfig) {
   const options = parseOptions(unsafeOptions);
 
-  const versionPath = options.versioning ? `version/${process.env.VERSION ?? Date.now()}/` : "";
+  const versionPath = options.versioning ? `version/${process.env.VERSION ?? Date.now()}/` : '';
 
   const env = getEnv({
     PUBLIC_PATH: options.publicPath,
@@ -55,10 +55,10 @@ export default function createConfig(unsafeOptions = {}) {
 
   function getStyleLoaders(preProcessor) {
     return [
-      options.isDev ? "style-loader" : MiniCssExtractPlugin.loader,
-      { loader: "css-loader", options: { importLoaders: preProcessor ? 3 : 1 } },
-      { loader: "postcss-loader" },
-      ...(preProcessor ? [{ loader: "resolve-url-loader" }, { loader: preProcessor }] : []),
+      options.isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+      { loader: 'css-loader', options: { importLoaders: preProcessor ? 3 : 1 } },
+      { loader: 'postcss-loader' },
+      ...(preProcessor ? [{ loader: 'resolve-url-loader' }, { loader: preProcessor }] : []),
     ];
   }
 
@@ -66,10 +66,10 @@ export default function createConfig(unsafeOptions = {}) {
    * @type {import('webpack').Configuration}
    */
   return {
-    stats: "none",
-    name: "pota-webpack",
-    target: "web",
-    mode: options.isDev ? "development" : "production",
+    stats: 'none',
+    name: 'pota-webpack',
+    target: 'web',
+    mode: options.isDev ? 'development' : 'production',
     // will bail compilation on the first error,
     // instead of the default behavior of tolerating the error
     bail: options.isProd,
@@ -77,49 +77,49 @@ export default function createConfig(unsafeOptions = {}) {
     context: paths.user,
     entry: paths.entry,
 
-    cache: options.cache && { type: "filesystem" },
+    cache: options.cache && { type: 'filesystem' },
 
     output: {
       path: options.output,
       publicPath: options.publicPath,
-      filename: `${versionPath}static/chunks/[name]${options.isDev ? "" : ".[contenthash]"}.js`,
+      filename: `${versionPath}static/chunks/[name]${options.isDev ? '' : '.[contenthash]'}.js`,
       chunkFilename: `${versionPath}static/chunks/[name]${
-        options.isDev ? "" : ".[contenthash]"
+        options.isDev ? '' : '.[contenthash]'
       }.js`,
       hotUpdateChunkFilename: `static/webpack/[id].[fullhash].hot-update.js`,
       hotUpdateMainFilename: `static/webpack/[fullhash].[runtime].hot-update.json`,
-      globalObject: "this",
+      globalObject: 'this',
       strictModuleErrorHandling: true,
     },
 
     resolve: {
-      extensions: [".js", ".jsx", ".ts", ".tsx"],
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
       alias: {
-        "@": paths.source,
+        '@': paths.source,
       },
     },
 
     optimization: {
       minimizer: [
-        "...", // This will make sure to include webpack's default minimizer
+        '...', // This will make sure to include webpack's default minimizer
         new CssMinimizerPlugin(),
       ],
       minimize: options.isProd,
       emitOnErrors: options.isProd,
-      moduleIds: options.isProd ? "deterministic" : "named",
+      moduleIds: options.isProd ? 'deterministic' : 'named',
       splitChunks: options.isProd && {
         cacheGroups: {
           defaultVendors: {
             name: `chunk-vendors`,
             test: /[\\/]node_modules[\\/]/,
             priority: -10,
-            chunks: "initial",
+            chunks: 'initial',
           },
           common: {
             name: `chunk-common`,
             minChunks: 2,
             priority: -20,
-            chunks: "initial",
+            chunks: 'initial',
             reuseExistingChunk: true,
           },
         },
@@ -130,7 +130,7 @@ export default function createConfig(unsafeOptions = {}) {
       // https://twitter.com/wSokra/status/969679223278505985
       // https://github.com/facebook/create-react-app/issues/5358
       runtimeChunk: {
-        name: "runtime",
+        name: 'runtime',
       },
     },
 
@@ -138,7 +138,7 @@ export default function createConfig(unsafeOptions = {}) {
       hot: true,
       historyApiFallback: true,
       client: {
-        logging: "none",
+        logging: 'none',
         progress: true,
         overlay: false,
       },
@@ -153,9 +153,9 @@ export default function createConfig(unsafeOptions = {}) {
           test: /\.tsx?$/,
           include: paths.source,
           use: [
-            { loader: "babel-loader", options: babelConfig },
+            { loader: 'babel-loader', options: babelConfig },
             {
-              loader: "ts-loader",
+              loader: 'ts-loader',
               options: {
                 // makes sure to load only the files required by webpack and nothing more
                 onlyCompileBundledFiles: true,
@@ -173,7 +173,7 @@ export default function createConfig(unsafeOptions = {}) {
         {
           test: /\.m?jsx?$/,
           include: paths.source,
-          use: [{ loader: "babel-loader", options: babelConfig }],
+          use: [{ loader: 'babel-loader', options: babelConfig }],
         },
 
         /**
@@ -200,7 +200,7 @@ export default function createConfig(unsafeOptions = {}) {
         // extensions .module.scss or .module.sass
         {
           test: /\.(scss|sass)$/,
-          use: getStyleLoaders("sass-loader"),
+          use: getStyleLoaders('sass-loader'),
           // Don't consider CSS imports dead code even if the
           // containing package claims to have no side effects.
           // Remove this when webpack adds a warning or an error for this.
@@ -214,10 +214,10 @@ export default function createConfig(unsafeOptions = {}) {
 
         {
           test: /\.(png|jpe?g|gif|webp|avif)(\?.*)?$/,
-          type: "asset",
+          type: 'asset',
           generator: {
             filename: `${versionPath}static/img/${
-              options.isDev ? "[name]" : "[contenthash]"
+              options.isDev ? '[name]' : '[contenthash]'
             }[ext][query]`,
           },
         },
@@ -229,13 +229,13 @@ export default function createConfig(unsafeOptions = {}) {
           oneOf: [
             {
               resourceQuery: /raw/,
-              type: "asset/source",
+              type: 'asset/source',
             },
             {
-              type: "asset/resource",
+              type: 'asset/resource',
               generator: {
                 filename: `${versionPath}static/img/${
-                  options.isDev ? "[name]" : "[contenthash]"
+                  options.isDev ? '[name]' : '[contenthash]'
                 }[ext][query]`,
               },
             },
@@ -244,30 +244,30 @@ export default function createConfig(unsafeOptions = {}) {
 
         {
           test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-          type: "asset",
+          type: 'asset',
           generator: {
             filename: `${versionPath}static/media/${
-              options.isDev ? "[name]" : "[contenthash:8]"
+              options.isDev ? '[name]' : '[contenthash:8]'
             }[ext][query]`,
           },
         },
 
         {
           test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
-          type: "asset",
+          type: 'asset',
           generator: {
             filename: `${versionPath}static/fonts/${
-              options.isDev ? "[name]" : "[contenthash:8]"
+              options.isDev ? '[name]' : '[contenthash:8]'
             }[ext][query]`,
           },
         },
 
         {
           test: /\.(glsl|frag|vert)(\?.*)?$/,
-          type: "asset/source",
+          type: 'asset/source',
           generator: {
             filename: `${versionPath}static/shaders/${
-              options.isDev ? "[name]" : "[contenthash]"
+              options.isDev ? '[name]' : '[contenthash]'
             }[ext][query]`,
           },
         },
@@ -277,8 +277,8 @@ export default function createConfig(unsafeOptions = {}) {
     plugins: [
       new HTMLPlugin({
         inject: true,
-        favicon: resolve(paths.publicDir, "favicon.ico"),
-        template: resolve(paths.publicDir, "index.html"),
+        favicon: resolve(paths.publicDir, 'favicon.ico'),
+        template: resolve(paths.publicDir, 'index.html'),
       }),
       new ErrorPlugin(),
       new webpack.DefinePlugin(env.stringified),
@@ -286,14 +286,14 @@ export default function createConfig(unsafeOptions = {}) {
         patterns: [
           {
             from: paths.publicDir,
-            toType: "dir",
-            globOptions: { ignore: ["**/.*", resolve(paths.publicDir, "index.html")] },
+            toType: 'dir',
+            globOptions: { ignore: ['**/.*', resolve(paths.publicDir, 'index.html')] },
           },
           {
-            from: "static",
+            from: 'static',
             to: `${versionPath}static`,
             noErrorOnMissing: true,
-            globOptions: { ignore: ["**/.*"] },
+            globOptions: { ignore: ['**/.*'] },
           },
         ],
       }),
@@ -301,9 +301,9 @@ export default function createConfig(unsafeOptions = {}) {
         new ImageMinimizerPlugin({
           minimizerOptions: {
             plugins: [
-              ["jpegtran", { progressive: true }],
-              ["optipng", { optimizationLevel: 5 }],
-              ["svgo"],
+              ['jpegtran', { progressive: true }],
+              ['optipng', { optimizationLevel: 5 }],
+              ['svgo'],
             ],
           },
         }),
@@ -319,7 +319,7 @@ export default function createConfig(unsafeOptions = {}) {
         }),
       options.analyze &&
         new BundleAnalyzerPlugin(
-          typeof options.analyze === "string" ? { analyzerMode: options.analyze } : {}
+          typeof options.analyze === 'string' ? { analyzerMode: options.analyze } : {},
         ),
     ].filter(Boolean),
   };

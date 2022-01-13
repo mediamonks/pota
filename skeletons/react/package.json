@@ -3,6 +3,9 @@
   "version": "1.0.0-rc.19",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
+  "exports": {
+    ".": "./.pota/config.js"
+  },
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -25,6 +28,7 @@
     "test": "jest --config ./test-utils/jest.config.ts"
   },
   "dependencies": {
+    "@pota/authoring": "^1.0.0",
     "babel-plugin-styled-components": "^1.13.3",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",

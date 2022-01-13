@@ -1,27 +1,21 @@
-import { join, dirname, basename, extname } from 'path';
-import { copyFile, mkdir, writeFile } from 'fs/promises';
+import { pathToFileURL } from 'url';
+import { join, dirname, resolve } from 'path';
+import { access, copyFile, mkdir, writeFile } from 'fs/promises';
 
 // @ts-ignore TypeScript is being weird
 import merge from 'lodash.merge';
 import { sortPackageJson } from 'sort-package-json';
-import { PackageJsonShape, POTA_CONFIG_FILE } from '@pota/shared/config';
-import { PotaConfig, PACKAGE_JSON_FILE, POTA_COMMANDS_DIR, POTA_DIR } from '@pota/shared/config';
-import { getNestedSkeletons } from '@pota/shared/skeleton';
-import { exists, readPackageJson, writePackageJson } from '@pota/shared/fs';
+import { PackageJsonShape } from '@pota/authoring';
+import { Skeleton } from '@pota/authoring';
 
-import { POTA_CLI, POTA_CLI_BIN } from './config.js';
 // @ts-ignore TypeScript is being weird
 import dedent from 'dedent';
-
-function addFileAsScript(pkg: PackageJsonShape, file: string) {
-  const command = basename(file, extname(file));
-
-  pkg.scripts ??= {};
-  pkg.scripts[command] ??= `${POTA_CLI_BIN} ${command}`;
-}
+import { readPackageJson, Recursive, writePackageJson } from './helpers.js';
+import { camelCase } from 'change-case';
 
 const IGNORED_PACKAGE_FIELDS: ReadonlyArray<keyof PackageJsonShape> = [
   'name',
+  'exports',
   'version',
   'peerDependencies',
   'dependencies',
@@ -51,7 +45,11 @@ function filterObject<T extends Record<string, any>>(o: T, fields: ReadonlyArray
 /*
  * Merges the fields of the package from `path` into the project package.
  */
-async function mergeSkeleton(pkg: PackageJsonShape, path: string, config: PotaConfig) {
+async function mergeSkeleton(
+  pkg: PackageJsonShape,
+  path: string,
+  permittedScripts?: ReadonlyArray<string>,
+) {
   const skeletonPkg = await readPackageJson(path);
 
   const { peerDependencies = {} } = skeletonPkg;
@@ -60,21 +58,14 @@ async function mergeSkeleton(pkg: PackageJsonShape, path: string, config: PotaCo
     delete skeletonPkg[field];
   }
 
-  if ('scripts' in skeletonPkg && 'scripts' in config) {
-    skeletonPkg.scripts = filterObject(skeletonPkg.scripts!, config.scripts!);
+  if ('scripts' in skeletonPkg && permittedScripts) {
+    skeletonPkg.scripts = filterObject(skeletonPkg.scripts!, permittedScripts);
   }
 
   merge(pkg, skeletonPkg);
 
   // place the skeleton package in `devDependencies`
   pkg.devDependencies ??= {};
-
-  if (config.extends && config.extends in peerDependencies) {
-    pkg.devDependencies[config.extends] = peerDependencies[config.extends];
-  }
-
-  // place the pota cli package in `devDependencies` if the skeleton is using it
-  if (POTA_CLI in peerDependencies) pkg.devDependencies[POTA_CLI] = peerDependencies[POTA_CLI];
 
   for (const [dep, version] of Object.entries(peerDependencies)) {
     // make sure that the dependency isn't defined in `devDependencies`
@@ -86,63 +77,117 @@ async function mergeSkeleton(pkg: PackageJsonShape, path: string, config: PotaCo
   }
 }
 
+function parseVarNameFromSkeleton(skeleton: string): string {
+  let varName = skeleton.startsWith("@pota") ? skeleton.substring("@pota/".length) : skeleton;
+
+  return camelCase(varName);
+}
+
 async function createPotaDir(path: string, skeleton: string) {
-  path = join(path, POTA_DIR);
+  path = join(path, '.pota');
 
   // create in-project pota directoru
   await mkdir(path);
 
-  path = join(path, POTA_CONFIG_FILE);
+  path = join(path, 'config.js');
+
+  const varName = parseVarNameFromSkeleton(skeleton);
 
   // add config file with the extended skeleton
   await writeFile(
     path,
     dedent`
-       export default {
-         extends: "${skeleton}"
-       };`,
+      import ${varName} from '${skeleton}';
+      import { define } from '@pota/authoring';
+
+      export default define(${varName});
+       `,
   );
 }
 
 async function copy(src: string, dst: string) {
   // create destination directories if they don't exist
   const dir = dirname(dst);
-  if (!(await exists(dir))) await mkdir(dir, { recursive: true });
+
+  try {
+    await access(dir);
+  } catch {
+    await mkdir(dir, { recursive: true });
+  }
 
   await copyFile(src, dst);
 }
 
-export default async function sync(targetPath: string, skeleton: string, pkgName: string) {
-  const nestedSkeletons = await getNestedSkeletons(targetPath, skeleton);
+type ExtendingConfig = Skeleton.Config & { extends?: ExtendingConfig };
+
+function order<C extends ExtendingConfig>(config: C) {
+  const ordered: Array<Skeleton.Config> = [config];
+
+  let current: ExtendingConfig | undefined = config.extends;
+
+  while (current) {
+    ordered.unshift(current);
+    current = current.extends;
+  }
+
+  return ordered;
+}
+
+interface SyncOptions {
+  potaDir?: boolean;
+  addCLI?: boolean;
+}
+
+const DEFAULT_SYNC_OPTIONS: SyncOptions = { potaDir: true, addCLI: true };
+
+export default async function sync(
+  targetPath: string,
+  skeleton: string,
+  pkgName: string,
+  options: SyncOptions = DEFAULT_SYNC_OPTIONS,
+) {
+  options = { ...DEFAULT_SYNC_OPTIONS, ...options };
+
+  const configPath = resolve(targetPath, 'node_modules', skeleton, '.pota/config.js');
+
+  const config: Skeleton.Config = (await import(pathToFileURL(configPath).toString())).default;
 
   const pkg = await readPackageJson(targetPath);
-  pkg.name = pkgName;
-
-  const commandsDir = join(POTA_DIR, POTA_COMMANDS_DIR);
 
   const fileMap = new Map<string, { src: string; dst: string }>();
-  const omits: Array<string> = [];
+  const omits: Array<string> = [".pota", "package-lock.json", "node_modules"];
 
-  for (const { path, config, files } of nestedSkeletons) {
-    if (config.omit) omits.push(...config.omit);
-    for (const file of files) {
-      if (file === PACKAGE_JSON_FILE) await mergeSkeleton(pkg, path, config);
-      else if (file.startsWith(POTA_DIR)) {
-        if (file.startsWith(commandsDir)) addFileAsScript(pkg, file);
-      } else {
-        const renamed = config.rename?.[file] ?? file;
-        fileMap.set(renamed, { src: join(path, file), dst: join(targetPath, renamed) });
+  for (const { omit, dirname, rename, scripts } of order(config)) {
+    if (omit) omits.push(...omit);
+
+    const skeletonRoot = resolve(dirname, '..');
+
+    for (const file of await Recursive.readdir(skeletonRoot)) {
+      if (file === 'package.json') await mergeSkeleton(pkg, skeletonRoot, scripts);
+      else {
+        const renamed = rename?.[file] ?? file;
+        fileMap.set(renamed, { src: join(skeletonRoot, file), dst: join(targetPath, renamed) });
       }
     }
   }
 
   for (const [file, { src, dst }] of fileMap.entries()) {
     if (!omits.some((omit) => omit === file || dirname(file).startsWith(omit))) {
+      console.log(dst);
       await copy(src, dst);
     }
   }
 
-  await createPotaDir(targetPath, skeleton);
+  if (options.potaDir) await createPotaDir(targetPath, skeleton);
+
+  pkg.name = pkgName;
+
+  if (options.addCLI) {
+    for (const command of Object.keys(config.commands ?? {})) {
+      pkg.scripts ??= {};
+      if (!(command in pkg.scripts)) pkg.scripts[command] = `pota ${command}`;
+    }
+  }
 
   await writePackageJson(sortPackageJson(pkg), targetPath);
 }

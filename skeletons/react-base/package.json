@@ -3,6 +3,9 @@
   "version": "1.0.0-rc.10",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
+  "exports": {
+    ".": "./.pota/config.js"
+  },
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -19,6 +22,7 @@
     "src"
   ],
   "dependencies": {
+    "@pota/authoring": "^1.0.0",
     "@babel/preset-react": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@svgr/webpack": "^5.5.0",
