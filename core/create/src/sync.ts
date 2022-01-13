@@ -78,7 +78,7 @@ async function mergeSkeleton(
 }
 
 function parseVarNameFromSkeleton(skeleton: string): string {
-  let varName = skeleton.startsWith("@pota") ? skeleton.substring("@pota/".length) : skeleton;
+  let varName = skeleton.startsWith('@pota') ? skeleton.substring('@pota/'.length) : skeleton;
 
   return camelCase(varName);
 }
@@ -155,7 +155,7 @@ export default async function sync(
   const pkg = await readPackageJson(targetPath);
 
   const fileMap = new Map<string, { src: string; dst: string }>();
-  const omits: Array<string> = [".pota", "package-lock.json", "node_modules"];
+  const omits: Array<string> = ['.pota', 'package-lock.json', 'node_modules'];
 
   for (const { omit, dirname, rename, scripts } of order(config)) {
     if (omit) omits.push(...omit);
