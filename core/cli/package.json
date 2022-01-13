@@ -29,8 +29,7 @@
   },
   "dependencies": {
     "@pota/authoring": "^1.0.0",
-    "sade": "^1.7.4",
-    "tsm": "^2.2.1"
+    "sade": "^1.7.4"
   },
   "devDependencies": {
     "@types/sade": "^1.7.3"
