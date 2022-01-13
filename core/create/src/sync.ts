@@ -173,7 +173,6 @@ export default async function sync(
 
   for (const [file, { src, dst }] of fileMap.entries()) {
     if (!omits.some((omit) => omit === file || dirname(file).startsWith(omit))) {
-      console.log(dst);
       await copy(src, dst);
     }
   }
