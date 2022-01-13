@@ -14,7 +14,7 @@ let skeleton = 'unknown';
 
 try {
   skeleton = JSON.parse(
-    await readFile(resolve((potaConfig.extends ?? potaConfig).dirname, "..", 'package.json'), { encoding: 'utf8' }),
+    await readFile(resolve(potaConfig.dirname, "..", 'package.json'), { encoding: 'utf8' }),
   ).name;
 } catch {}
 
