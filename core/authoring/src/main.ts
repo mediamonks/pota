@@ -6,11 +6,11 @@ function extendSkeleton(
   base: Skeleton.Config,
   config: Skeleton.Config,
 ): typeof config & { extends: typeof base } {
-  const mergedMeta: Skeleton.Meta<[]> = Object.fromEntries(
+  const mergedBaseMeta: Skeleton.Meta<[]> = Object.fromEntries(
     Object.entries(base.meta ?? {}).map(([key, fn]) => [key, config.meta?.[key] ?? fn]),
   );
 
-  const mergedCommands = Object.fromEntries(
+  const mergedBaseCommands = Object.fromEntries(
     Object.entries(base.commands ?? {}).map(([command, properties]) => {
       let mergedOptions;
 
@@ -32,7 +32,11 @@ function extendSkeleton(
   ) as Record<string, Skeleton.Command.Command<[]>>;
 
   return Object.assign(
-    { ...config, commands: mergedCommands, meta: mergedMeta },
+    {
+      ...config,
+      commands: { ...config.commands, ...mergedBaseCommands },
+      meta: { ...config.meta, ...mergedBaseMeta },
+    },
     { extends: base },
   );
 }
