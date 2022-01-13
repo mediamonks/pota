@@ -1,13 +1,10 @@
 {
   "name": "@pota/cli",
-  "version": "1.0.0-rc.13",
+  "version": "1.0.0",
   "description": "Create Pota Apps with no configuration",
   "type": "module",
   "bin": {
     "pota": "./bin/pota.js"
-  },
-  "exports": {
-    "./authoring": "./lib/authoring.js"
   },
   "files": [
     "lib",
