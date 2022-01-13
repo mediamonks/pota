@@ -10,7 +10,7 @@ export default define(reactBaseSkeleton, {
   scripts: ['start-storybook', 'build-storybook', 'test'],
   meta: {
     babel() {
-      const config = reactBaseSkeleton.babel();
+      const config = reactBaseSkeleton.meta.babel();
       const { plugins = [] } = config;
 
       return {
