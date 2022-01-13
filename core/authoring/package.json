@@ -1,6 +1,6 @@
 {
   "name": "@pota/authoring",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "pota skeleton authoring package",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
