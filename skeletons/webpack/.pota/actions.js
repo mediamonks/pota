@@ -11,7 +11,7 @@ const { red, green, cyan } = kleur;
 import * as paths from './paths.js';
 
 export async function build(options, config, skeleton) {
-  console.log(logSymbols.info, `Using ${skeleton} configuration`);
+  console.log(logSymbols.info, `Using ${cyan(skeleton)} configuration`);
 
   console.log('Building...');
 
@@ -41,7 +41,7 @@ export async function dev(options, config, skeleton) {
   process.env.NODE_ENV = options.prod ? 'production' : 'development';
   const port = await parsePort(options.port);
 
-  console.log(logSymbols.info, `Using ${skeleton} configuration`);
+  console.log(logSymbols.info, `Using ${cyan(skeleton)} configuration`);
 
   if (isNumber(options.port) && port !== options.port) {
     console.log(
