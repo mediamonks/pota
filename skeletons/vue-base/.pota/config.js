@@ -42,7 +42,7 @@ export default define(webpackSkeleton, {
   meta: {
     async webpack(options, babelConfig) {
       const [config, { DefinePlugin }, { VueLoaderPlugin }] = await Promise.all([
-        webpackSkeleton.webpack(options, babelConfig),
+        webpackSkeleton.meta.webpack(options, babelConfig),
         import('webpack'),
         import('vue-loader'),
       ]);
