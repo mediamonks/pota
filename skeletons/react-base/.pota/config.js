@@ -24,7 +24,7 @@ export default define(webpackSkeleton, {
   },
   meta: {
     babel() {
-      const { presets = [], plugins = [] } = webpackSkeleton.babel();
+      const { presets = [], plugins = [] } = webpackSkeleton.meta.babel();
 
       const isDev = process.env.NODE_ENV === 'development';
 
@@ -44,7 +44,7 @@ export default define(webpackSkeleton, {
     },
     async webpack(options, babelConfig) {
       const [config, { default: ReactRefreshPlugin }] = await Promise.all([
-        webpackSkeleton.webpack(options, babelConfig),
+        webpackSkeleton.meta.webpack(options, babelConfig),
         import('@pmmmwh/react-refresh-webpack-plugin'),
       ]);
 
@@ -89,7 +89,7 @@ export default define(webpackSkeleton, {
               };
             }
 
-            return { ...rule, use: use ?? rule.use };
+            return rule;
           }),
         },
         plugins: [...config.plugins, isDev && new ReactRefreshPlugin({ overlay: false })].filter(
