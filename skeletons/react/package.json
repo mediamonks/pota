@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-skeleton",
-  "version": "1.0.0-rc.20",
+  "version": "1.0.0",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -17,7 +17,7 @@
   "files": [
     ".pota",
     ".storybook",
-    "plop-templates"
+    "plop-templates",
     "plopfile.ts",
     "public",
     "scripts",
