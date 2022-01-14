@@ -7,7 +7,7 @@ import reactBaseSkeleton from '@pota/react-base-skeleton';
 export default define(reactBaseSkeleton, {
   dirname: dirname(fileURLToPath(import.meta.url)),
   omit: ['src/App.tsx'],
-  scripts: ['start-storybook', 'build-storybook', 'test'],
+  scripts: ['start-storybook', 'build-storybook', 'test', 'plop'],
   meta: {
     babel() {
       const config = reactBaseSkeleton.meta.babel();

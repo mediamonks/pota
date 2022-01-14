@@ -1,11 +1,6 @@
 {
   "name": "@pota/react-skeleton",
   "version": "1.0.0-rc.20",
-  "author": "Paul <p.simkevi@gmail.com>",
-  "type": "module",
-  "exports": {
-    ".": "./.pota/config.js"
-  },
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -14,47 +9,57 @@
     "url": "https://github.com/mediamonks/pota.git",
     "directory": "skeletons/react"
   },
+  "author": "Paul <p.simkevi@gmail.com>",
+  "type": "module",
+  "exports": {
+    ".": "./.pota/config.js"
+  },
   "files": [
     ".pota",
     ".storybook",
-    "storybook-static",
+    "plop-templates"
+    "plopfile.ts",
     "public",
-    "tsconfig.json",
-    "src"
+    "scripts",
+    "src",
+    "storybook-static",
+    "tsconfig.json"
   ],
   "scripts": {
-    "start-storybook": "start-storybook -p 9001 -s public,storybook-static",
     "build-storybook": "build-storybook -s public,storybook-static",
+    "plop": "node --loader ts-node/esm ./scripts/plop.ts",
+    "start-storybook": "start-storybook -p 9001 -s public,storybook-static",
     "test": "jest --config ./test-utils/jest.config.ts"
   },
   "dependencies": {
     "@pota/authoring": "^1.0.0",
-    "babel-plugin-styled-components": "^1.13.3",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/builder-webpack5": "^6.3.12",
     "@storybook/manager-webpack5": "^6.3.12",
-    "@storybook/react": "^6.3.12"
+    "@storybook/react": "^6.3.12",
+    "babel-plugin-styled-components": "^1.13.3"
   },
   "peerDependencies": {
     "@pota/react-base-skeleton": "^1.0.0-rc.1",
-    "@types/styled-components": "^5.1.15",
-    "isntnt": "^1.5.2",
-    "mobx": "^6.3.7",
-    "mobx-react-lite": "^3.2.2",
-    "polished": "^4.1.3",
-    "react-router": "^6.0.1",
-    "react-router-dom": "^6.0.1",
-    "styled-components": "^5.3.3",
-    "web-vitals": "^2.1.1",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.2",
+    "@types/styled-components": "^5.1.15",
+    "isntnt": "^1.5.2",
     "jest": "^27.3.1",
+    "mobx-react-lite": "^3.2.2",
+    "mobx": "^6.3.7",
+    "plop": "^3.0.5",
+    "polished": "^4.1.3",
+    "react-router-dom": "^6.0.1",
+    "react-router": "^6.0.1",
+    "styled-components": "^5.3.3",
     "ts-jest": "^27.0.7",
-    "ts-node": "^10.4.0"
+    "ts-node": "^10.4.0",
+    "web-vitals": "^2.1.1"
   },
   "publishConfig": {
     "access": "public"
