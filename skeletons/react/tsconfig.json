@@ -7,5 +7,5 @@
   },
 
   "extends": "@pota/react-base-skeleton",
-  "include": ["src/**/*.ts", "src/**/*.tsx", "./.eslintrc.cjs", "./test-utils/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "./.eslintrc.cjs", "./test-utils/**/*.ts", "./plopfile.ts", "./scripts/*.ts"]
 }

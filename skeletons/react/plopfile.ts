@@ -22,7 +22,7 @@ const typePrefixMap: Record<Type, string> = {
   [types.none]: '',
 };
 
-export default function (plop: NodePlopAPI) {
+export default function plopfile(plop: NodePlopAPI) {
   plop.setGenerator('component', {
     description: 'Component generator',
     prompts: [
@@ -62,10 +62,13 @@ export default function (plop: NodePlopAPI) {
       },
     ],
     actions: (userData) => {
-      const {componentPrefix = '', type, typePrefix = '', name, id = ''} = userData as Record<
-        string,
-        string
-      > & { type: Type };
+      const {
+        componentPrefix = '',
+        type,
+        typePrefix = '',
+        name,
+        id = '',
+      } = userData as Record<string, string> & { type: Type };
       const data = {
         componentName: `${componentPrefix}${componentPrefix && '-'}${typePrefix}${id}-${name}`,
       } as const;
@@ -91,5 +94,3 @@ function getDirectory(type: Type) {
       return type;
   }
 }
-
-
