@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-base-skeleton",
-  "version": "1.0.0-rc.11",
+  "version": "1.0.0",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "exports": {
@@ -15,29 +15,29 @@
     "directory": "skeletons/react-base"
   },
   "files": [
+    ".eslintrc.cjs",
     ".pota",
     "public",
-    ".eslintrc.cjs",
-    "tsconfig.json",
-    "src"
+    "src",
+    "tsconfig.json"
   ],
   "dependencies": {
-    "@pota/authoring": "^1.0.0",
     "@babel/preset-react": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
+    "@pota/authoring": "^1.0.0",
     "@svgr/webpack": "^5.5.0",
     "babel-plugin-named-asset-import": "^0.3.7"
   },
   "peerDependencies": {
     "@mediamonks/eslint-config-react": "^2.0.0-rc.1",
     "@pota/cli": "^1.0.0-rc.9",
-    "@types/react": "^17.0.34",
+    "@pota/webpack-skeleton": "^1.0.0",
     "@types/react-dom": "^17.0.11",
-    "react": "^17.0.2",
+    "@types/react": "^17.0.34",
     "react-dom": "^17.0.2",
     "react-refresh": "^0.10.0",
-    "web-vitals": "^2.1.1",
-    "@pota/webpack-skeleton": "^1.0.0-rc.17"
+    "react": "^17.0.2",
+    "web-vitals": "^2.1.1"
   },
   "publishConfig": {
     "access": "public"
