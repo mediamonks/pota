@@ -36,14 +36,13 @@
     "host": "TODO: Add a host name."
   },
   "scripts": {
-    "cli": "node ../../core/cli/bin/pota.js",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "format": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
-    "rsync": "cross-env rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete-after"
+    "rsync": "cross-env rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete"
   },
   "browserslist": [
     "last 2 versions",
