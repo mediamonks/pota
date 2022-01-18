@@ -21,7 +21,7 @@ const sizeConfig = {
  */
 export type ParagraphSize = keyof typeof sizeConfig;
 
-export interface StyledParagraphProps {
+export type StyledParagraphProps = {
   /** desc 1 */
   size?: ParagraphSize;
   /** desc 2 */
