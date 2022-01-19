@@ -143,7 +143,6 @@ const DEFAULT_SYNC_OPTIONS: SyncOptions = { potaDir: true, addCLI: true };
 export default async function sync(
   targetPath: string,
   skeleton: string,
-  pkgName: string,
   options: SyncOptions = DEFAULT_SYNC_OPTIONS,
 ) {
   options = { ...DEFAULT_SYNC_OPTIONS, ...options };
@@ -178,8 +177,6 @@ export default async function sync(
   }
 
   if (options.potaDir) await createPotaDir(targetPath, skeleton);
-
-  pkg.name = pkgName;
 
   if (options.addCLI) {
     for (const command of Object.keys(config.commands ?? {})) {

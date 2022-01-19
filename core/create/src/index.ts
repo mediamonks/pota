@@ -37,11 +37,11 @@ sade('@pota/create <skeleton> <dir>', true)
   )
   .example('npx @pota/create webpack ./project-directory')
   .action(async (skeleton: SadeSkeleton, dir: SadeDirectory, options: SadeOptions) => {
-    const pkgName = basename(dir);
+    const projectName = basename(dir);
     const originalCwd = process.cwd();
     const cwd = resolve(process.cwd(), dir);
 
-    log(`Creating a new Pota App ${cyan(pkgName)} in ${green(cwd)}.`);
+    log(`Creating a new Pota App ${cyan(projectName)} in ${green(cwd)}.`);
 
     // resolve shorthand to full package name
     if (isSkeletonShorthand(skeleton)) skeleton = getSkeletonFromShorthand(skeleton);
@@ -80,6 +80,10 @@ sade('@pota/create <skeleton> <dir>', true)
       // change directory into current working directory (the project directory)
       process.chdir(cwd);
 
+      // write the initial package.json with just the project name
+      // to make sure that the latter `npm install`'s will will install into the correct directory
+      await helpers.writePackageJson({ name: projectName }, cwd);
+
       const visualName = skeletonPkgDetails.type === 'file' ? basename(skeleton) : skeleton;
 
       if (options['add-pota-cli'])
@@ -101,7 +105,7 @@ sade('@pota/create <skeleton> <dir>', true)
       log();
       console.log(`Setting up project structure...`);
 
-      await sync(cwd, await helpers.getSkeletonName(skeletonPkgDetails, cwd), pkgName, {
+      await sync(cwd, await helpers.getSkeletonName(skeletonPkgDetails, cwd), {
         potaDir: options['pota-dot-dir'],
         addCLI: options['add-pota-cli'],
       });
@@ -153,7 +157,7 @@ sade('@pota/create <skeleton> <dir>', true)
     }
     log(dedent`
         🚀🚀🚀 ${green('SUCCESS')} 🚀🚀🚀
-        Created ${cyan(pkgName)} at ${green(cwd)}
+        Created ${cyan(projectName)} in ${green(cwd)}
 
         Inside that directory, you can run several commands:
 
