@@ -6,6 +6,9 @@ Please look through this document for insights in how the project is setup and h
 
 ### Overview
 
+Projects within the `core` directory are part of the root package workspace. The `skeletons` are
+individual packages which are not part of any workspace.
+
 ```
 core/
   cli/

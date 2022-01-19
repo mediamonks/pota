@@ -5,12 +5,7 @@
   "workspaces": [
     "core/create",
     "core/cli",
-    "core/authoring",
-    "skeletons/webpack",
-    "skeletons/react",
-    "skeletons/react-base",
-    "skeletons/vue",
-    "skeletons/vue-base"
+    "core/authoring"
   ],
   "scripts": {
     "format": "prettier \"**/*.{js,ts,md,json}\" --write --loglevel warn"
