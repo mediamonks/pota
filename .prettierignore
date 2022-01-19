@@ -2,17 +2,22 @@
  
 skeletons/webpack/*
 !skeletons/webpack/.pota
+!skeletons/webpack/README.md
 
 skeletons/react/*
 !skeletons/react/.pota
+!skeletons/react/README.md
 
 skeletons/react-base/*
 !skeletons/react-base/.pota
+!skeletons/react-base/README.md
 
 skeletons/vue/*
 !skeletons/vue/.pota
+!skeletons/vue/README.md
 
 skeletons/vue-base/*
 !skeletons/vue-base/.pota
+!skeletons/vue-base/README.md
 
 

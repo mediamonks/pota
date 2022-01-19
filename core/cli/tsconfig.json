@@ -6,7 +6,5 @@
     "allowJs": true
   },
   "include": ["/**/*.ts", "/**/*.cjs"],
-  "references": [
-    { "path": "../authoring" }
-  ]
+  "references": [{ "path": "../authoring" }]
 }

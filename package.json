@@ -13,7 +13,7 @@
     "skeletons/vue-base"
   ],
   "scripts": {
-    "format": "prettier \"**/*.{js,ts}\" --write --loglevel warn"
+    "format": "prettier \"**/*.{js,ts,md,json}\" --write --loglevel warn"
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
