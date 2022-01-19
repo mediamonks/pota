@@ -1,6 +1,12 @@
 import { fileURLToPath } from 'url';
-import { resolve, dirname } from 'path';
+import { resolve, dirname, relative, isAbsolute } from 'path';
 import { cwd } from 'process';
+
+export function isSubDirectory(parent, directory) {
+  const relativePath = relative(parent, directory);
+
+  return relativePath && !relativePath.startsWith('..') && !isAbsolute(relativePath);
+}
 
 export const self = dirname(fileURLToPath(import.meta.url));
 export const user = cwd();

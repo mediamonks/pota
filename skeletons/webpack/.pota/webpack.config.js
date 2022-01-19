@@ -17,6 +17,8 @@ import getEnv from './getEnv.js';
 const IS_DEV_ENV = process.env.NODE_ENV === 'development';
 const IS_PROD_ENV = process.env.NODE_ENV === 'production' || !IS_DEV_ENV;
 
+const IS_IN_SUB_DIRECTORY_OF_CWD = paths.isSubDirectory(paths.user, paths.skeletonNodeModules);
+
 export function parseOptions(options) {
   const {
     analyze = false,
@@ -92,11 +94,23 @@ export default async function createConfig(unsafeOptions, babelConfig) {
       strictModuleErrorHandling: true,
     },
 
+    // add the skeleton node_modules to the loader resolution
+    // only if the skeleton node_modules are a sub directory of the cwd
+    // this is required so webpack knows that there's an additional directory to load loaders from
+    ...(!IS_IN_SUB_DIRECTORY_OF_CWD && {
+      resolveLoader: { modules: ['node_modules', paths.skeletonNodeModules] },
+    }),
+
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       alias: {
         '@': paths.source,
       },
+
+      // add the skeleton node_modules to the resolution
+      // only if the skeleton node_modules are a sub directory of the cwd
+      // this is required so webpack knows that there's an additional directory to load modules from
+      ...(!IS_IN_SUB_DIRECTORY_OF_CWD && { modules: ['node_modules', paths.skeletonNodeModules] }),
     },
 
     optimization: {
