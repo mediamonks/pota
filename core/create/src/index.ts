@@ -69,7 +69,7 @@ sade('@pota/create <skeleton> <dir>', true)
       process.exit(1);
     } catch {}
 
-    if (skeletonPkgDetails.type === 'file') {
+    if (skeletonPkgDetails.type === 'file' || skeletonPkgDetails.type === 'directory') {
       skeleton = relative(cwd, skeleton);
       skeletonPkgDetails = npa(skeleton);
     }

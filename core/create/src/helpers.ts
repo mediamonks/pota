@@ -112,6 +112,7 @@ export async function getSkeletonName(skeletonPkgDetails: NpaResult, packageJson
 
           return version === shortName || version === skeletonPkgDetails.rawSpec;
         }
+        case 'directory':
         case 'file':
           return version === `file:${skeletonPkgDetails.rawSpec}`;
         default:
