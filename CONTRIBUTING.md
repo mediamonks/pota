@@ -6,15 +6,15 @@ Please look through this document for insights in how the project is setup and h
 
 ### Overview
 
-Projects within the `core` directory are part of the root package workspace. The `skeletons` are
-individual packages which are not part of any workspace.
+```
+cli/
+create/
+authoring/
+```
+
+These packages are considerd the `core` of pota and are part of a single workspace governed by the root `package.json`
 
 ```
-core/
-  cli/
-  create/
-  authoring/
-
 skeletons/
   webpack/
   react/
@@ -22,6 +22,8 @@ skeletons/
   vue/
   vue-base/
 ```
+
+The `skeletons` directory includes individual packages for each official pota skeleton.
 
 # FAQ
 

@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mediamonks/pota.git",
-    "directory": "core/create-pota"
+    "directory": "create-pota"
   },
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"

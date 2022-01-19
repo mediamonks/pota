@@ -1,19 +1,19 @@
 {
-  "name": "@pota/authoring",
+  "name": "@pota/cli",
   "version": "1.0.1",
-  "description": "pota skeleton authoring package",
-  "author": "Paul <p.simkevi@gmail.com>",
+  "description": "Create Pota Apps with no configuration",
   "type": "module",
-  "files": [
-    "lib"
-  ],
-  "exports": {
-    ".": "./lib/main.js"
+  "bin": {
+    "pota": "./bin/pota.js"
   },
+  "files": [
+    "lib",
+    "bin"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mediamonks/pota.git",
-    "directory": "core/authoring"
+    "directory": "cli"
   },
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -23,6 +23,17 @@
     "build": "tsc -b -i",
     "clean:build": "tsc -b --clean && tsc -b",
     "prepublishOnly": "npm run clean:build"
+  },
+  "dependencies": {
+    "@pota/authoring": "^1.0.0",
+    "sade": "^1.7.4"
+  },
+  "devDependencies": {
+    "@types/sade": "^1.7.3"
+  },
+  "engines": {
+    "node": ">=14",
+    "npm": ">=7"
   },
   "publishConfig": {
     "access": "public"

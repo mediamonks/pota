@@ -3,9 +3,9 @@
   "private": true,
   "description": "💁 the build system to carry your projects",
   "workspaces": [
-    "core/create",
-    "core/cli",
-    "core/authoring"
+    "create",
+    "cli",
+    "authoring"
   ],
   "scripts": {
     "format": "prettier \"**/*.{js,ts,md,json}\" --write --loglevel warn"
