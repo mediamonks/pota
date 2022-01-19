@@ -23,22 +23,32 @@ export default define(webpackSkeleton, {
     },
   },
   meta: {
-    babel() {
-      const { presets = [], plugins = [] } = webpackSkeleton.meta.babel();
-
+    async babel() {
       const isDev = process.env.NODE_ENV === 'development';
 
+      const [
+        { presets = [], plugins = [] },
+        presetReact,
+        namedAssetImportPlugin,
+        reactRefreshPlugin,
+      ] = await Promise.all([
+        webpackSkeleton.meta.babel(),
+        import('@babel/preset-react').then(m => m.default),
+        import('babel-plugin-named-asset-import').then(m => m.default),
+        isDev && import('react-refresh/babel.js').then(m => m.default),
+      ]);
+
       return {
-        presets: [...presets, ['@babel/preset-react']],
+        presets: [...presets, [presetReact]],
         plugins: [
           ...plugins,
           [
-            'babel-plugin-named-asset-import',
+            namedAssetImportPlugin,
             {
               loaderMap: { svg: { ReactComponent: '@svgr/webpack?-svgo,+titleProp,+ref![path]' } },
             },
           ],
-          isDev && ['react-refresh/babel'],
+          reactRefreshPlugin && [reactRefreshPlugin],
         ].filter(Boolean),
       };
     },

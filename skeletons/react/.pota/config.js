@@ -9,13 +9,17 @@ export default define(reactBaseSkeleton, {
   omit: ['src/App.tsx'],
   scripts: ['start-storybook', 'build-storybook', 'test', 'plop'],
   meta: {
-    babel() {
-      const config = reactBaseSkeleton.meta.babel();
+    async babel() {
+      const [config, styledComponentsPlugin] = await Promise.all([
+        reactBaseSkeleton.meta.babel(),
+        import('babel-plugin-styled-components').then(m => m.default),
+      ]);
+
       const { plugins = [] } = config;
 
       return {
         ...config,
-        plugins: [...plugins, ['babel-plugin-styled-components']],
+        plugins: [...plugins, [styledComponentsPlugin]],
       };
     },
   },
