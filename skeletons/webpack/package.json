@@ -32,9 +32,6 @@
     "bitbucket-pipelines.yml",
     "lint-staged.config.js"
   ],
-  "config": {
-    "host": "TODO: Add a host name."
-  },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
     "fix": "run-s fix:* && npm run format",
@@ -44,14 +41,19 @@
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
     "rsync": "cross-env rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete"
   },
+  "config": {
+    "host": "TODO: Add a host name."
+  },
   "browserslist": [
     "last 2 versions",
     "not ie <= 11, not ie_mob <= 11",
     "not dead"
   ],
+  "prettier": "@mediamonks/prettier-config",
   "dependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
+    "@mediamonks/prettier-config": "^1.0.0",
     "@pota/authoring": "^1.0.0",
     "@types/friendly-errors-webpack-plugin": "^0.1.4",
     "@types/mini-css-extract-plugin": "^2.4.0",
