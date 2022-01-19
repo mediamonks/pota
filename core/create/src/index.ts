@@ -11,6 +11,7 @@ import dedent from 'dedent';
 import { isSkeletonShorthand, getSkeletonFromShorthand } from './config.js';
 import * as helpers from './helpers.js';
 import sync from './sync.js';
+import { initializeGit } from './git.js';
 
 const { log } = helpers;
 const { green, cyan } = kleur;
@@ -21,6 +22,7 @@ interface SadeOptions {
   'fail-cleanup': boolean;
   'pota-dot-dir': boolean;
   'add-pota-cli': boolean;
+  'init-git': boolean;
 }
 
 const selfPackageJsonPath = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'package.json');
@@ -30,6 +32,7 @@ sade('@pota/create <skeleton> <dir>', true)
   .describe('Create Pota project')
   .option('--fail-cleanup', 'Cleanup after failing initialization', true)
   .option('--pota-dot-dir', "Adds the '.pota' directory in the project", true)
+  .option('--init-git', 'Initializes git in the created project', true)
   .option(
     '--add-pota-cli',
     "Adds the '@pota/cli' dependency and skeleton commands as scripts",
@@ -126,35 +129,16 @@ sade('@pota/create <skeleton> <dir>', true)
       await bail();
     }
 
-    let initializedGit = false;
-
     try {
-      // create branch under the name `main` and create initial commit
-      try {
-        await helpers.command('git init -b main');
-        await helpers.command('git add .');
-        await helpers.command('git commit -m "Initial commit from @pota/create"');
-        initializedGit = true;
-      } catch (error) {
-        // if `-b main` isn't supported fallback to renaming the branch
-        if ((error as { code: number }).code === 129) {
-          await helpers.command('git init');
-          await helpers.command('git add .');
-          await helpers.command('git commit -m "Initial commit from @pota/create"');
-          await helpers.command('git branch master -m main');
-          initializedGit = true;
-        } else throw error;
+      if (options['init-git'] && (await initializeGit())) {
+        log('Initialized a git repository.');
+        log();
       }
     } catch (error) {
       console.error(error);
     }
 
     // TODO: include the commands of the skeleton instead of assuming that every skeleton comes with `build` and `dev`
-    log();
-    if (initializedGit) {
-      log('Initialized a git repository.');
-      log();
-    }
     log(dedent`
         🚀🚀🚀 ${green('SUCCESS')} 🚀🚀🚀
         Created ${cyan(projectName)} in ${green(cwd)}
