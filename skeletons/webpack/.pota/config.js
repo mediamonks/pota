@@ -52,7 +52,7 @@ export default define({
       async action(options) {
         process.env.NODE_ENV = options.prod ? 'production' : 'development';
 
-        const babelConfig = this.meta.babel(options);
+        const babelConfig = await this.meta.babel(options);
         const config = await this.meta.webpack(options, babelConfig);
 
         await (await import('./actions.js')).dev(options, config, this.skeleton);
@@ -89,7 +89,7 @@ export default define({
 
         process.env.NODE_ENV = options.debug ? 'development' : 'production';
 
-        const babelConfig = this.meta.babel(options);
+        const babelConfig = await this.meta.babel(options);
         const config = await this.meta.webpack(options, babelConfig);
 
         await (await import('./actions.js')).build(options, config, this.skeleton);
@@ -97,11 +97,13 @@ export default define({
     },
   },
   meta: {
-    babel() {
+    async babel() {
+      const presetEnv = (await import('@babel/preset-env')).default;
+
       return {
         presets: [
           [
-            '@babel/preset-env',
+            presetEnv,
             {
               useBuiltIns: 'usage',
               bugfixes: true,
@@ -112,7 +114,8 @@ export default define({
       };
     },
     async webpack(options, babelConfig) {
-      const createConfig = await import('./webpack.config.js').then((m) => m.default);
+      const createConfig = (await import('./webpack.config.js')).default;
+
       return createConfig(options, babelConfig);
     },
   },
