@@ -33,9 +33,9 @@ export default define(webpackSkeleton, {
         reactRefreshPlugin,
       ] = await Promise.all([
         webpackSkeleton.meta.babel(),
-        import('@babel/preset-react').then(m => m.default),
-        import('babel-plugin-named-asset-import').then(m => m.default),
-        isDev && import('react-refresh/babel.js').then(m => m.default),
+        import('@babel/preset-react').then((m) => m.default),
+        import('babel-plugin-named-asset-import').then((m) => m.default),
+        isDev && import('react-refresh/babel.js').then((m) => m.default),
       ]);
 
       return {

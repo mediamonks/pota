@@ -12,7 +12,8 @@ create/
 authoring/
 ```
 
-These packages are considerd the `core` of pota and are part of a single workspace governed by the root `package.json`
+These packages are considerd the `core` of pota and are part of a single workspace governed by the
+root `package.json`
 
 ```
 skeletons/

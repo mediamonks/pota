@@ -15,13 +15,13 @@ export default define(reactBaseSkeleton, {
     'plop',
     'typecheck',
     'typecheck:main',
-    'typecheck:tools'
+    'typecheck:tools',
   ],
   meta: {
     async babel() {
       const [config, styledComponentsPlugin] = await Promise.all([
         reactBaseSkeleton.meta.babel(),
-        import('babel-plugin-styled-components').then(m => m.default),
+        import('babel-plugin-styled-components').then((m) => m.default),
       ]);
 
       const { plugins = [] } = config;
