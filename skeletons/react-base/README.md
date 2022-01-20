@@ -80,14 +80,16 @@ _hidden TODOs_
 
 Non-Pota scripts defined in `"scripts"` of `package.json` and are runnable using `npm run {script}`
 
-| Script             | Description                                                                |
-| ------------------ | -------------------------------------------------------------------------- |
-| **`check-types`**  | Checks for type errors and unused variables/types in the source directory. |
-| **`fix`**          | Executes all `fix:*` commands in sequence.                                 |
-| **`fix:eslint`**   | Executes `eslint:lint` and fixes fixable errors.                           |
-| **`fix:prettier`** | Formats the source files using `prettier`.                                 |
-| **`lint`**         | Executes all `lint:*` commands in sequence.                                |
-| **`lint:eslint`**  | Lints the source files using `eslint`.                                     |
+| Script            | Description                                                                |
+| ----------------- | -------------------------------------------------------------------------- |
+| **`typecheck`**   | Checks for type errors and unused variables/types in the source directory. |
+| **`fix`**         | Executes all `fix:*` and `format commands in sequence.                     |
+| **`fix:eslint`**  | Executes `eslint:lint` and fixes fixable errors.                           |
+| **`format`**      | Formats the source files using `prettier`.                                 |
+| **`lint`**        | Executes all `lint:*` commands in sequence.                                |
+| **`lint:eslint`** | Lints the source files using `eslint`.                                     |
+| **`rsync`**       | Synchronizes (uploads) `dist/` files to a remote server.                   |
+
 
 <hr />
 
