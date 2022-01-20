@@ -1,11 +1,5 @@
 {
-  "ts-node": {
-    "transpileOnly": true,
-    "compilerOptions": {
-      "skipLibCheck": true
-    }
-  },
-
   "extends": "@pota/react-base-skeleton",
-  "include": ["src/**/*.ts", "src/**/*.tsx", "./.eslintrc.cjs", "./test-utils/**/*.ts", "./plopfile.ts", "./scripts/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/**/*.stories.ts", "src/**/*.stories.tsx", "src/storybook-helpers/**/*"]
 }

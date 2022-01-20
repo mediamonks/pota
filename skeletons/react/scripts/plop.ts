@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import minimist from 'minimist';
 import { Plop, run } from 'plop';
 import path, { dirname } from 'node:path';

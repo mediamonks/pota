@@ -7,7 +7,16 @@ import reactBaseSkeleton from '@pota/react-base-skeleton';
 export default define(reactBaseSkeleton, {
   dirname: dirname(fileURLToPath(import.meta.url)),
   omit: ['src/App.tsx'],
-  scripts: ['start-storybook', 'build-storybook', 'test', 'plop'],
+  scripts: [
+    'postinstall',
+    'start-storybook',
+    'build-storybook',
+    'test',
+    'plop',
+    'typecheck',
+    'typecheck:main',
+    'typecheck:tools'
+  ],
   meta: {
     async babel() {
       const [config, styledComponentsPlugin] = await Promise.all([

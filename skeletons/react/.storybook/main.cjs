@@ -1,3 +1,7 @@
+function findPlugin(config, name) {
+  return config.plugins.find((plugin) => plugin.constructor.name === name);
+}
+
 module.exports =  {
   core: {
     builder: 'webpack5',
@@ -14,16 +18,14 @@ module.exports =  {
     "@storybook/addon-essentials"
   ],
   async webpackFinal(config) {
-    const { getNestedConfigModulesSelf, createConfig } = await import('@pota/webpack-skeleton/pota/commands/build.js')
+    const skeletonConfig = (await import('../.pota/config.js')).default;
 
-    const skeletonConfig = await createConfig(await getNestedConfigModulesSelf());
-
-    const findPlugin = (config, name) => config.plugins.find((plugin) => plugin.constructor.name === name);
+    const skeletonWebpackConfig = await skeletonConfig.meta.webpack({}, skeletonConfig.meta.babel());
 
     return {
       ...config,
-      module: { ...config.module, rules: skeletonConfig.module.rules },
-      plugins: [...config.plugins, findPlugin(skeletonConfig, 'ReactRefreshPlugin')]
+      module: { ...config.module, rules: skeletonWebpackConfig.module.rules },
+      plugins: [...config.plugins, findPlugin(skeletonWebpackConfig, 'ReactRefreshPlugin')]
     };
   }
 }

@@ -22,7 +22,7 @@ const typePrefixMap: Record<Type, string> = {
   [types.none]: '',
 };
 
-export default function plopfile(plop: NodePlopAPI) {
+export default function plopfile(plop: NodePlopAPI): void {
   plop.setGenerator('component', {
     description: 'Component generator',
     prompts: [
