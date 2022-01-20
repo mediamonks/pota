@@ -111,14 +111,22 @@ _hidden TODOs_
 
 Non-Pota scripts defined in `"scripts"` of `package.json` and are runnable using `npm run {script}`
 
-| Script             | Description                                                                |
-| ------------------ | -------------------------------------------------------------------------- |
-| **`check-types`**  | Checks for type errors and unused variables/types in the source directory. |
-| **`fix`**          | Executes all `fix:*` commands in sequence.                                 |
-| **`fix:eslint`**   | Executes `eslint:lint` and fixes fixable errors.                           |
-| **`fix:prettier`** | Formats the source files using `prettier`.                                 |
-| **`lint`**         | Executes all `lint:*` commands in sequence.                                |
-| **`lint:eslint`**  | Lints the source files using `eslint`.                                     |
+| Script                | Description                                                                   |
+| --------------------- | ------------------------------------------------------------------------------|
+| **`postinstall`**     | Run `patch-package` to patch faulty packages.                                 |
+| **`build-storybook`** | Bundle stories for deployment.                                                |
+| **`start-storybook`** | Start storybook's development server.                                         |
+| **`plop`**            | Generate a new component's source files.                                      |
+| **`test`**            | Run unit tests.                                                               |
+| **`fix`**             | Executes all `fix:*` and `format commands in sequence.                        |
+| **`fix:eslint`**      | Executes `eslint:lint` and fixes fixable errors.                              |
+| **`format`**          | Formats the source files using `prettier`.                                    |
+| **`lint`**            | Executes all `lint:*` commands in sequence.                                   |
+| **`lint:eslint`**     | Lints the source files using `eslint`.                                        |
+| **`rsync`**           | Synchronizes (uploads) `dist/` files to a remote server.                      |
+| **`typecheck`**       | Synchronously runs `typecheck:main` and `typecheck:tools`.                    |
+| **`typecheck:main`**  | Checks for type errors and unused variables/types in the source directory.    |
+| **`typecheck:tools`** | Checks for type errors and unused variables/types of the various local tools. |
 
 <hr />
 
