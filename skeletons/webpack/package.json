@@ -57,6 +57,7 @@
     "@pota/authoring": "^1.0.0",
     "@types/friendly-errors-webpack-plugin": "^0.1.4",
     "@types/mini-css-extract-plugin": "^2.4.0",
+    "@types/node": "^17.0.10",
     "@types/webpack-bundle-analyzer": "^4.4.1",
     "autoprefixer": "^10.3.6",
     "babel-loader": "^8.2.2",
@@ -97,7 +98,8 @@
     "webpack": "^5.57.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.7.3"
+    "webpack-dev-server": "^4.7.3",
+    "workbox-webpack-plugin": "^6.4.2"
   },
   "peerDependencies": {
     "@mediamonks/eslint-config-base": "^2.0.0-alpha.0",

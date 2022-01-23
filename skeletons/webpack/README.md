@@ -148,6 +148,37 @@ _hidden TODOs_
 
 <hr />
 
+### Service Worker
+
+The skeleton has opt-in support for
+[service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
+through the help of [workbox](https://developers.google.com/web/tools/workbox/).
+
+To get started, you can create `/src/service-worker.ts` file to customize workbox and its many
+[modules](https://developers.google.com/web/tools/workbox/modules) .
+
+> This is how an example service worker file could look like:
+
+```ts
+/// <reference lib="webworker" />
+
+import { clientsClaim } from 'workbox-core';
+import { precacheAndRoute } from 'workbox-precaching';
+
+declare const self: ServiceWorkerGlobalScope;
+
+clientsClaim();
+
+// eslint-disable-next-line no-underscore-dangle
+precacheAndRoute(self.__WB_MANIFEST);
+```
+
+Now, whenever you bundle your application for production, a `service-worker.js` file will be
+generated.
+
+As a last step, you need to make sure to register the service worker using the
+`serviceWorkerRegistration.ts` module, see the comment in `main.ts` for more details.
+
 ### Deployment
 
 #### Remote Sync

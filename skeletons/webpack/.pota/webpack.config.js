@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import { access } from 'fs/promises';
 
 import webpack from 'webpack';
 
@@ -9,6 +10,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import ErrorPlugin from 'friendly-errors-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import * as paths from './paths.js';
@@ -18,6 +20,15 @@ const IS_DEV_ENV = process.env.NODE_ENV === 'development';
 const IS_PROD_ENV = process.env.NODE_ENV === 'production' || !IS_DEV_ENV;
 
 const IS_IN_SUB_DIRECTORY_OF_CWD = paths.isSubDirectory(paths.user, paths.skeletonNodeModules);
+
+async function exists(path) {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export function parseOptions(options) {
   const {
@@ -63,6 +74,10 @@ export default async function createConfig(unsafeOptions, babelConfig) {
       ...(preProcessor ? [{ loader: 'resolve-url-loader' }, { loader: preProcessor }] : []),
     ];
   }
+
+  const serviceWorkerPath = resolve(paths.source, 'service-worker.ts');
+
+  const useServiceWorker = options.isProd && (await exists(serviceWorkerPath));
 
   /**
    * @type {import('webpack').Configuration}
@@ -291,7 +306,6 @@ export default async function createConfig(unsafeOptions, babelConfig) {
     plugins: [
       new HTMLPlugin({
         inject: true,
-        favicon: resolve(paths.publicDir, 'favicon.ico'),
         template: resolve(paths.publicDir, 'index.html'),
       }),
       new ErrorPlugin(),
@@ -325,6 +339,12 @@ export default async function createConfig(unsafeOptions, babelConfig) {
         new MiniCssExtractPlugin({
           filename: `${versionPath}static/css/[contenthash].css`,
           chunkFilename: `${versionPath}static/css/[contenthash].css`,
+        }),
+      useServiceWorker &&
+        new WorkboxWebpackPlugin.InjectManifest({
+          swSrc: serviceWorkerPath,
+          dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+          exclude: [/\.map$/, /LICENSE/],
         }),
       options.typeCheck &&
         new ForkTsCheckerWebpackPlugin({
