@@ -112,7 +112,7 @@ _hidden TODOs_
 Non-Pota scripts defined in `"scripts"` of `package.json` and are runnable using `npm run {script}`
 
 | Script                | Description                                                                   |
-| --------------------- | ------------------------------------------------------------------------------|
+| --------------------- | ----------------------------------------------------------------------------- |
 | **`postinstall`**     | Run `patch-package` to patch faulty packages.                                 |
 | **`build-storybook`** | Bundle stories for deployment.                                                |
 | **`start-storybook`** | Start storybook's development server.                                         |

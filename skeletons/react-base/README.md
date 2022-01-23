@@ -90,7 +90,6 @@ Non-Pota scripts defined in `"scripts"` of `package.json` and are runnable using
 | **`lint:eslint`** | Lints the source files using `eslint`.                                     |
 | **`rsync`**       | Synchronizes (uploads) `dist/` files to a remote server.                   |
 
-
 <hr />
 
 ### JavaScript / TypeScript
