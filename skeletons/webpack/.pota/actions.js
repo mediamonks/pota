@@ -38,10 +38,9 @@ export async function build(options, config, skeleton) {
 }
 
 export async function dev(options, config, skeleton) {
-  process.env.NODE_ENV = options.prod ? 'production' : 'development';
-  const port = await parsePort(options.port);
-
   console.log(logSymbols.info, `Using ${cyan(skeleton)} configuration`);
+
+  const port = await parsePort(options.port);
 
   if (isNumber(options.port) && port !== options.port) {
     console.log(
