@@ -1,0 +1,65 @@
+{
+  "name": "@pota/vite-skeleton",
+  "version": "0.0.1",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mediamonks/pota.git",
+    "directory": "skeletons/vite"
+  },
+  "author": "Paul <p.simkevi@gmail.com>",
+  "type": "module",
+  "exports": {
+    ".": "./.pota/config.js",
+    "./.pota/paths.js": "./.pota/paths.js"
+  },
+  "files": [
+    "public",
+    "src",
+    ".pota",
+    "gitignore",
+    "tsconfig.json",
+    ".eslintrc.cjs",
+    ".nvmrc",
+    ".npmrc",
+    ".postcssrc.cjs",
+    "bitbucket-pipelines.yml",
+    "index.html"
+  ],
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
+    "fix": "run-s fix:* && npm run format",
+    "fix:eslint": "npm run lint:eslint -- --fix",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
+    "lint": "run-s lint:*",
+    "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
+    "rsync": "cross-env rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete"
+  },
+  "config": {
+    "host": "TODO: Add a host name."
+  },
+  "prettier": "@mediamonks/prettier-config",
+  "dependencies": {
+    "@mediamonks/prettier-config": "^1.0.0",
+    "@pota/authoring": "^1.0.0",
+    "kleur": "^4.1.4",
+    "log-symbols": "^5.0.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.5.2",
+    "vite": "^2.7.2"
+  },
+  "peerDependencies": {
+    "@mediamonks/eslint-config-base": "^2.0.0-alpha.0",
+    "@pota/cli": "^1.0.0-rc.6"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7",
+    "yarn": "unsupported"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
