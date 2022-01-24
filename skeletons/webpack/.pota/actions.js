@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'url';
 import { resolve } from 'path';
 
 import logSymbols from 'log-symbols';
@@ -105,7 +106,8 @@ function getDevServerConfig(config) {
 
 async function loadProxySetup() {
   try {
-    const setup = (await import(resolve(paths.user, 'setupProxy.js'))).default;
+    const proxyPath = pathToFileURL(resolve(paths.user, 'setupProxy.js')).toString();
+    const setup = (await import(proxyPath)).default;
 
     if (typeof setup !== 'function') {
       throw new Error('`setupProxy.js` should export default a function.');
