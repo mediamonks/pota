@@ -7,8 +7,5 @@
   },
 
   "extends": "@pota/react-base-skeleton",
-  "compilerOptions": {
-    "typeRoots": ["../../work/pota/skeletons/react/node_modules/@types/"]
-  },
   "include": ["src/**/*.stories.ts", "src/**/*.stories.tsx", "src/storybook-helpers/**/*", "./.eslintrc.cjs", "./test-utils/**/*.ts", "./plopfile.ts", "./scripts/*.ts"]
 }
