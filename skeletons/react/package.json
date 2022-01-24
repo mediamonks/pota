@@ -23,15 +23,14 @@
     "scripts",
     "patches",
     "src",
-    "storybook-static",
     "tsconfig.json",
     "tsconfig.tools.json"
   ],
   "scripts": {
     "postinstall": "npx patch-package",
-    "build-storybook": "build-storybook -s public,storybook-static",
+    "build-storybook": "build-storybook",
     "plop": "TS_NODE_PROJECT=tsconfig.tools.json node --loader ts-node/esm ./scripts/plop.ts",
-    "start-storybook": "start-storybook -p 9001 -s public,storybook-static",
+    "start-storybook": "start-storybook -p 9001",
     "test": "jest --config ./test-utils/jest.config.ts",
     "typecheck": "run-s typecheck:*",
     "typecheck:main": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
