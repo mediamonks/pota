@@ -66,12 +66,14 @@ export default async function createConfig(unsafeOptions, babelConfig) {
     VERSIONED_STATIC: `${versionPath}static/`,
   });
 
-  function getStyleLoaders(preProcessor) {
+  function getStyleLoaders(preProcessor, preProcessorOptions) {
     return [
       options.isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
       { loader: 'css-loader', options: { importLoaders: preProcessor ? 3 : 1 } },
       { loader: 'postcss-loader' },
-      ...(preProcessor ? [{ loader: 'resolve-url-loader' }, { loader: preProcessor }] : []),
+      ...(preProcessor
+        ? [{ loader: 'resolve-url-loader' }, { loader: preProcessor, options: preProcessorOptions }]
+        : []),
     ];
   }
 
@@ -229,7 +231,7 @@ export default async function createConfig(unsafeOptions, babelConfig) {
         // extensions .module.scss or .module.sass
         {
           test: /\.(scss|sass)$/,
-          use: getStyleLoaders('sass-loader'),
+          use: getStyleLoaders('sass-loader', { sourceMap: true }),
           // Don't consider CSS imports dead code even if the
           // containing package claims to have no side effects.
           // Remove this when webpack adds a warning or an error for this.
