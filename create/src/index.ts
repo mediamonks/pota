@@ -76,6 +76,8 @@ sade('@pota/create <skeleton> <dir>', true)
 
     const bail = helpers.createBailer(options['fail-cleanup'] ? cwd : undefined);
 
+    let postCreate: string | undefined = undefined;
+
     try {
       // create project directory
       await mkdir(cwd, { recursive: true });
@@ -99,7 +101,6 @@ sade('@pota/create <skeleton> <dir>', true)
         'install',
         skeleton,
         options['add-pota-cli'] ? '@pota/cli' : '',
-        `--prefix ${cwd}`,
         '-D',
         '--no-audit',
         '--no-fund',
@@ -108,25 +109,17 @@ sade('@pota/create <skeleton> <dir>', true)
       log();
       console.log(`Setting up project structure...`);
 
-      const afterInstallScripts = await sync(
-        cwd,
-        await helpers.getSkeletonName(skeletonPkgDetails, cwd),
-        {
-          potaDir: options['pota-dot-dir'],
-          addCLI: options['add-pota-cli'],
-        },
-      );
+      const syncResult = await sync(cwd, await helpers.getSkeletonName(skeletonPkgDetails, cwd), {
+        potaDir: options['pota-dot-dir'],
+        addCLI: options['add-pota-cli'],
+      });
+
+      ({ postCreate } = syncResult);
+      const { afterInstallScripts } = syncResult;
 
       console.log(`Installing remaining peer dependencies...`);
 
-      await helpers.spawn(
-        'npm',
-        'install',
-        `--prefix ${cwd}`,
-        '--no-audit',
-        '--no-fund',
-        '--prefer-offline',
-      );
+      await helpers.spawn('npm', 'install', '--no-audit', '--no-fund', '--prefer-offline');
 
       await addScripts(cwd, afterInstallScripts);
     } catch (error) {
@@ -142,6 +135,13 @@ sade('@pota/create <skeleton> <dir>', true)
       }
     } catch (error) {
       console.error(error);
+    }
+
+    if (postCreate) {
+      console.log(`Running post-create script '${cyan(postCreate)}'...`);
+
+      const [command, ...args] = postCreate.split(' ');
+      await helpers.spawn(command, ...args);
     }
 
     // TODO: include the commands of the skeleton instead of assuming that every skeleton comes with `build` and `dev`

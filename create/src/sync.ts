@@ -14,7 +14,7 @@ import { readPackageJson, Recursive, writePackageJson } from './helpers.js';
 import { camelCase } from 'change-case';
 
 function isString(value: unknown): value is string {
-  return typeof value === "string";
+  return typeof value === 'string';
 }
 
 const IGNORED_PACKAGE_FIELDS: ReadonlyArray<keyof PackageJsonShape> = [
@@ -78,9 +78,11 @@ async function mergeSkeleton(
 
   if (scripts && scripts.length > 0) {
     const skeletonPkgScripts = skeletonPkg.scripts
-      ? filterObject(skeletonPkg.scripts, scripts.filter((v): v is [string, string] => v[1] != null).map(([command])=>command)) 
+      ? filterObject(
+          skeletonPkg.scripts,
+          scripts.filter((v): v is [string, string] => v[1] != null).map(([command]) => command),
+        )
       : {};
-
 
     for (const script of scripts) {
       const command = isString(script) ? script : script[0];
@@ -181,7 +183,7 @@ export default async function sync(
   targetPath: string,
   skeleton: string,
   options: SyncOptions = DEFAULT_SYNC_OPTIONS,
-): Promise<Array<[string, string]>> {
+): Promise<{ afterInstallScripts: Array<[string, string]>; postCreate?: string }> {
   options = { ...DEFAULT_SYNC_OPTIONS, ...options };
 
   const configPath = resolve(targetPath, 'node_modules', skeleton, '.pota/config.js');
@@ -189,13 +191,15 @@ export default async function sync(
   const config: Skeleton.Config = (await import(pathToFileURL(configPath).toString())).default;
 
   const pkg = await readPackageJson(targetPath);
+  let postCreate: undefined | string = undefined;
 
   const afterInstallScripts: Array<[string, string]> = [];
   const fileMap = new Map<string, { src: string; dst: string }>();
   const omits: Array<string> = ['.pota', 'package-lock.json', 'node_modules'];
 
-  for (const { omit, dirname, rename, scripts } of order(config)) {
+  for (const { omit, dirname, rename, scripts, postcreate } of order(config)) {
     if (omit) omits.push(...omit);
+    if (postcreate) postCreate = postcreate;
 
     const skeletonRoot = resolve(dirname, '..');
 
@@ -226,7 +230,7 @@ export default async function sync(
 
   await writePackageJson(sortPackageJson(pkg), targetPath);
 
-  return afterInstallScripts;
+  return { afterInstallScripts, postCreate };
 }
 
 export async function addScripts(pkgPath: string, scripts: ReadonlyArray<[string, string]>) {
