@@ -80,7 +80,8 @@ export namespace Skeleton {
 
   export interface Config {
     dirname: string;
-    scripts?: ReadonlyArray<string>;
+    scripts?: ReadonlyArray<string | [string, string]>;
+    postcreate?: string;
     omit?: ReadonlyArray<string>;
     rename?: Record<string, string>;
     commands?: Record<string, Command.Command<[]>>;
