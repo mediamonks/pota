@@ -10,7 +10,7 @@ import dedent from 'dedent';
 
 import { isSkeletonShorthand, getSkeletonFromShorthand } from './config.js';
 import * as helpers from './helpers.js';
-import sync from './sync.js';
+import sync, { addScripts } from './sync.js';
 import { initializeGit } from './git.js';
 
 const { log } = helpers;
@@ -89,9 +89,9 @@ sade('@pota/create <skeleton> <dir>', true)
 
       const visualName = skeletonPkgDetails.type === 'file' ? basename(skeleton) : skeleton;
 
-      if (options['add-pota-cli'])
+      if (options['add-pota-cli']) {
         log(`Installing ${cyan(visualName)} and ${cyan('@pota/cli')}, this might take a while...`);
-      else log(`Installing ${cyan(visualName)}, this might take a while...`);
+      } else log(`Installing ${cyan(visualName)}, this might take a while...`);
       log();
 
       await helpers.spawn(
@@ -108,10 +108,14 @@ sade('@pota/create <skeleton> <dir>', true)
       log();
       console.log(`Setting up project structure...`);
 
-      await sync(cwd, await helpers.getSkeletonName(skeletonPkgDetails, cwd), {
-        potaDir: options['pota-dot-dir'],
-        addCLI: options['add-pota-cli'],
-      });
+      const afterInstallScripts = await sync(
+        cwd,
+        await helpers.getSkeletonName(skeletonPkgDetails, cwd),
+        {
+          potaDir: options['pota-dot-dir'],
+          addCLI: options['add-pota-cli'],
+        },
+      );
 
       console.log(`Installing remaining peer dependencies...`);
 
@@ -123,6 +127,8 @@ sade('@pota/create <skeleton> <dir>', true)
         '--no-fund',
         '--prefer-offline',
       );
+
+      await addScripts(cwd, afterInstallScripts);
     } catch (error) {
       console.error(error);
 

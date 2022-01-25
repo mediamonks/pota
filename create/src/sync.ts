@@ -13,6 +13,10 @@ import dedent from 'dedent';
 import { readPackageJson, Recursive, writePackageJson } from './helpers.js';
 import { camelCase } from 'change-case';
 
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+
 const IGNORED_PACKAGE_FIELDS: ReadonlyArray<keyof PackageJsonShape> = [
   'name',
   'exports',
@@ -42,14 +46,28 @@ function filterObject<T extends Record<string, any>>(o: T, fields: ReadonlyArray
   return r;
 }
 
+const AFTER_INSTALL_SCRIPTS = [
+  'prepublishOnly',
+  'prepublish',
+  'publish',
+  'postpublish',
+  'prepare',
+  'prepack',
+  'postpack',
+  'preinstall',
+  'install',
+  'postinstall',
+] as const;
+
 /*
  * Merges the fields of the package from `path` into the project package.
  */
 async function mergeSkeleton(
   pkg: PackageJsonShape,
   path: string,
-  permittedScripts?: ReadonlyArray<string>,
-) {
+  scripts?: ReadonlyArray<string | [string, string]>,
+): Promise<ReadonlyArray<[string, string]>> {
+  const afterInstallScripts: Array<[string, string]> = [];
   const skeletonPkg = await readPackageJson(path);
 
   const { peerDependencies = {} } = skeletonPkg;
@@ -58,8 +76,25 @@ async function mergeSkeleton(
     delete skeletonPkg[field];
   }
 
-  if ('scripts' in skeletonPkg && permittedScripts) {
-    skeletonPkg.scripts = filterObject(skeletonPkg.scripts!, permittedScripts);
+  if (scripts && scripts.length > 0) {
+    const skeletonPkgScripts = skeletonPkg.scripts
+      ? filterObject(skeletonPkg.scripts, scripts.filter((v): v is [string, string] => v[1] != null).map(([command])=>command)) 
+      : {};
+
+
+    for (const script of scripts) {
+      const command = isString(script) ? script : script[0];
+      const commandScript = isString(script) ? skeletonPkgScripts?.[command] : script[1];
+
+      if (!commandScript) continue;
+
+      if (AFTER_INSTALL_SCRIPTS.includes(command as typeof AFTER_INSTALL_SCRIPTS[number])) {
+        afterInstallScripts.push([command, commandScript]);
+      } else {
+        skeletonPkg.scripts ??= {};
+        skeletonPkg.scripts[command] = commandScript;
+      }
+    }
   }
 
   merge(pkg, skeletonPkg);
@@ -75,6 +110,8 @@ async function mergeSkeleton(
       pkg.dependencies[dep] = version;
     }
   }
+
+  return afterInstallScripts;
 }
 
 function parseVarNameFromSkeleton(skeleton: string): string {
@@ -144,7 +181,7 @@ export default async function sync(
   targetPath: string,
   skeleton: string,
   options: SyncOptions = DEFAULT_SYNC_OPTIONS,
-) {
+): Promise<Array<[string, string]>> {
   options = { ...DEFAULT_SYNC_OPTIONS, ...options };
 
   const configPath = resolve(targetPath, 'node_modules', skeleton, '.pota/config.js');
@@ -153,6 +190,7 @@ export default async function sync(
 
   const pkg = await readPackageJson(targetPath);
 
+  const afterInstallScripts: Array<[string, string]> = [];
   const fileMap = new Map<string, { src: string; dst: string }>();
   const omits: Array<string> = ['.pota', 'package-lock.json', 'node_modules'];
 
@@ -162,8 +200,9 @@ export default async function sync(
     const skeletonRoot = resolve(dirname, '..');
 
     for (const file of await Recursive.readdir(skeletonRoot)) {
-      if (file === 'package.json') await mergeSkeleton(pkg, skeletonRoot, scripts);
-      else {
+      if (file === 'package.json') {
+        afterInstallScripts.push(...(await mergeSkeleton(pkg, skeletonRoot, scripts)));
+      } else {
         const renamed = rename?.[file] ?? file;
         fileMap.set(renamed, { src: join(skeletonRoot, file), dst: join(targetPath, renamed) });
       }
@@ -186,4 +225,17 @@ export default async function sync(
   }
 
   await writePackageJson(sortPackageJson(pkg), targetPath);
+
+  return afterInstallScripts;
+}
+
+export async function addScripts(pkgPath: string, scripts: ReadonlyArray<[string, string]>) {
+  if (scripts.length === 0) return;
+
+  const pkg = await readPackageJson(pkgPath);
+
+  await writePackageJson(
+    { ...pkg, scripts: { ...pkg.scripts, ...Object.fromEntries(scripts) } },
+    pkgPath,
+  );
 }
