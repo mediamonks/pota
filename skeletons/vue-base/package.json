@@ -1,6 +1,6 @@
 {
   "name": "@pota/vue-base-skeleton",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "exports": {
