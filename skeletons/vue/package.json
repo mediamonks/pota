@@ -1,6 +1,6 @@
 {
   "name": "@pota/vue-skeleton",
-  "version": "1.0.0-rc.12",
+  "version": "1.0.0",
   "author": "Paul <p.simkevi@gmail.com>",
   "type": "module",
   "exports": {
@@ -17,29 +17,30 @@
   "files": [
     ".pota",
     ".storybook",
-    "storybook-static",
     "test-utils",
     "src",
+    "patches",
     "tsconfig.json"
   ],
   "scripts": {
-    "start-storybook": "start-storybook -p 9001 -s public,storybook-static",
-    "build-storybook": "build-storybook -s public,storybook-static",
+    "postinstall": "npx patch-package",
+    "start-storybook": "start-storybook -p 9001",
+    "build-storybook": "build-storybook",
     "test": "jest --config ./test-utils/jest.config.ts"
   },
   "dependencies": {
     "@pota/authoring": "^1.0.0",
-    "@storybook/addon-actions": "^6.3.12",
-    "@storybook/addon-essentials": "^6.3.12",
-    "@storybook/addon-links": "^6.3.12",
-    "@storybook/builder-webpack5": "^6.3.12",
-    "@storybook/manager-webpack5": "^6.3.12",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/builder-webpack5": "6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
     "@storybook/vue3": "^6.3.12"
   },
   "peerDependencies": {
     "pinia": "^2.0.4",
-    "@pota/cli": "^1.0.0-rc.6",
-    "@pota/vue-base-skeleton": "^1.0.0-rc.0",
+    "@pota/cli": "^1.0.1",
+    "@pota/vue-base-skeleton": "^1.0.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.2",

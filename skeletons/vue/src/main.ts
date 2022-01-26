@@ -6,6 +6,7 @@ import App from './components/unlisted/App.vue';
 import reportWebVitals from './reportWebVitals';
 import plugins from './config/plugins';
 import directives from './config/directives';
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration"
 
 // create app instace
 const instance = createApp(App);
@@ -27,3 +28,8 @@ instance.mount('#root');
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://cra.link/PWA
+serviceWorkerRegistration.unregister();
