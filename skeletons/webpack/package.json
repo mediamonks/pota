@@ -24,7 +24,7 @@
     "tsconfig.json",
     ".eslintrc.cjs",
     ".editorconfig",
-    ".huskyrc",
+    ".husky",
     ".nvmrc",
     ".npmrc",
     ".prettierrc",
@@ -36,7 +36,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
-    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss}\" --write --loglevel warn",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
     "rsync": "cross-env rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete"
@@ -74,13 +74,11 @@
     "friendly-errors-webpack-plugin": "npm:@soda/friendly-errors-webpack-plugin@^1.8.0",
     "get-port": "^6.0.0",
     "html-webpack-plugin": "^5.3.2",
-    "husky": "^4.3.0",
     "image-minimizer-webpack-plugin": "^2.2.0",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^9.0.0",
     "kleur": "^4.1.4",
-    "lint-staged": "^10.5.1",
     "log-symbols": "^5.0.0",
     "mini-css-extract-plugin": "^2.3.0",
     "npm-run-all": "^4.1.5",
@@ -102,8 +100,10 @@
     "workbox-webpack-plugin": "^6.4.2"
   },
   "peerDependencies": {
-    "@mediamonks/eslint-config-base": "^2.0.0-alpha.0",
-    "@pota/cli": "^1.0.0-rc.6"
+    "@mediamonks/eslint-config-base": "^2.0.0",
+    "@pota/cli": "^1.0.1",
+    "husky": "^7.0.0",
+    "lint-staged": "^12.3.1"
   },
   "engines": {
     "node": ">=16",

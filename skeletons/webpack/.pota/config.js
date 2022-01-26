@@ -19,7 +19,17 @@ function preprocessOptions(options) {
 
 export default define({
   dirname: dirname(fileURLToPath(import.meta.url)),
-  scripts: ['typecheck', 'fix', 'fix:eslint', 'format', 'lint', 'lint:eslint', 'rsync'],
+  scripts: [
+    'typecheck',
+    'fix',
+    'fix:eslint',
+    'format',
+    'lint',
+    'lint:eslint',
+    'rsync',
+    ['prepare', 'husky install'],
+  ],
+  postcreate: 'npm run prepare',
   rename: {
     gitignore: '.gitignore',
   },

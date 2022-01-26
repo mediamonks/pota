@@ -1,4 +1,5 @@
-module.exports = {
-  '**/*.{ts?(x),js?(x)}': () => ['yarn lint'],
-  'package.json': (filenames) => ['sort-package-json', `git add ${filenames.join(' ')}`],
+export default {
+  '**/*.{ts?(x),js?(x)}': () => ['npm run lint'],
+  '**/*.ts?(x)': () => ['npm run typecheck'],
+  '**/*.{ts?(x),js,?(s)css,md,json}': () => ['npm run format']
 };
