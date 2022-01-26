@@ -23,15 +23,15 @@
   ],
   "dependencies": {
     "@pota/authoring": "^1.0.0",
-    "@vue/compiler-sfc": "^3.2.20",
-    "vue-loader": "^16.8.1",
+    "@vue/compiler-sfc": "^3.2.29",
+    "vue-loader": "^16.8.3",
     "vue-style-loader": "^4.1.3"
   },
   "peerDependencies": {
-    "vue": "^3.2.20",
-    "@pota/cli": "^1.0.0-rc.6",
-    "@mediamonks/eslint-config-vue": "^2.0.0-rc.1",
-    "@pota/webpack-skeleton": "^1.0.0-rc.11"
+    "vue": "^3.2.29",
+    "@pota/cli": "^1.0.1",
+    "@mediamonks/eslint-config-vue": "^2.0.0-rc.2",
+    "@pota/webpack-skeleton": "^2.2.0"
   },
   "publishConfig": {
     "access": "public"
