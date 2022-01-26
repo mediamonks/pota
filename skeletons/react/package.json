@@ -46,7 +46,7 @@
     "babel-plugin-styled-components": "^1.13.3"
   },
   "peerDependencies": {
-    "@pota/react-base-skeleton": "^2.0.0",
+    "@pota/react-base-skeleton": "^2.1.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
