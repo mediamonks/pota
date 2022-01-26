@@ -40,11 +40,12 @@ npm run build # or npx pota build
 | **`analyze`**           | `{Boolean}`                                                                   | `false`                                                    | When enabled, will open a bundle report after bundling.                                                                                          |
 | **`cache`**             | `{Boolean}`                                                                   | `true`                                                     | Toggles webpack's [caching](https://webpack.js.org/configuration/cache/) behavior.                                                               |
 | **`image-compression`** | `{Boolean}`                                                                   | `true`                                                     | Toggles image compression.                                                                                                                       |
-| **`mode`**              | `{development\|production}`                                                   | `production`                                               | Override webpack's [mode](https://webpack.js.org/configuration/mode).                                                                            |
-| **`output`**            | `{String}`                                                                    | `./build`                                                  | The build output directory.                                                                                                                      |
+| **`debug`**             | `{Boolean}`                                                                   | `false`                                                    | Sets NODE_ENV to 'development'.                                                                                                                  |
+| **`watch`**             | `{Boolean}`                                                                   | `false`                                                    | Run build and watch for changes.                                                                                                                 |
+| **`output`**            | `{String}`                                                                    | `./dist`                                                   | The build output directory.                                                                                                                      |
 | **`source-map`**        | `{false\|`[devtool](https://webpack.js.org/configuration/devtool/#devtool)`}` | `source-map` (production), `eval-source-map` (development) | Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. |
 | **`public-path`**       | `{String}`                                                                    | `/`                                                        | The location of static assets on your production server.                                                                                         |
-| **`type-check`**        | `{Boolean}`                                                                   | `true`                                                     | When disabled, will ignore type related errors.                                                                                                  |
+| **`typecheck`**         | `{Boolean}`                                                                   | `true`                                                     | When disabled, will ignore type related errors.                                                                                                  |
 | **`versioning`**        | `{Boolean}`                                                                   | `false`                                                    | When enabled, will copy assets in `./static` to a versioned directory in the output (e.g. `build/version/v2/static/...`).                        |
 | **`profile`**           | `{Boolean}`                                                                   | `false`                                                    | Toggles support for the React Devtools in **production**.                                                                                        |
 
@@ -60,10 +61,12 @@ npm run dev # or npx pota dev
 | ----------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **`cache`**             | `{Boolean}`                                                                   | `true`                                                     | Toggle webpack's [caching](https://webpack.js.org/configuration/cache/) behavior.                                                                |
 | **`https`**             | `{Boolean}`                                                                   | `false`                                                    | Run the development server with HTTPS.                                                                                                           |
+| **`open`**              | `{Boolean}`                                                                   | `true`                                                     | Allows to configure dev server to open the browser after the server has been started.                                                            |
+| **`port`**              | `{Number}`                                                                    | `2001`                                                     | Allows configuring the port.                                                                                                                     |
 | **`image-compression`** | `{Boolean}`                                                                   | `true`                                                     | Toggles image compression.                                                                                                                       |
-| **`mode`**              | `{development\|production}`                                                   | `production`                                               | Override webpack's [mode](https://webpack.js.org/configuration/mode).                                                                            |
+| **`prod`**              | `{Boolean}`                                                                   | `false`                                                    | Sets NODE_ENV to 'production'.                                                                                                                   |
 | **`source-map`**        | `{false\|`[devtool](https://webpack.js.org/configuration/devtool/#devtool)`}` | `source-map` (production), `eval-source-map` (development) | Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. |
-| **`type-check`**        | `{Boolean}`                                                                   | `true`                                                     | Toggles checking for type related errors.                                                                                                        |
+| **`typecheck`**         | `{Boolean}`                                                                   | `true`                                                     | Toggles checking for type related errors.                                                                                                        |
 
 <br />
 
@@ -152,7 +155,49 @@ _hidden TODOs_
 
 <hr />
 
+### Service Worker
+
+The skeleton has opt-in support for
+[service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
+through the help of [workbox](https://developers.google.com/web/tools/workbox/).
+
+To get started, you can create `/src/service-worker.ts` file to customize workbox and its many
+[modules](https://developers.google.com/web/tools/workbox/modules) .
+
+> This is how an example service worker file could look like:
+
+```ts
+/// <reference lib="webworker" />
+
+import { clientsClaim } from 'workbox-core';
+import { precacheAndRoute } from 'workbox-precaching';
+
+declare const self: ServiceWorkerGlobalScope;
+
+clientsClaim();
+
+// eslint-disable-next-line no-underscore-dangle
+precacheAndRoute(self.__WB_MANIFEST);
+```
+
+Now, whenever you bundle your application for production, a `service-worker.js` file will be
+generated.
+
+As a last step, you need to make sure to register the service worker using the
+`serviceWorkerRegistration.ts` module, see the comment in `main.ts` for more details.
+
 ### Deployment
+
+#### Remote Sync
+
+For simple deployments, when you just want to upload your files to a remote server, you can use the
+`rsync` script.
+
+Note: before using the `rsync` script, make sure to configure a host in in the "package.json"
+
+```bash
+npm pkg set config.host="github.com"
+```
 
 _hidden TODOs_
 
