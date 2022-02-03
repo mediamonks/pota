@@ -62,7 +62,7 @@ export async function dev(options, config, skeleton) {
       setupMiddlewares(middlewares, devServer) {
         if (!devServer) throw new Error('webpack-dev-server is not defined');
 
-        middlewares.push(proxySetup(devServer.app));
+        middlewares.unshift(proxySetup(devServer.app));
 
         return middlewares;
       },
