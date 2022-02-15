@@ -317,7 +317,9 @@ export default async function createConfig(unsafeOptions, babelConfig) {
           {
             from: paths.publicDir,
             toType: 'dir',
-            globOptions: { ignore: ['**/.*', resolve(paths.publicDir, 'index.html')] },
+            globOptions: {
+              ignore: ['**/.*', resolve(paths.publicDir, 'index.html').replace(/\\/g, '/')],
+            },
           },
           {
             from: 'static',
