@@ -19,8 +19,8 @@ export const OFFICIAL_TEMPLATES = {
     value: '@pota/vanilla-template',
     recommended: [OFFICIAL_SCRIPTS.webpack],
   },
-  'muban-complete': {
-    value: '@pota/muban-complete-template',
+  'muban': {
+    value: '@pota/muban-template',
     recommended: [OFFICIAL_SCRIPTS['muban-webpack']],
   },
   react: {
@@ -37,7 +37,7 @@ export type OfficialTemplate = keyof typeof OFFICIAL_TEMPLATES;
 
 export const SHORTHANDS: Record<string, { template: OfficialTemplate; scripts?: OfficialScripts }> =
   {
-    muban: { template: 'muban-complete', scripts: 'muban-webpack' },
+    muban: { template: 'muban', scripts: 'muban-webpack' },
     vanilla: { template: 'vanilla', scripts: 'webpack' },
     react: { template: 'react', scripts: 'react-webpack' },
     'react-base': { template: 'react-base', scripts: 'react-webpack' },
