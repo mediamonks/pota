@@ -1,0 +1,11 @@
+[data-component='image-test'] {
+  .css-image {
+    background-image: url('../../assets/images/webpack-test.jpg');
+    height: 300px;
+    background-position: center;
+    background-size: cover;
+  }
+  > div > img {
+    height: 300px;
+  }
+}

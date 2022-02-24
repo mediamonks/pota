@@ -1,0 +1,88 @@
+{
+  "name": "@pota/webpack-scripts",
+  "version": "0.0.13",
+  "description": "Base Webpack configuration and scripts for Pota",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "scripts/webpack"
+  },
+  "author": "frontend.monks",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./config": "./lib/config.js",
+    "./paths": "./lib/paths.js"
+  },
+  "main": "lib/index.js",
+  "typesVersions": {
+    "*": {
+      "config": [
+        "./lib/config.d.ts"
+      ],
+      "paths": [
+        "./lib/paths.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc -b -i",
+    "clean:build": "tsc -b --clean && tsc -b",
+    "prepublishOnly": "npm run clean:build"
+  },
+  "dependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "autoprefixer": "^10.3.6",
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^10.2.0",
+    "core-js": "^3.18.1",
+    "css-loader": "^6.3.0",
+    "css-minimizer-webpack-plugin": "^3.2.0",
+    "dotenv": "^15.0.0",
+    "dotenv-expand": "^6.0.1",
+    "file-loader": "^6.2.0",
+    "fork-ts-checker-webpack-plugin": "^6.3.3",
+    "friendly-errors-webpack-plugin": "npm:@soda/friendly-errors-webpack-plugin@^1.8.0",
+    "get-port": "^6.0.0",
+    "html-webpack-plugin": "^5.3.2",
+    "image-minimizer-webpack-plugin": "^2.2.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^9.0.0",
+    "isntnt": "^1.5.2",
+    "kleur": "^4.1.4",
+    "log-symbols": "^5.0.0",
+    "mini-css-extract-plugin": "^2.3.0",
+    "postcss": "^8.3.8",
+    "postcss-loader": "^6.1.1",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.42.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.3.0",
+    "ts-loader": "^9.2.6",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.57.1",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-dev-server": "^4.7.3",
+    "workbox-webpack-plugin": "^6.4.2"
+  },
+  "devDependencies": {
+    "@types/babel__preset-env": "^7.9.2",
+    "@types/friendly-errors-webpack-plugin": "^0.1.4",
+    "@types/node": "^17.0.10",
+    "@types/webpack-bundle-analyzer": "^4.4.1",
+    "@types/workbox-webpack-plugin": "^5.1.8",
+    "typescript": "4.6.0-dev.20211102"
+  },
+  "peerDependencies": {
+    "@pota/cli": "^2.0.0-alpha.2"
+  }
+}

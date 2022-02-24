@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "lint-staged.config.js",
+    ".eslintrc.cjs",
+    "plopfile.ts",
+    "./scripts/*.ts",
+    "./mocks/**/*.ts",
+    "src/assets.d.ts"
+  ]
+}

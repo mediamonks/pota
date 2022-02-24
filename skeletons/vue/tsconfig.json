@@ -1,4 +1,0 @@
-{
-  "extends": "@pota/vue-base-skeleton",
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "./test-utils/**/*.ts", "./.eslintrc.cjs"]
-}

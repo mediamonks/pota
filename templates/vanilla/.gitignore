@@ -1,0 +1,16 @@
+# Logs
+*.log
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+dist/
+
+# Dependency directories
+node_modules/
+
+temp/
+
+*.tgz
+tsconfig.tsbuildinfo

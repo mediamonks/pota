@@ -1,0 +1,24 @@
+// Correctly set `seng-scss` assetPath
+$pathAsset: '~/src/assets';
+$pathFont: 'fonts'; // must be the same as config/paths.webpackAssetFonts
+$pathImage: 'images'; // must be the same as config/paths.webpackAssetImages
+
+// Fonts
+$baseFont: Arial, sans-serif;
+
+// Z-Index
+$zLayout: default;
+
+// Colors
+$colorPrimaryTheme: #41a6ff;
+$colorWhite: #fff;
+$colorGrey01: #495057;
+$colorGrey02: #ced4da;
+
+// Eases
+$easeInOutCustom: cubic-bezier(0.2, 0, 0, 1);
+
+// Try to always use one of these ease duration
+$easeFast: 0.2s;
+$easeModerate: 0.6s;
+$easeSlow: 0.8s;

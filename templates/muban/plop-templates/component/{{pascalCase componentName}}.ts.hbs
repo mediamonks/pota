@@ -1,0 +1,18 @@
+import { defineComponent{{#if isCmsComponent}}, supportLazy{{/if}} } from '@muban/muban';
+
+import './{{pascalCase componentName}}.styles.scss';
+
+export const {{pascalCase componentName}} = defineComponent({
+  name: '{{dashCase componentName}}',
+  props: {},
+  refs: {},
+  setup({ props, refs }) {
+    // Todo: Add component logic or remove the file
+    return [];
+  },
+});
+
+{{#if isCmsComponent}}
+export const lazy = supportLazy({{pascalCase componentName}});
+{{/if}}
+

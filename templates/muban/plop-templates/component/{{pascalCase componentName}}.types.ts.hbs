@@ -1,0 +1,5 @@
+{{#if isCmsComponent}}import type { AbstractBlockTemplateProps } from '../../../types/AbstractBlockTemplateProps';{{/if}}
+
+export type {{pascalCase componentName}}TemplateProps = {{#if isCmsComponent}}AbstractBlockTemplateProps & {{/if}}{
+  // TODO: Add your template props here or remove the file!
+};

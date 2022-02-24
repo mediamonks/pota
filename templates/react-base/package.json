@@ -1,0 +1,60 @@
+{
+  "name": "@pota/react-base-template",
+  "version": "0.0.1",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mediamonks/pota.git",
+    "directory": "templates/react-base"
+  },
+  "license": "MIT",
+  "author": "frontend.monks",
+  "type": "module",
+  "scripts": {
+    "build": "pota build",
+    "dev": "pota dev",
+    "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
+    "fix": "run-s fix:* && npm run format",
+    "fix:eslint": "npm run lint:eslint -- --fix",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
+    "lint": "run-s lint:*",
+    "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
+    "rsync": "cross-env rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete",
+    "prepack": "node ../scripts/prepack-package.js",
+    "postpack": "node ../scripts/postpack-package.js"
+  },
+  "config": {
+    "host": "TODO: Add a host name."
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not ie <= 11, not ie_mob <= 11",
+    "not dead"
+  ],
+  "prettier": "@mediamonks/prettier-config",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7",
+    "yarn": "unsupported"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-refresh": "^0.10.0",
+    "web-vitals": "^2.1.1"
+  },
+  "devDependencies": {
+    "@mediamonks/eslint-config-react": "^2.0.0-rc.1",
+    "@mediamonks/prettier-config": "^1.0.0",
+    "@pota/cli": "^2.0.0-alpha.2",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "cross-env": "^7.0.3",
+    "husky": "^7.0.4",
+    "npm-run-all": "^4.1.5",
+    "lint-staged": "^12.3.1",
+    "typescript": "^4.5.2"
+  }
+}

@@ -2,33 +2,40 @@
 
 Please look through this document for insights in how the project is setup and how to contribute.
 
-## Folder Structure
+## Creating projects from local `templates`
 
-### Overview
+[`create-pota`](core/create-pota) supports project creation from local packages.
 
-```
-cli/
-create/
-authoring/
-```
+> Example:
 
-These packages are considerd the `core` of pota and are part of a single workspace governed by the
-root `package.json`
-
-```
-skeletons/
-  webpack/
-  react/
-  react-base/
-  vue/
-  vue-base/
+```bash
+npx pota --template templates/vanilla
 ```
 
-The `skeletons` directory includes individual packages for each official pota skeleton.
+NOTE: [`create-pota`](core/create-pota) currently does not support project creation with local scripts packages.
+However, these can be easily installed after the project is created (see next section). To skip scripts selection you can pass `--scripts none`.
+
+> Example:
+
+```bash
+npx pota --template templates/vanilla --scripts none
+```
+
+## Working with local `templates`, `scripts` and `@pota/cli`
+
+It would be quite a chore to have to constantly re-create a project after making changes to either one of the `templates`, `scripts` or the `@pota/cli` package. Each of the `templates` are setup in a way where they are almost immediately ready to be utilized as a project.
+
+```bash
+cd templates/vanilla # change directory into selected template
+
+npm install ../../core/cli # (optional) install the local cli package
+
+npm pkg set pota="../../scripts/webpack/lib/index.js" # let the cli know to load the local scripts module
+```
 
 # FAQ
 
-## Why are the core packages using nightly TypeScript?
+## Why are the `core` and `scripts` packages using nightly TypeScript?
 
 As most of the ecosystem is undergoing a transition from using CJS to native ES modules, it makes
 sense for a new package to support ESM, especially because Pota has its own closed ecosystem
@@ -38,5 +45,5 @@ beta, as it included support for emitting native ESM. However, the release candi
 [removed support for this feature](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-rc/#esm-nodejs)
 and the accompanying `module` types `nodenext` and `node12`.
 
-So instead of rewritting code back to CJS, the project will continue using a stable version of
+So instead of rewriting code back to CJS, the project will continue using a stable version of
 nightly TypeScript, to continue properly supporting ESM.

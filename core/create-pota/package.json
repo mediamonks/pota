@@ -1,0 +1,54 @@
+{
+  "name": "create-pota",
+  "version": "0.0.4",
+  "description": "Command for creating Pota projects",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "create-pota"
+  },
+  "license": "MIT",
+  "author": "frontend.monks",
+  "type": "module",
+  "bin": "./bin/create-pota.cjs",
+  "files": [
+    "lib",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsc -b -i",
+    "clean:build": "tsc -b --clean && tsc -b",
+    "minimize": "minimize-js ./lib",
+    "prepublishOnly": "npm run clean:build && npm run minimize"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.3",
+    "env-paths": "^3.0.0",
+    "kleur": "^4.1.4",
+    "minimist": "^1.2.5",
+    "npm-package-arg": "^8.1.5",
+    "prompts": "^2.4.2",
+    "semver": "^7.3.5",
+    "validate-npm-package-name": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
+    "@types/minimist": "^1.2.2",
+    "@types/npm-package-arg": "^6.1.1",
+    "@types/prompts": "^2.0.14",
+    "@types/semver": "^7.3.9",
+    "@types/validate-npm-package-name": "^3.0.3",
+    "minimize-js": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=14",
+    "npm": ">=7",
+    "yarn": "unsupported"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

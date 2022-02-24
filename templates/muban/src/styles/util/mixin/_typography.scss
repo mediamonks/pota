@@ -1,0 +1,41 @@
+// Body copy
+@mixin copy-01 {
+  font-size: 1.6rem;
+}
+
+@mixin copy-02 {
+  font-size: 1.4rem;
+}
+
+@mixin copy-03 {
+  font-size: 1.2rem;
+}
+
+@mixin copy-04 {
+  font-size: 1.1rem;
+}
+
+// Heading
+@mixin heading-01 {
+  font-size: 4.6rem;
+}
+
+@mixin heading-02 {
+  font-size: 3.6rem;
+}
+
+@mixin heading-03 {
+  font-size: 3rem;
+}
+
+@mixin heading-04 {
+  font-size: 2.4rem;
+}
+
+@mixin heading-05 {
+  font-size: 2rem;
+}
+
+@mixin heading-06 {
+  font-size: 1.8rem;
+}

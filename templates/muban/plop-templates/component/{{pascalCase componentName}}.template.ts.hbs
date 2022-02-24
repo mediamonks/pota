@@ -1,0 +1,18 @@
+import type { ComponentTemplateResult } from '@muban/template';
+import { html } from '@muban/template';
+import type { {{pascalCase componentName}}TemplateProps } from './{{pascalCase componentName}}.types';
+
+export const {{camelCase componentName}}Template = (
+  {{#if isCmsComponent}}{ id, blockSpacingTop = 'normal', blockSpacingBottom = 'normal' }{{^}}props{{/if}}: {{pascalCase componentName}}TemplateProps,
+  ref?: string,
+): ComponentTemplateResult => html`<{{#if isCmsComponent}}section{{^}}div{{/if}}
+  {{#if isCmsComponent}}
+  ...$\{{ id }}
+  data-block-spacing-top="${blockSpacingTop}"
+  data-block-spacing-bottom="${blockSpacingBottom}"
+  {{/if}}
+  data-component="{{dashCase componentName}}"
+  data-ref=${ref}
+>
+  I'm the <strong>{{dashCase componentName}}</strong> component.
+</{{#if isCmsComponent}}section{{^}}div{{/if}}>`;

@@ -1,0 +1,15 @@
+[data-component='toggle-expand'] {
+  [data-ref='expand-content'] {
+    display: none;
+  }
+
+  &.isExpanded {
+    [data-ref='expand-content'] {
+      display: block;
+    }
+  }
+
+  p {
+    max-width: 400px;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/node16",
+  "compilerOptions": {
+    "module": "nodenext",
+    "composite": true,
+    "declaration": true,
+    "skipLibCheck": true
+  }
+}

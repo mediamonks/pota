@@ -1,54 +1,42 @@
-<div align="center">
-  <img src="./logo.png" alt="Pota">
-</div>
+# Pota · ![cli](https://img.shields.io/npm/v/@pota/cli?label=%40pota%2Fcli) ![create](https://img.shields.io/npm/v/create-pota?label=create-pota)
 
-<br />
+Pota is for creating and operating Node.js projects.
 
-<div align="center">
-  <a href="https://github.com/mediamonks/pota/tree/main/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-green.svg" alt="PRs Welcome" />
-  </a>
-  <a href="https://nodejs.org/en/about/releases/">
-    <img src="https://img.shields.io/node/v/@pota/create.svg" alt="node compatibility">
-  </a>
-  <a href="https://npmjs.org/package/@pota/cli">
-    <img src="https://badgen.now.sh/npm/dm/@pota/cli" alt="downloads" />
-  </a>
-</div>
+- **Create**: Pota provides you with a set of officially supported and managed [`templates`](templates) and [`scripts`](scripts), which can be composed together into a project using the [`create-pota`](core/create-pota) command. It also allows you to bring your own [`template`](templates) or [`scripts`](scripts), if you already have something that you are comfortable with, but still want to utilize [`create-pota`](core/create-pota).
+- **Operate**: Have you ever wanted to change something about your build tool, customize it or easily add new commands? The [`@pota/cli`](core/cli) package and the [`scripts`](scripts) designed around it provide you with such possibilities.
 
-<div align="center">The <b>Pota</b> (ポーター, Japanese for "porter") for your projects</div>
-<hr />
-<br />
+All of this and more is possible through the `pota` command.
 
-<b>Pota</b> is a project boot-strapper tool that supports the creation and usage of <b>nested
-skeletons</b>, alleviating the headache of maintaining multiple skeletons and upgrading the projects
-that use them.
+## Getting Started
 
-<br />
-
-> pick a skeleton from below and start hacking
+To get started, we recommend creating a brand new project using [`create-pota`](core/create-pota):
 
 ```bash
-npm init @pota react my-react-app
+npm init pota
 ```
 
 > with npx
 
 ```bash
-npx @pota/create vue my-vue-app
+npx pota
 ```
 
-## Official Skeletons 📚
+> with yarn
 
-| Skeleton                                     | Shorthand    | Version                                                                                              |
-| -------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------- |
-| [@pota/webpack-skeleton](skeletons/webpack)  | `webpack`    | ![webpack-skeleton version](https://img.shields.io/npm/v/@pota/webpack-skeleton.svg?label=%20)       |
-| [@pota/react-skeleton](skeletons/react)      | `react`      | ![react-skeleton version](https://img.shields.io/npm/v/@pota/react-skeleton.svg?label=%20)           |
-| [@pota/react-base-skeleton](skeletons/react) | `react-base` | ![react-base-skeleton version](https://img.shields.io/npm/v/@pota/react-base-skeleton.svg?label=%20) |
-| [@pota/vue-skeleton](skeletons/vue)          | `vue`        | ![vue-skeleton version](https://img.shields.io/npm/v/@pota/vue-skeleton.svg?label=%20)               |
-| [@pota/vue-base-skeleton](skeletons/vue)     | `vue-base`   | ![vue-base-skeleton version](https://img.shields.io/npm/v/@pota/vue-base-skeleton.svg?label=%20)     |
+```bash
+yarn pota
+```
+
+## Documentation
+
+- [The Core](core)
+- [Official Templates](templates)
+- [Official Scripts](scripts)
 
 ## Contributing
 
-We appreciate other great minds working Pota and making it better for all. See
-[CONTRIBUTING.md](./CONTRIBUTING.md) for more information on how to get started.
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+
+Pota is [MIT licensed](LICENSE).

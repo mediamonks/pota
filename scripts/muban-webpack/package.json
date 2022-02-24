@@ -1,0 +1,53 @@
+{
+  "name": "@pota/muban-webpack-scripts",
+  "version": "0.0.1",
+  "description": "Muban related configuration and scripts for Pota",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "scripts/muban-webpack"
+  },
+  "author": "frontend.monks",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./config": "./lib/config.js",
+    "./paths": "./lib/paths.js"
+  },
+  "typesVersions": {
+    "*": {
+      "config": [
+        "./lib/config.d.ts"
+      ],
+      "paths": [
+        "./lib/paths.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc -b -i",
+    "clean:build": "tsc -b --clean && tsc -b",
+    "prepublishOnly": "npm run clean:build"
+  },
+  "dependencies": {
+    "@pota/webpack-scripts": "^0.0.13",
+    "isntnt": "^1.5.2",
+    "null-loader": "^4.0.1",
+    "require-from-string": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.10",
+    "@types/require-from-string": "^1.2.1"
+  },
+  "peerDependencies": {
+    "@mediamonks/monck": "^1.0.6",
+    "@pota/cli": "^2.0.0-alpha.2"
+  }
+}

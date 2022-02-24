@@ -1,0 +1,52 @@
+/* Stylesheet for all generic typography styles */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+// Body copy
+.copy-01 {
+  @include copy-01;
+}
+
+.copy-02 {
+  @include copy-02;
+}
+
+.copy-03 {
+  @include copy-03;
+}
+
+.copy-04 {
+  @include copy-04;
+}
+
+// Heading
+.heading-01 {
+  @include heading-01;
+}
+
+.heading-02 {
+  @include heading-02;
+}
+
+.heading-03 {
+  @include heading-03;
+}
+
+.heading-04 {
+  @include heading-04;
+}
+
+.heading-05 {
+  @include heading-05;
+}
+
+.heading-06 {
+  @include heading-06;
+}

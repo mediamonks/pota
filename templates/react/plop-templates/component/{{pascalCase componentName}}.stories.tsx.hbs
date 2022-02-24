@@ -1,0 +1,16 @@
+import type { Meta } from '@storybook/react';
+
+import {{pascalCase componentName}} from './{{pascalCase componentName}}';
+import { createTemplate } from '../../../storybook-helpers/stories';
+import { globalStoreDecorator } from '../../../storybook-helpers/decorators';
+
+export default {
+  title: '{{pascalCase componentName}}',
+  component: {{pascalCase componentName}},
+  decorators: [globalStoreDecorator],
+} as Meta;
+
+const Template = createTemplate({{pascalCase componentName}});
+
+export const Default = Template.bind({});
+Default.args = {};

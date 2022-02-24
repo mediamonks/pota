@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Muban</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/favicon-192.png">
+  <link rel="manifest" href="/manifest.json">
+
+  <meta name="app-script" content="{{publicPath}}static/chunks/main.js" />
+
+  <meta http-equiv="Content-Security-Policy" content="script-src 'sha256-+OVgFCkyF2/rZ6qyfsNnIisCRI6dtMZw3w0Y4xiYagw=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';">
+
+  <link rel="stylesheet" href="{{publicPath}}static/css/main.css" />
+</head>
+  <body>
+    <div id="app">
+      {{content}}
+    </div>
+
+    <!-- @formatter:off -->
+    <!-- prettier-ignore -->
+    <script>!function(){for(var o=document.querySelectorAll('html > head > meta[name="app-script"]'),t=0;t<o.length;t++){var e=o[t].getAttribute("content"),n=document.createElement("script");n.src=e,n.src.substr(0,window.location.origin.length)!==window.location.origin?window.console&&console.error("[ScriptLoader] Cannot load "+e+"."):document.body.appendChild(n)}}()</script>
+    <!-- @formatter:on -->
+  </body>
+</html>

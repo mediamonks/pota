@@ -1,0 +1,79 @@
+{
+  "name": "@pota/muban-template",
+  "version": "0.0.1",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "templates/muban"
+  },
+  "license": "MIT",
+  "author": "frontend.monks",
+  "type": "module",
+  "scripts": {
+    "build": "pota build --output=dist/site",
+    "build:preview": "npm run build -- --preview",
+    "dev": "pota dev --port 9000",
+    "fix": "run-s fix:* && npm run format",
+    "fix:eslint": "npm run lint:eslint -- --fix",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
+    "postinstall": "npx patch-package && husky install",
+    "lint": "run-s lint:*",
+    "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
+    "plop": "node --loader ts-node/esm ./scripts/plop.ts",
+    "rsync": "cross-env rsync -avPx dist/site/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete-after",
+    "rsync:mocks": "cross-env rsync -avPx dist/node/* ${npm_package_name}@${npm_package_config_host}:~/node --delete-after",
+    "rsync:storybook": "cross-env rsync -avPx dist/storybook/* ${npm_package_name}@${npm_package_config_host}:~/public/storybook/ --delete-after",
+    "storybook": "start-storybook -p 6006",
+    "storybook:build": "npm run apply-storybook-patches ; build-storybook -o ./dist/storybook",
+    "storybook:mock-api": "cross-env MOCK_API=true npm run storybook",
+    "typecheck": "run-s typecheck:*",
+    "typecheck:main": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
+    "typecheck:tools": "tsc --project tsconfig.tools.json --noEmit --noUnusedLocals"
+  },
+  "config": {
+    "host": "TODO: Add a host name."
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not ie <= 11, not ie_mob <= 11",
+    "not dead"
+  ],
+  "prettier": "@mediamonks/prettier-config",
+  "dependencies": {
+    "@mediamonks/monck": "^1.0.6",
+    "@mediamonks/muban-transition-component": "^1.0.0",
+    "@muban/muban": "^1.0.0-alpha.28",
+    "@muban/template": "^1.0.0-alpha.3",
+    "clsx": "^1.1.1",
+    "faker": "^5.5.3",
+    "isntnt": "^1.5.2",
+    "normalize.css": "^8.0.1",
+    "seng-scss": "^1.2.5"
+  },
+  "devDependencies": {
+    "@mediamonks/muban-storybook-addon-transition": "^1.0.0",
+    "@mediamonks/prettier-config": "^1.0.0",
+    "@muban/eslint-config": "^1.0.0-alpha.5",
+    "@muban/storybook": "^7.0.0-alpha.19",
+    "@pota/cli": "^2.0.0-alpha.2",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/addons": "^6.4.9",
+    "@storybook/builder-webpack5": "6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
+    "@types/faker": "^5.5.9",
+    "@types/minimist": "^1.2.2",
+    "eslint-plugin-lit": "^1.6.1",
+    "eslint-plugin-lit-a11y": "^2.2.0",
+    "plop": "^3.0.5",
+    "cross-env": "^7.0.3",
+    "lint-staged": "^12.3.1",
+    "husky": "^7.0.4",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.4.0"
+  }
+}

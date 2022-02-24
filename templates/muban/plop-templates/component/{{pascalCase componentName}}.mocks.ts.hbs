@@ -1,0 +1,10 @@
+import type { {{pascalCase componentName}}TemplateProps } from './{{pascalCase componentName}}.types';
+
+export const {{camelCase componentName}}DefaultMockData: {{pascalCase componentName}}TemplateProps = {
+  {{#if isCmsComponent}}
+  blockSpacingTop: 'normal',
+  blockSpacingBottom: 'normal',
+  {{else}}
+  // TODO: Add your mock data here or remove the file!
+  {{/if}}
+};
