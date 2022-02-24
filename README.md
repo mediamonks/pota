@@ -29,9 +29,9 @@ yarn pota
 
 ## Documentation
 
-- [The Core](core)
-- [Official Templates](templates)
-- [Official Scripts](scripts)
+- [Core](core)
+- [Templates](templates)
+- [Scripts](scripts)
 
 ## Contributing
 
