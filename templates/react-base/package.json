@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-base-template",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -34,11 +34,6 @@
     "not dead"
   ],
   "prettier": "@mediamonks/prettier-config",
-  "engines": {
-    "node": ">=16",
-    "npm": ">=7",
-    "yarn": "unsupported"
-  },
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -56,5 +51,10 @@
     "npm-run-all": "^4.1.5",
     "lint-staged": "^12.3.1",
     "typescript": "^4.5.2"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7",
+    "yarn": "unsupported"
   }
 }
