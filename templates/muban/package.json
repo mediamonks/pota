@@ -58,7 +58,7 @@
     "@mediamonks/prettier-config": "^1.0.0",
     "@muban/eslint-config": "^1.0.0-alpha.5",
     "@muban/storybook": "^7.0.0-alpha.19",
-    "@pota/cli": "^2.0.0-alpha.2",
+    "@pota/cli": "^2.0.0-alpha.4",
     "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.9",
     "@storybook/addon-links": "^6.4.9",
