@@ -12,19 +12,13 @@ All of this and more is possible through the `pota` command.
 To get started, we recommend creating a brand new project using [`create-pota`](core/create-pota):
 
 ```bash
-npm init pota
-```
-
-> with npx
-
-```bash
-npx pota
+npm init pota@latest
 ```
 
 > with yarn
 
 ```bash
-yarn pota
+yarn create pota
 ```
 
 ## Documentation
