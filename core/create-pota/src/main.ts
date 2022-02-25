@@ -17,7 +17,6 @@ import {
   readPackageJson,
   writePackageJson,
 } from './package.js';
-import { getGlobalConfig, setGlobalConfig } from './global-config.js';
 import {
   CUSTOM_CHOICE_VALUE,
   FILE_RENAMES,
@@ -48,8 +47,6 @@ function createCustomChoice(type: 'template' | 'script') {
 // when referencing this variable
 const CWD = process.cwd();
 
-const config = await getGlobalConfig();
-
 const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git'>> = [
   // query project name
   {
@@ -78,11 +75,6 @@ const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git
     initial: 0,
     choices: [
       ...Object.entries(OFFICIAL_TEMPLATES).map(([title, { value }]) => ({ title, value })),
-      ...config.custom.templates.map((template) => ({
-        title: yellow(template),
-        value: template,
-        description: 'custom, previously used',
-      })),
       createCustomChoice('template'),
     ],
   },
@@ -110,11 +102,6 @@ const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git
           }
           return { title, value, description: 'recommended' };
         }),
-        ...config.custom.scripts.map((script) => ({
-          title: yellow(script),
-          value: script,
-          description: 'custom, previously used',
-        })),
         createCustomChoice('script'),
         NONE_CHOICE,
       ];
@@ -311,29 +298,3 @@ console.log();
 console.log(`    ${cyan('cd')} ${relativeDir}`);
 console.log();
 console.log(cyan('    npm install'));
-
-// finally, store the used template/script if either one is custom
-let configChanged = false;
-if (
-  !(templatePackage in OFFICIAL_TEMPLATES) &&
-  !config.custom.templates.includes(templatePackage)
-) {
-  config.custom.templates.push(templatePackage);
-  configChanged = true;
-}
-
-if (
-  scriptsPackage &&
-  !(scriptsPackage in OFFICIAL_SCRIPTS) &&
-  !config.custom.scripts.includes(scriptsPackage)
-) {
-  config.custom.scripts.push(scriptsPackage);
-  configChanged = true;
-}
-
-// update the config only if it changed
-if (!configChanged) {
-  try {
-    await setGlobalConfig(config);
-  } catch {} // error nom nom
-}
