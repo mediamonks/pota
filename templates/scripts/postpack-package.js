@@ -10,7 +10,7 @@ const selfPath = relative(process.cwd(), fileURLToPath(import.meta.url));
 const prepackPath = selfPath.replace('postpack', 'prepack');
 
 // read template package.json
-const pkg = JSON.parse(await readFile(packagePath, { encoding: 'utf8' }));
+let pkg = JSON.parse(await readFile(packagePath, { encoding: 'utf8' }));
 
 // remove the "prepack" script (it calls this module)
 pkg.scripts.prepack = `node ${prepackPath}`;
@@ -22,5 +22,11 @@ if (pkg.pota.dependencies) pkg.dependencies = pkg.pota.dependencies;
 if (pkg.pota.devDependencies) pkg.devDependencies = pkg.pota.devDependencies;
 
 delete pkg.pota;
+
+const PKG_KEY_WEIGHTS = {
+  engines: 1
+}
+
+pkg = Object.fromEntries(Object.entries(pkg).sort(([a], [b]) => (PKG_KEY_WEIGHTS[a] ?? -1)  - (PKG_KEY_WEIGHTS[b] ?? -1)))
 
 await writeFile(packagePath, JSON.stringify(pkg, null, 2));
