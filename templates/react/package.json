@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-template",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -39,11 +39,6 @@
     "not dead"
   ],
   "prettier": "@mediamonks/prettier-config",
-  "engines": {
-    "node": ">=16",
-    "npm": ">=7",
-    "yarn": "unsupported"
-  },
   "dependencies": {
     "isntnt": "^1.5.2",
     "jest": "^27.3.1",
@@ -64,7 +59,7 @@
   "devDependencies": {
     "@mediamonks/eslint-config-react": "^2.0.0-rc.1",
     "@mediamonks/prettier-config": "^1.0.0",
-    "@pota/cli": "^2.0.0-alpha.2",
+    "@pota/cli": "^2.0.0-alpha.4",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
@@ -84,5 +79,10 @@
     "npm-run-all": "^4.1.5",
     "lint-staged": "^12.3.1",
     "typescript": "^4.5.2"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7",
+    "yarn": "unsupported"
   }
 }
