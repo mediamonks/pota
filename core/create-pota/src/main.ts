@@ -1,4 +1,5 @@
-import { access, mkdir } from 'fs/promises';
+import { join } from 'path';
+import { access, mkdir, unlink as removeFile } from 'fs/promises';
 
 // @ts-ignore TS is drunk, AGAIN!
 import kleur from 'kleur';
@@ -146,8 +147,9 @@ const args = minimist(process.argv.slice(2), {
 const [shorthand] = args._;
 
 if (shorthand) {
-  args.template = SHORTHANDS[shorthand].template;
-  if (SHORTHANDS[shorthand].scripts) args.scripts = SHORTHANDS[shorthand].scripts;
+  args.template = OFFICIAL_TEMPLATES[SHORTHANDS[shorthand].template].value;
+  if (SHORTHANDS[shorthand].scripts)
+    args.scripts = OFFICIAL_SCRIPTS[SHORTHANDS[shorthand].scripts!];
 }
 
 // override prompts with passed args (if any)
@@ -194,6 +196,7 @@ try {
     templatePackage,
     '--save-dev',
     '--ignore-scripts',
+    '--force', // we only care about the content of the template package, so if its dependencies end up faulty, then that is fine
     '--no-fund',
     '--no-audit',
     '--quiet',
@@ -208,6 +211,8 @@ console.log();
 // read proejct the package json
 // (should now contain the name and 1-2 dev dependencies for the template and scripts packages)
 const pkg = await readPackageJson(projectPath);
+
+await removeFile(join(projectPath, 'package-lock.json'));
 
 // convert the template package specifier to the package names
 // Example: `../template/muban-complete` to `@pota/muban-complete-template`
@@ -227,7 +232,6 @@ if (templatePackage.isFilenamePackage || templatePackage.isGitPackage) {
 const templatePackagePath = resolve(projectPath, 'node_modules', templatePackage);
 
 const files = await Recursive.readdir(templatePackagePath, ['node_modules']);
-
 for (let file of files) {
   if (IGNORED_FILES.includes(file)) continue;
 
@@ -297,7 +301,7 @@ const relativeDir = relative(CWD, process.cwd());
 
 console.log(`  success 💁`);
 console.log();
-console.log(`  created ${green(name)}`);
+console.log(`  created   ${green(name)}`);
 console.log();
 console.log(`  template: ${yellow(templatePackage)}`);
 if (scriptsPackage) console.log(`  scripts:  ${yellow(scriptsPackage)}`);

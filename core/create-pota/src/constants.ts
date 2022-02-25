@@ -19,7 +19,7 @@ export const OFFICIAL_TEMPLATES = {
     value: '@pota/vanilla-template',
     recommended: [OFFICIAL_SCRIPTS.webpack],
   },
-  'muban': {
+  muban: {
     value: '@pota/muban-template',
     recommended: [OFFICIAL_SCRIPTS['muban-webpack']],
   },
@@ -59,7 +59,7 @@ export const FILE_RENAMES = {
   gitignore: '.gitignore',
 };
 
-export const IGNORED_FILES = ['package.json', 'package-lock.json'];
+export const IGNORED_FILES = ['package.json'];
 
 export const IGNORED_PACKAGE_KEYS: ReadonlyArray<PackageJsonShapeKey> = [
   'author',
