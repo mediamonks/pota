@@ -14,6 +14,10 @@ export function normalizePackageName(
   projectPath: string,
 ): string & { isFilenamePackage?: boolean; isGitPackage?: boolean } {
   if (IS_GIT_NPM_PACKAGE.test(name) || IS_URL_NPM_PACKAGE.test(name)) {
+    const [gitServer, actualName] = name.split(':');
+    if (actualName && gitServer === 'git@github.com') {
+      return Object.assign(`github:${actualName.replace('.git', '')}`, { isGitPackage: true });
+    }
     return Object.assign(name, { isGitPackage: true });
   }
 
