@@ -1,4 +1,4 @@
-import { resolve, dirname, isAbsolute } from 'path';
+import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import sade from 'sade';
@@ -6,6 +6,7 @@ import sade from 'sade';
 import type { CommandConstructor } from './authoring.js';
 import { loadDependencies } from './loadDependencies.js';
 import { readPackage } from './readPackage.js';
+import { resolveModulePath } from './resolveModulePath.js';
 
 const root = process.cwd();
 
@@ -29,9 +30,8 @@ if (!commandModulePaths) {
 let commands: Record<string, CommandConstructor> = {};
 
 try {
-  for (let path of commandModulePaths) {
-    path = isAbsolute(path) ? path : resolve(root, path);
-    commands = { ...commands, ...(await import(path)) };
+  for (const path of commandModulePaths) {
+    commands = { ...commands, ...(await import(resolveModulePath(path, root))) };
   }
 } catch (error) {
   console.error('Error occurred loading one of the command modules:');
