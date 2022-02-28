@@ -44,6 +44,6 @@
     "@types/node": "^17.0.10"
   },
   "peerDependencies": {
-    "@pota/cli": "^2.0.0-alpha.2"
+    "@pota/cli": "^2.0.0-alpha.5"
   }
 }

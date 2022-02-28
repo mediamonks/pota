@@ -1,10 +1,4 @@
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-import type { MubanWebpackConfig } from './config.js';
-
-import type { Command, OptionsToOptionsDef } from '@pota/cli/authoring';
-
+import { defineOptions, localPath } from '@pota/cli/authoring';
 import {
   Build as WebpackBuild,
   BuildOptions as WebpackBuildOptions,
@@ -12,16 +6,21 @@ import {
   DevOptions as WebpackDevOptions,
 } from '@pota/webpack-scripts';
 
+import type { Command } from '@pota/cli/authoring';
+
+import type { MubanWebpackConfig } from './config.js';
+
+
 type CommonOptions = {
   'mock-api': boolean;
 };
 
-const commonOptions: OptionsToOptionsDef<CommonOptions> = {
+const commonOptions = defineOptions<CommonOptions>({
   'mock-api': {
     description: 'Toggles support for building API mocks',
     default: false,
   },
-};
+})
 
 export type BuildOptions = WebpackBuildOptions &
   CommonOptions & {
@@ -30,8 +29,7 @@ export type BuildOptions = WebpackBuildOptions &
 
 type Dependencies = { config: MubanWebpackConfig };
 
-const SELF_DIRNAME = dirname(fileURLToPath(import.meta.url));
-const CONFIG_PATHS = ['pota.config.js', join(SELF_DIRNAME, 'config.js')];
+const CONFIG_PATHS = ['pota.config.js', localPath(import.meta.url, 'config.js')];
 
 export class Build extends WebpackBuild implements Command<BuildOptions, Dependencies> {
   dependsOn = { config: CONFIG_PATHS };

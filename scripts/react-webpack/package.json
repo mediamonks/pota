@@ -45,6 +45,6 @@
     "web-vitals": "^2.1.4"
   },
   "peerDependencies": {
-    "@pota/cli": "^2.0.0-alpha.2"
+    "@pota/cli": "^2.0.0-alpha.5"
   }
 }

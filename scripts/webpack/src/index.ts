@@ -1,11 +1,9 @@
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { localPath, defineOptions } from '@pota/cli/authoring';
+import { isNumber } from 'isntnt';
 
 import type { Stats } from 'webpack';
-import type { Command, OptionsToOptionsDef } from '@pota/cli/authoring';
+import type { Command } from '@pota/cli/authoring';
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
-
-import { isNumber } from 'isntnt';
 
 import { parsePort } from './parsePort.js';
 import { loadProxySetup } from './loadProxySetup.js';
@@ -16,7 +14,7 @@ import { paths } from './paths.js';
 import type { WebpackConfig } from './config.js';
 import type { CommonOptions, BuildOptions, DevOptions } from './types.js';
 
-const commonOptions: OptionsToOptionsDef<CommonOptions> = {
+const commonOptions = defineOptions<CommonOptions>({
   'public-path': {
     description: 'The location of static assets on your production server.',
     default: '/',
@@ -39,7 +37,7 @@ const commonOptions: OptionsToOptionsDef<CommonOptions> = {
       "Toggles webpack's caching behavior. (https://webpack.js.org/configuration/cache/)",
     default: true,
   },
-};
+})
 
 function buildFinish(error: unknown, stats?: Stats, onFinish?: () => void) {
   if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
@@ -52,8 +50,7 @@ function buildFinish(error: unknown, stats?: Stats, onFinish?: () => void) {
 
 type Dependencies = { config: WebpackConfig };
 
-const SELF_DIRNAME = dirname(fileURLToPath(import.meta.url));
-const CONFIG_PATHS = ['pota.config.js', join(SELF_DIRNAME, 'config.js')];
+const CONFIG_PATHS = ['pota.config.js', localPath(import.meta.url, 'config.js')];
 
 export class Build implements Command<BuildOptions, Dependencies> {
   name = 'build';

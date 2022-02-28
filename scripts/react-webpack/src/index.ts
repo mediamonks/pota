@@ -1,13 +1,12 @@
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-import type { Command } from '@pota/cli/authoring';
+import { localPath } from '@pota/cli/authoring';
 import {
   Build as WebpackBuild,
   BuildOptions as WebpackBuildOptions,
   Dev as WebpackDev,
   DevOptions,
 } from '@pota/webpack-scripts';
+
+import type { Command } from '@pota/cli/authoring';
 import type { ReactWebpackConfig } from './config.js';
 
 type BuildOptions = WebpackBuildOptions & {
@@ -16,8 +15,7 @@ type BuildOptions = WebpackBuildOptions & {
 
 type Dependencies = { config: ReactWebpackConfig };
 
-const SELF_DIRNAME = dirname(fileURLToPath(import.meta.url));
-const CONFIG_PATHS = ['pota.config.js', join(SELF_DIRNAME, 'config.js')];
+const CONFIG_PATHS = ['pota.config.js', localPath(import.meta.url, 'config.js')];
 
 export class Build extends WebpackBuild implements Command<BuildOptions, Dependencies> {
   dependsOn = { config: CONFIG_PATHS };

@@ -48,6 +48,6 @@
   },
   "peerDependencies": {
     "@mediamonks/monck": "^1.0.6",
-    "@pota/cli": "^2.0.0-alpha.2"
+    "@pota/cli": "^2.0.0-alpha.5"
   }
 }
