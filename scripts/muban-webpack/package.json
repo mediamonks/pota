@@ -1,6 +1,6 @@
 {
   "name": "@pota/muban-webpack-scripts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Muban related configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
