@@ -1,6 +1,5 @@
 import type { Ref } from '@muban/muban';
 import { defineComponent, ref, propType, computed, bind } from '@muban/muban';
-import { supportLazy } from '@muban/muban/dist/esm/lib/api/apiLazy';
 import { isBoolean, optional } from 'isntnt';
 
 import './toggle-expand.scss';
@@ -12,7 +11,7 @@ import data from '../../../assets/json/test.json';
 console.log('json data test', data);
 
 export const useToggle = (
-  initialValue: boolean,
+  initialValue: boolean
 ): readonly [Ref<boolean>, (force?: boolean) => void] => {
   const state = ref(initialValue);
   const toggle = (force?: boolean): void => {
@@ -45,5 +44,3 @@ export const ToggleExpand = defineComponent({
     ];
   },
 });
-
-export const lazy = supportLazy(ToggleExpand);

@@ -1,4 +1,4 @@
-import type { Story } from '@muban/storybook/types-6-0';
+import type { Story } from '@muban/storybook';
 
 import type { {{pascalCase componentName}}TemplateProps } from './{{pascalCase componentName}}.types';
 import { {{camelCase componentName}}Template } from './{{pascalCase componentName}}.template';
@@ -6,13 +6,14 @@ import { {{pascalCase componentName}} } from './{{pascalCase componentName}}';
 import { {{camelCase componentName}}DefaultMockData } from './{{pascalCase componentName}}.mocks';
 
 export default {
-title: '{{type}}/{{dashCase componentName}}',
-argTypes: {},
+  title: '{{type}}/{{dashCase componentName}}',
+  argTypes: {},
 };
 
-export const Default: Story<{{pascalCase componentName}}TemplateProps> = () => ({
-  template: {{camelCase componentName}}Template,
-  component: {{pascalCase componentName}},
-  });
-
-  Default.args = {{camelCase componentName}}DefaultMockData;
+export const Default: Story<{{pascalCase componentName}}TemplateProps> = {
+  render: () => ({
+    template: {{camelCase componentName}}Template,
+    component: {{pascalCase componentName}},
+  }),
+  args: {{camelCase componentName}}DefaultMockData
+};

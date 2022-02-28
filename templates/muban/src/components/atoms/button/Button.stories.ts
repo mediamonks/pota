@@ -1,15 +1,24 @@
-import type { Story } from '@muban/storybook/types-6-0';
+import type { Story } from '@muban/storybook';
+import { buttonTemplate } from './Button.template';
 import type { ButtonTemplateProps } from './Button.template';
-import { meta } from './Button.template';
 
 export default {
   title: 'Button',
   argTypes: {
     label: { control: 'text' },
   },
+  parameters: {
+    actions: {
+      handles: ['click', '[data-component="button"]'],
+    },
+  },
 };
 
-export const Default: Story<ButtonTemplateProps> = () => meta;
-Default.args = {
-  label: 'Click me',
+export const Default: Story<ButtonTemplateProps> = {
+  render: () => ({
+    template: buttonTemplate,
+  }),
+  args: {
+    label: 'Click me',
+  },
 };

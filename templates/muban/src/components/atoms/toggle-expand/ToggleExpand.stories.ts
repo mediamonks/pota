@@ -1,4 +1,4 @@
-import type { Story } from '@muban/storybook/types-6-0';
+import type { Story } from '@muban/storybook';
 import { ToggleExpand } from './ToggleExpand';
 import type { ToggleExpandProps } from './ToggleExpand.template';
 import { toggleExpandTemplate } from './ToggleExpand.template';
@@ -10,15 +10,19 @@ export default {
   },
 };
 
-export const Default: Story<ToggleExpandProps> = () => ({
-  component: ToggleExpand,
-  template: toggleExpandTemplate,
-});
-Default.args = {
-  isExpanded: false,
+export const Default: Story<ToggleExpandProps> = {
+  render: () => ({
+    component: ToggleExpand,
+    template: toggleExpandTemplate,
+  }),
+  args: {
+    isExpanded: false,
+  },
 };
 
-export const Expanded = Default.bind({});
-Expanded.args = {
-  isExpanded: true,
+export const Expanded: Story<ToggleExpandProps> = {
+  ...Default,
+  args: {
+    isExpanded: true,
+  },
 };
