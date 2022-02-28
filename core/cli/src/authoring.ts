@@ -1,7 +1,10 @@
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
 type Constructor<T, Arguments extends unknown[] = any[]> = new (...arguments_: Arguments) => T;
 
-export type OptionsToOptionsDef<O extends Record<string, unknown>> = {
-  [P in keyof O]: { description?: string; default: O[P] };
+export type OptionsToOptionsDef<Options extends Record<string, unknown>> = {
+  [P in keyof Options]: { description?: string; default: Options[P] };
 };
 
 export interface Command<
@@ -17,3 +20,15 @@ export interface Command<
 }
 
 export type CommandConstructor = Constructor<Command<Record<string, unknown>>>;
+
+export function defineOptions<Options extends Record<string, unknown>>(
+  options: OptionsToOptionsDef<Options>,
+): OptionsToOptionsDef<Options> {
+  return options;
+}
+
+export function localPath(localFileUrl: string | URL, path: string) {
+  const directory = dirname(fileURLToPath(localFileUrl));
+
+  return join(directory, path);
+}
