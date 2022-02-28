@@ -1,6 +1,6 @@
 {
   "name": "@pota/webpack-scripts",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Base Webpack configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
