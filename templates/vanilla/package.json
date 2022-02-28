@@ -38,7 +38,6 @@
   "devDependencies": {
     "@mediamonks/eslint-config-base": "^2.0.0",
     "@mediamonks/prettier-config": "^1.0.0",
-    "@pota/cli": "^2.0.0-alpha.4",
     "cross-env": "^7.0.3",
     "eslint": "^8.2.0",
     "husky": "^7.0.4",
