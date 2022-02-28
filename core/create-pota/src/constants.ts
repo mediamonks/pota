@@ -71,4 +71,5 @@ export const IGNORED_PACKAGE_KEYS: ReadonlyArray<PackageJsonShapeKey> = [
   'license',
   'publishConfig',
   'repository',
+  'keywords'
 ];

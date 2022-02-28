@@ -52,6 +52,7 @@ export interface PackageJsonShape {
   author?: string;
   name?: string;
   version?: string;
+  keywords?: ReadonlyArray<string>;
   pota?:
     | string
     | {
