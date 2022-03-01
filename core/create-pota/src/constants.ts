@@ -10,6 +10,7 @@ export const OFFICIAL_SCRIPTS = {
   webpack: '@pota/webpack-scripts',
   'muban-webpack': '@pota/muban-webpack-scripts',
   'react-webpack': '@pota/react-webpack-scripts',
+  'react-vite': '@pota/react-vite-scripts',
 } as const;
 
 export type OfficialScripts = keyof typeof OFFICIAL_SCRIPTS;
@@ -29,7 +30,7 @@ export const OFFICIAL_TEMPLATES = {
   },
   'react-base': {
     value: '@pota/react-base-template',
-    recommended: [OFFICIAL_SCRIPTS['react-webpack']],
+    recommended: [OFFICIAL_SCRIPTS['react-webpack'], OFFICIAL_SCRIPTS['react-vite']],
   },
 } as const;
 
