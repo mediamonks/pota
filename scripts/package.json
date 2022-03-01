@@ -6,6 +6,7 @@
     "muban-webpack",
     "react-webpack",
     "webpack",
+    "react-vite",
     "vite"
   ],
   "scripts": {

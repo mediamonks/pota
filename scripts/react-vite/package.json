@@ -1,0 +1,47 @@
+{
+  "name": "@pota/react-vite-scripts",
+  "version": "0.0.1",
+  "description": "Base React Vite configuration and scripts for Pota",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "scripts/react-vite"
+  },
+  "author": "frontend.monks",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./config": "./lib/config.js",
+    "./paths": "./lib/paths.js"
+  },
+  "typesVersions": {
+    "*": {
+      "config": [
+        "./lib/config.d.ts"
+      ],
+      "paths": [
+        "./lib/paths.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc -b -i",
+    "clean:build": "tsc -b --clean && tsc -b",
+    "prepublishOnly": "npm run clean:build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^1.2.0",
+    "@pota/vite-scripts": "^0.0.1",
+    "vite": "^2.8.5"
+  },
+  "peerDependencies": {
+    "@pota/cli": "^2.0.0-alpha.5"
+  }
+}
