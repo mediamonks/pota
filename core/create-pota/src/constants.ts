@@ -35,14 +35,6 @@ export const OFFICIAL_TEMPLATES = {
 
 export type OfficialTemplate = keyof typeof OFFICIAL_TEMPLATES;
 
-export const SHORTHANDS: Record<string, { template: OfficialTemplate; scripts?: OfficialScripts }> =
-  {
-    muban: { template: 'muban', scripts: 'muban-webpack' },
-    vanilla: { template: 'vanilla', scripts: 'webpack' },
-    react: { template: 'react', scripts: 'react-webpack' },
-    'react-base': { template: 'react-base', scripts: 'react-webpack' },
-  };
-
 export const TEMPLATE_VALUES_AS_KEYS = Object.fromEntries(
   Object.entries(OFFICIAL_TEMPLATES).map(([key, { value }]) => [value, key]),
 ) as Record<string, OfficialTemplate>;
@@ -71,5 +63,5 @@ export const IGNORED_PACKAGE_KEYS: ReadonlyArray<PackageJsonShapeKey> = [
   'license',
   'publishConfig',
   'repository',
-  'keywords'
+  'keywords',
 ];

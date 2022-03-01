@@ -3,7 +3,6 @@ import { access, mkdir, unlink as removeFile } from 'fs/promises';
 
 // @ts-ignore TS is drunk, AGAIN!
 import kleur from 'kleur';
-import minimist from 'minimist';
 import prompts from 'prompts';
 
 import { copy, Recursive } from './fs.js';
@@ -25,22 +24,14 @@ import {
   NONE_CHOICE,
   OFFICIAL_SCRIPTS,
   OFFICIAL_TEMPLATES,
-  SHORTHANDS,
   TEMPLATE_VALUES_AS_KEYS,
 } from './constants.js';
+import { parseArguments } from './parseArguments.js';
 
 const { green, cyan, yellow, gray } = kleur;
 
-/*
- * Helper function for creating a "custom choice"
- */
-function createCustomChoice(type: 'template' | 'script') {
-  return {
-    title: yellow(CUSTOM_CHOICE_VALUE),
-    value: CUSTOM_CHOICE_VALUE,
-    description: `bring your own custom ${type}`,
-  };
-}
+// override prompts with passed args (if any)
+prompts.override(parseArguments(process.argv.slice(2)));
 
 // cwd will change in the exection of this script
 // so we need to make sure we are always using the same value
@@ -75,7 +66,11 @@ const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git
     initial: 0,
     choices: [
       ...Object.entries(OFFICIAL_TEMPLATES).map(([title, { value }]) => ({ title, value })),
-      createCustomChoice('template'),
+      {
+        title: yellow(CUSTOM_CHOICE_VALUE),
+        value: CUSTOM_CHOICE_VALUE,
+        description: `bring your own custom template`,
+      },
     ],
   },
   // custom choice: query for template
@@ -102,7 +97,11 @@ const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git
           }
           return { title, value, description: 'recommended' };
         }),
-        createCustomChoice('script'),
+        {
+          title: yellow(CUSTOM_CHOICE_VALUE),
+          value: CUSTOM_CHOICE_VALUE,
+          description: `bring your own custom script`,
+        },
         NONE_CHOICE,
       ];
     },
@@ -124,23 +123,6 @@ const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git
     inactive: 'no',
   },
 ];
-
-// parse args and filter out non-shorthand options
-const args = minimist(process.argv.slice(2), {
-  unknown: (arg) => arg in SHORTHANDS || arg === '--template' || arg === '--scripts',
-});
-
-// if a shorthand has been passed, then apply its `template` and `scripts` back to the args
-const [shorthand] = args._;
-
-if (shorthand) {
-  args.template = OFFICIAL_TEMPLATES[SHORTHANDS[shorthand].template].value;
-  if (SHORTHANDS[shorthand].scripts)
-    args.scripts = OFFICIAL_SCRIPTS[SHORTHANDS[shorthand].scripts!];
-}
-
-// override prompts with passed args (if any)
-prompts.override(args);
 
 // prompt the user
 const result = await prompts(PROMPTS, {
@@ -175,7 +157,9 @@ process.chdir(projectPath);
 // create the initial package.json with just the project name
 await writePackageJson(projectPath, { name });
 
-// install template and scripts package (if it was asked for)
+// TODO: immediately copy template if its a local package
+
+// install the template package
 try {
   await spawn(
     'npm',
@@ -195,14 +179,15 @@ try {
 }
 console.log();
 
-// read proejct the package json
+// read the newly created package json
 // (should now contain the name and 1-2 dev dependencies for the template and scripts packages)
 const pkg = await readPackageJson(projectPath);
 
+// remove the package-lock (should contains a single entry for the template package)
 await removeFile(join(projectPath, 'package-lock.json'));
 
 // convert the template package specifier to the package names
-// Example: `../template/muban-complete` to `@pota/muban-complete-template`
+// Example: `../template/muban` to `@pota/muban-template`
 if (templatePackage.isFilenamePackage || templatePackage.isGitPackage) {
   const matchingEntry = Object.entries(pkg.devDependencies ?? ({} as Record<string, string>)).find(
     ([, pkgSpec]) => pkgSpec.endsWith(templatePackage),
@@ -218,8 +203,7 @@ if (templatePackage.isFilenamePackage || templatePackage.isGitPackage) {
 
 const templatePackagePath = resolve(projectPath, 'node_modules', templatePackage);
 
-const files = await Recursive.readdir(templatePackagePath, ['node_modules']);
-for (let file of files) {
+for (let file of await Recursive.readdir(templatePackagePath, ['node_modules'])) {
   if (IGNORED_FILES.includes(file)) continue;
 
   const src = resolve(templatePackagePath, file);

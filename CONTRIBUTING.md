@@ -9,7 +9,7 @@ Please look through this document for insights in how the project is setup and h
 > Example:
 
 ```bash
-npx pota --template templates/vanilla
+npm init pota -- --template templates/vanilla
 ```
 
 NOTE: [`create-pota`](core/create-pota) currently does not support project creation with local scripts packages.
@@ -18,7 +18,7 @@ However, these can be easily installed after the project is created (see next se
 > Example:
 
 ```bash
-npx pota --template templates/vanilla --scripts none
+npm init pota -- --template templates/vanilla --no-scripts
 ```
 
 ## Working with local `templates`, `scripts` and `@pota/cli`
