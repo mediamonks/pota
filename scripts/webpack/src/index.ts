@@ -37,7 +37,7 @@ const commonOptions = defineOptions<CommonOptions>({
       "Toggles webpack's caching behavior. (https://webpack.js.org/configuration/cache/)",
     default: true,
   },
-})
+});
 
 function buildFinish(error: unknown, stats?: Stats, onFinish?: () => void) {
   if (!error && stats?.hasErrors()) error = stats.toJson({ colors: true })?.errors;
@@ -165,9 +165,10 @@ export class Dev implements Command<DevOptions, Dependencies> {
         setupMiddlewares(middlewares, devServer) {
           if (!devServer) throw new Error('webpack-dev-server is not defined');
 
-
           if (devServerConfig.setupMiddlewares) {
-            middlewares.unshift(...(devServerConfig.setupMiddlewares(middlewares, devServer) ?? []));
+            middlewares.unshift(
+              ...(devServerConfig.setupMiddlewares(middlewares, devServer) ?? []),
+            );
           }
 
           middlewares.unshift(proxySetup(devServer.app!));

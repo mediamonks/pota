@@ -5,7 +5,14 @@ import type { Command } from '@pota/cli/authoring';
 import { paths } from './paths.js';
 
 import type { ViteConfig } from './config.js';
-import type { CommonOptions, BuildOptions, DevOptions, PreviewOptions, DevAndPreviewOptions, DevAndBuildOptions } from './types.js';
+import type {
+  CommonOptions,
+  BuildOptions,
+  DevOptions,
+  PreviewOptions,
+  DevAndPreviewOptions,
+  DevAndBuildOptions,
+} from './types.js';
 
 const commonOptions = defineOptions<CommonOptions>({
   'public-path': {
@@ -18,28 +25,31 @@ const commonOptions = defineOptions<CommonOptions>({
   },
 });
 
-
 const devAndPreviewOptions = defineOptions<DevAndPreviewOptions>({
   host: {
     description: 'Specify which IP addresses the server should listen on.',
-    default: '127.0.0.1'
+    default: '127.0.0.1',
   },
   https: {
-    description: "Enables the server's listening socket for TLS (by default, dev server will be served over HTTP)",
-    default: false
+    description:
+      "Enables the server's listening socket for TLS (by default, dev server will be served over HTTP)",
+    default: false,
   },
   open: {
-    description: 'Allows to configure dev server to open the browser after the server has been started.',
-    default: true
+    description:
+      'Allows to configure dev server to open the browser after the server has been started.',
+    default: true,
   },
   port: { description: 'Allows configuring the port.', default: 2001 },
   cors: { description: 'Enable CORS.', default: false },
 });
 
 const devAndBuildOptions = defineOptions<DevAndBuildOptions>({
-  force: { description: 'Ignore pre-bundled dependencies (the node_modules/.vite cache).', default: false },
+  force: {
+    description: 'Ignore pre-bundled dependencies (the node_modules/.vite cache).',
+    default: false,
+  },
 });
-
 
 type Dependencies = { config: ViteConfig };
 
@@ -97,7 +107,6 @@ export class Dev implements Command<DevOptions, Dependencies> {
     };
   }
 
-
   async action(_: DevOptions, { config }: Dependencies) {
     const { createServer } = await import('vite');
 
@@ -117,7 +126,6 @@ export class Preview implements Command<PreviewOptions, Dependencies> {
     return { ...commonOptions, ...devAndBuildOptions, ...devAndPreviewOptions };
   }
 
-
   async action(_: PreviewOptions, { config }: Dependencies) {
     const { preview } = await import('vite');
 
@@ -126,6 +134,5 @@ export class Preview implements Command<PreviewOptions, Dependencies> {
     server.printUrls();
   }
 }
-
 
 export { BuildOptions, DevOptions, PreviewOptions };

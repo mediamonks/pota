@@ -13,7 +13,7 @@ export type ViteConfigOptions = CommonOptions &
   Partial<PreviewOptions>;
 
 export class ViteConfig<C extends ViteConfigOptions = ViteConfigOptions> {
-  constructor(public readonly options: C) { }
+  constructor(public readonly options: C) {}
 
   public get isDev() {
     return process.env.NODE_ENV === 'development';

@@ -1,5 +1,5 @@
 import { access } from 'fs/promises';
-import { isAbsolute, resolve } from 'path';
+import { isAbsolute, resolve, join } from 'path';
 
 import babelPresetEnv from '@babel/preset-env';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
@@ -18,7 +18,6 @@ import type { Configuration, RuleSetRule } from 'webpack';
 import type { BuildOptions, DevOptions, CommonOptions } from './types.js';
 
 import { paths, isSubDirectory } from './paths.js';
-import { join } from 'path/posix';
 
 export type WebpackConfigOptions = CommonOptions & Partial<BuildOptions> & Partial<DevOptions>;
 

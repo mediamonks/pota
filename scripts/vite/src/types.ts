@@ -23,8 +23,10 @@ export type BuildOptions = CommonOptions &
     'source-map': boolean;
   };
 
-export type DevOptions = CommonOptions & DevAndBuildOptions & DevAndPreviewOptions & {
-  prod: boolean;
-};
+export type DevOptions = CommonOptions &
+  DevAndBuildOptions &
+  DevAndPreviewOptions & {
+    prod: boolean;
+  };
 
 export type PreviewOptions = CommonOptions & DevAndPreviewOptions;

@@ -10,7 +10,6 @@ import type { Command } from '@pota/cli/authoring';
 
 import type { MubanWebpackConfig } from './config.js';
 
-
 type CommonOptions = {
   'mock-api': boolean;
 };
@@ -20,7 +19,7 @@ const commonOptions = defineOptions<CommonOptions>({
     description: 'Toggles support for building API mocks',
     default: false,
   },
-})
+});
 
 export type BuildOptions = WebpackBuildOptions &
   CommonOptions & {
