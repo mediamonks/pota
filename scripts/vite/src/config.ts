@@ -1,5 +1,3 @@
-import { join } from 'path';
-
 import { defineConfig, PluginOption, UserConfig } from 'vite';
 import type { WatcherOptions } from 'rollup';
 import type { BuildOptions, DevOptions, CommonOptions, PreviewOptions } from './types.js';
@@ -13,7 +11,7 @@ export type ViteConfigOptions = CommonOptions &
   Partial<PreviewOptions>;
 
 export class ViteConfig<C extends ViteConfigOptions = ViteConfigOptions> {
-  constructor(public readonly options: C) {}
+  constructor(public readonly options: C) { }
 
   public get isDev() {
     return process.env.NODE_ENV === 'development';
@@ -33,7 +31,7 @@ export class ViteConfig<C extends ViteConfigOptions = ViteConfigOptions> {
 
   public async final(): Promise<UserConfig> {
     return defineConfig({
-      root: join(process.cwd(), 'public'),
+      root: paths.user,
       plugins: await this.plugins(),
       mode: this.isDev ? 'development' : 'production',
       base: this.options['public-path'],
