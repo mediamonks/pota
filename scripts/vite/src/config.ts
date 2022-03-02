@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-import { defineConfig, Plugin, UserConfig } from 'vite';
+import { defineConfig, PluginOption, UserConfig } from 'vite';
 import type { WatcherOptions } from 'rollup';
 import type { BuildOptions, DevOptions, CommonOptions, PreviewOptions } from './types.js';
 
@@ -27,7 +27,7 @@ export class ViteConfig<C extends ViteConfigOptions = ViteConfigOptions> {
     return paths.entry;
   }
 
-  public async plugins(): Promise<Array<Plugin>> {
+  public async plugins(): Promise<Array<PluginOption>> {
     return [injectEntryTagPlugin(this.entry)];
   }
 
