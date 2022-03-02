@@ -1,23 +1,22 @@
-# react-skeleton [![downloads](https://badgen.now.sh/npm/dm/@pota/react-skeleton)](https://npmjs.org/package/@pota/react-skeleton) ![extends](https://badgen.net/badge/extends/@pota%2Freact-base-skeleton/blue)
-
-<div align="center">The <b>de-facto React skeleton</b> for new projects.</div>
-<br />
+# react-template [![downloads](https://badgen.now.sh/npm/dm/@pota/react-template)](https://npmjs.org/package/@pota/react-template)
 
 ## Setup 🚀
 
-You can create a new project using the `@pota/create` package.
+You can create a new project using [`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
 
 ```bash
-npx @pota/create react my-react-app
+npm init pota -- --template react
 ```
+
+> or use the shorthand, for the recommeded script setup
+
+```bash
+npm init pota react
+```
+
 
 <!--
 During project creation, everything above this comment should _ideally_ be replaced with a `Quick Start` on how to run & build the project, referencing the project title in the heading, instead of the skeleton's.
--->
-
-<!--
-TODO: How to include the content from the `README.md` of `react-base-skeleton` ?
-As now I have to copy it over on every change -_- (This is the fourth time I copied this file 😠😠😠😠 )
 -->
 
 ## Standards 📒
