@@ -37,8 +37,9 @@
     "prepublishOnly": "npm run clean:build"
   },
   "dependencies": {
+    "@pota/vite-scripts": "^0.0.2",
     "@vitejs/plugin-react": "^1.2.0",
-    "@pota/vite-scripts": "^0.0.1",
+    "babel-plugin-formatjs": "^10.3.18",
     "vite": "^2.8.5"
   },
   "peerDependencies": {

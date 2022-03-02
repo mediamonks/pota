@@ -1,5 +1,5 @@
 import { ViteConfig, ViteConfigOptions } from '@pota/vite-scripts/config';
-import viteReact from '@vitejs/plugin-react';
+import formatJsBabelPlugin from 'babel-plugin-formatjs';
 import { defineConfig, UserConfig } from 'vite';
 
 import { paths } from './paths.js';
@@ -9,8 +9,29 @@ export class ReactViteConfig extends ViteConfig {
     return paths.entry;
   }
 
+  public get babelConfig() {
+    return {
+      plugins: [
+        [
+          formatJsBabelPlugin.default,
+          {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            ast: true,
+          },
+        ],
+      ],
+    };
+  }
+
   public async plugins() {
-    return [(viteReact as unknown as Function)(), ...(await super.plugins())];
+    const viteReact = await (import('@vitejs/plugin-react').then(m => m.default.default));
+
+    return [
+      ...(await super.plugins()),
+      ...viteReact({
+        babel: this.babelConfig,
+      }),
+    ];
   }
 
   public async final() {
