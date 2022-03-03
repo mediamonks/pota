@@ -1,6 +1,6 @@
 {
   "name": "@pota/cli",
-  "version": "2.0.0-alpha.5",
+  "version": "2.0.0-alpha.6",
   "description": "Create Pota Apps with no configuration",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
