@@ -3,10 +3,12 @@ import { fileURLToPath } from 'url';
 
 import sade from 'sade';
 
-import type { CommandConstructor } from './authoring.js';
+import type { CommandFunction, CommandModule } from './authoring.js';
 import { loadDependencies } from './loadDependencies.js';
 import { readPackage } from './readPackage.js';
 import { resolveModulePath } from './resolveModulePath.js';
+import { isNativeClass } from './isNativeClass.js';
+import { paramCase } from 'param-case';
 
 const root = process.cwd();
 
@@ -27,7 +29,7 @@ if (!commandModulePaths) {
   process.exit(1);
 }
 
-let commands: Record<string, CommandConstructor> = {};
+let commands: Record<string, CommandModule> = {};
 
 try {
   for (const path of commandModulePaths) {
@@ -44,9 +46,15 @@ const version = (await readPackage(selfPackagePath)).version ?? 'N/A';
 
 const main = sade('pota').version(version);
 
-for (const [moduleName, commandClass] of Object.entries(commands)) {
+for (const [moduleName, commandModule] of Object.entries(commands)) {
   try {
-    const command = new commandClass();
+    if (!isNativeClass(commandModule)) {
+      const commandAction: CommandFunction = commandModule;
+      main.command(paramCase(commandAction.name)).action(({ _: options }) => commandAction(options));
+      continue;
+    }
+
+    const command = new commandModule();
 
     const program = main.command(command.name);
 

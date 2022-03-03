@@ -19,7 +19,16 @@ export interface Command<
   dependsOn: { [K in keyof Dependencies]: string | ReadonlyArray<string> };
 }
 
-export type CommandConstructor = Constructor<Command<Record<string, unknown>>>;
+export type CommandConstructor<Options extends Record<string, unknown> = Record<string, unknown>> =
+  Constructor<Command<Options>>;
+
+export type CommandFunction<Options extends Record<string, unknown> = Record<string, unknown>> = (
+  options: Options,
+) => void | Promise<void>;
+
+export type CommandModule<Options extends Record<string, unknown> = Record<string, unknown>> =
+  | CommandConstructor<Options>
+  | CommandFunction<Options>;
 
 export function defineOptions<Options extends Record<string, unknown>>(
   options: OptionsToOptionsDef<Options>,
