@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "pota dev",
     "build": "pota build",
-    "postinstall": "husky install",
+    "postinstall": "npx patch-package",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",

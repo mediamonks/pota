@@ -1,0 +1,6 @@
+{
+  "short_name": "vanilla",
+  "name": "Pota Vanilla Template",
+  "start_url": ".",
+  "display": "standalone"
+}
