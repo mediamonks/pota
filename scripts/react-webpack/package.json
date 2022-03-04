@@ -39,7 +39,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
-    "@pota/webpack-scripts": "^0.0.13",
+    "@pota/webpack-scripts": "^0.0.15",
     "@svgr/webpack": "^6.2.1",
     "babel-plugin-named-asset-import": "^0.3.8",
     "web-vitals": "^2.1.4"
