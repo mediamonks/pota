@@ -11,6 +11,8 @@ import WorkboxPlugin from 'workbox-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 import webpack from 'webpack';
 
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
@@ -131,7 +133,12 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
     return [
       new HTMLPlugin({
         inject: true,
-        template: resolve(paths.publicDir, 'index.html'),
+        template: resolve(paths.user, 'index.html'),
+      }),
+      new FaviconsWebpackPlugin({
+        logo: resolve(paths.assets, 'favicon.svg'),
+        manifest: resolve(paths.user, 'manifest.json'),
+        inject: true,
       }),
       new FriendlyErrorsPlugin(),
       new webpack.DefinePlugin(env.stringified),
@@ -141,7 +148,7 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
             from: paths.publicDir,
             toType: 'dir',
             globOptions: {
-              ignore: ['**/.*', resolve(paths.publicDir, 'index.html').replace(/\\/g, '/')],
+              ignore: ['**/.*'],
             },
           },
           {

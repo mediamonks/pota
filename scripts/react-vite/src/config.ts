@@ -24,7 +24,7 @@ export class ReactViteConfig extends ViteConfig {
   }
 
   public async plugins() {
-    const viteReact = await (import('@vitejs/plugin-react').then(m => m.default.default));
+    const viteReact = await import('@vitejs/plugin-react').then((m) => m.default.default);
 
     return [
       ...(await super.plugins()),

@@ -23,6 +23,7 @@ function createPaths() {
 
     // Paths relative to the source directory
     entry: resolve(source, 'main.ts'),
+    assets: resolve(source, 'assets'),
 
     serviceWorker: resolve(source, 'service-worker.ts'),
   };
