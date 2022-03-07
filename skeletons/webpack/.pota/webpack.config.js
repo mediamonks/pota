@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { join, resolve } from 'path';
 import { access } from 'fs/promises';
 
 import webpack from 'webpack';
@@ -96,7 +96,13 @@ export default async function createConfig(unsafeOptions, babelConfig) {
     context: paths.user,
     entry: paths.entry,
 
-    cache: options.cache && { type: 'filesystem' },
+    cache: options.cache && {
+      type: 'filesystem',
+      buildDependencies: {
+        // This makes all dependencies of this file - build dependencies
+        config: [join(paths.self, 'webpack.config.js')],
+      },
+    },
 
     output: {
       path: options.output,
