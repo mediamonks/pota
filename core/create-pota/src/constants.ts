@@ -48,13 +48,9 @@ export const NONE_CHOICE: prompts.Choice = {
   description: "don't include a scripts package",
 };
 
-export const FILE_RENAMES = {
-  gitignore: '.gitignore',
-};
-
-export const IGNORED_FILES = ['package.json'];
-
 export const IGNORED_PACKAGE_KEYS: ReadonlyArray<PackageJsonShapeKey> = [
+  'name',
+  'version',
   'author',
   'bin',
   'bugs',

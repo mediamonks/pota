@@ -50,7 +50,9 @@ for (const [moduleName, commandModule] of Object.entries(commands)) {
   try {
     if (!isNativeClass(commandModule)) {
       const commandAction: CommandFunction = commandModule;
-      main.command(paramCase(commandAction.name)).action(({ _: options }) => commandAction(options));
+      main
+        .command(paramCase(commandAction.name))
+        .action(({ _: options }) => commandAction(options));
       continue;
     }
 

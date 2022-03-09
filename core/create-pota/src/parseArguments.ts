@@ -1,4 +1,5 @@
 import minimist from 'minimist';
+
 import { OFFICIAL_TEMPLATES, OFFICIAL_SCRIPTS, NONE_CHOICE } from './constants.js';
 import type { OfficialScripts, OfficialTemplate } from './constants.js';
 

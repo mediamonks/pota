@@ -1,25 +1,15 @@
-import { join } from 'path';
-import { access, mkdir, unlink as removeFile } from 'fs/promises';
+import { access, mkdir } from 'fs/promises';
 
 // @ts-ignore TS is drunk, AGAIN!
 import kleur from 'kleur';
 import prompts from 'prompts';
 
-import { copy, Recursive } from './fs.js';
-import { isString } from './predicates.js';
 import { nameValidator } from './validators.js';
 import { resolve, relative } from 'path';
-import { spawn, command } from './spawn.js';
-import {
-  normalizePackageName,
-  PackageJsonShapeKey,
-  readPackageJson,
-  writePackageJson,
-} from './package.js';
+import { command } from './spawn.js';
+import { PackageJsonShape, readPackageJson, writePackageJson } from './package.js';
 import {
   CUSTOM_CHOICE_VALUE,
-  FILE_RENAMES,
-  IGNORED_FILES,
   IGNORED_PACKAGE_KEYS,
   NONE_CHOICE,
   OFFICIAL_SCRIPTS,
@@ -27,6 +17,7 @@ import {
   TEMPLATE_VALUES_AS_KEYS,
 } from './constants.js';
 import { parseArguments } from './parseArguments.js';
+import { initFileTemplate, initGitTemplate, initNpmTemplate } from './template.js';
 
 const { green, cyan, yellow, gray } = kleur;
 
@@ -134,126 +125,65 @@ const result = await prompts(PROMPTS, {
   process.exit(1);
 });
 
-// get project name
-const { name } = result;
+const { name, template } = result;
 
 // setup project path
 const projectPath = resolve(CWD, name);
 
-let scriptsPackage =
-  result.scripts === NONE_CHOICE.value
-    ? null
-    : normalizePackageName(result.scripts as string, CWD, projectPath);
-
-// normalize template package names (resolve file paths)
-let templatePackage = normalizePackageName(result.template as string, CWD, projectPath);
-
+let scriptsPackage = result.scripts === NONE_CHOICE.value ? null : result.scripts;
 // create project directory
 await mkdir(projectPath);
 
 // change cwd to project directory
 process.chdir(projectPath);
 
-// create the initial package.json with just the project name
-await writePackageJson(projectPath, { name });
+const IS_WINDOWS = process.platform === 'win32';
+const HAS_SLASHES = IS_WINDOWS ? /\\|[/]/ : /[/]/;
 
-// TODO: immediately copy template if its a local package
+const GIT_REGEX = /((git|ssh|http(s)?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:/\-~]+)(\.git)(\/)?/;
 
 // install the template package
 try {
-  await spawn(
-    'npm',
-    'install',
-    templatePackage,
-    '--save-dev',
-    '--ignore-scripts',
-    '--force', // we only care about the content of the template package, so if its dependencies end up faulty, then that is fine
-    '--no-fund',
-    '--no-audit',
-    '--quiet',
-  );
+  if (
+    GIT_REGEX.test(result.template) ||
+    result.template.startsWith('bitbucket:') ||
+    result.template.startsWith('github:')
+  ) {
+    await initGitTemplate(template);
+  } else if (HAS_SLASHES.test(template) && !template.startsWith('@')) {
+    await initFileTemplate(resolve(CWD, template));
+  } else {
+    await initNpmTemplate(template);
+  }
 } catch (error) {
+  console.error(`Error occurred initializing '${template}'`);
   console.error((error as Error).message || error);
-  console.error(`Error occurred fetching '${templatePackage}'`);
   process.exit(1);
 }
-console.log();
 
-// read the newly created package json
-// (should now contain the name and 1-2 dev dependencies for the template and scripts packages)
-const pkg = await readPackageJson(projectPath);
-
-// remove the package-lock (should contains a single entry for the template package)
-await removeFile(join(projectPath, 'package-lock.json'));
-
-// convert the template package specifier to the package names
-// Example: `../template/muban` to `@pota/muban-template`
-if (templatePackage.isFilenamePackage || templatePackage.isGitPackage) {
-  const matchingEntry = Object.entries(pkg.devDependencies ?? ({} as Record<string, string>)).find(
-    ([, pkgSpec]) => pkgSpec.endsWith(templatePackage),
-  );
-
-  if (matchingEntry) {
-    [templatePackage] = matchingEntry;
-  } else {
-    console.error(`Error occurred discovering '${templatePackage}'.`);
-    process.exit(1);
-  }
-}
-
-const templatePackagePath = resolve(projectPath, 'node_modules', templatePackage);
-
-for (let file of await Recursive.readdir(templatePackagePath, ['node_modules'])) {
-  if (IGNORED_FILES.includes(file)) continue;
-
-  const src = resolve(templatePackagePath, file);
-
-  if (file in FILE_RENAMES) file = FILE_RENAMES[file as keyof typeof FILE_RENAMES];
-  const dst = resolve(projectPath, file);
-
-  await copy(src, dst);
-}
-
-// read the template package.json
-const templatePkg = await readPackageJson(templatePackagePath);
-
-const templatePkgPotaConfig =
-  templatePkg.pota && !isString(templatePkg.pota) ? templatePkg.pota : {};
-
-delete pkg.devDependencies![templatePackage];
-
-// delete keys that we don't care about from the template pkg
-for (const key in templatePkg) {
-  if (IGNORED_PACKAGE_KEYS.includes(key as PackageJsonShapeKey)) {
-    delete templatePkg[key as keyof typeof templatePkg];
-  }
-}
-
-let scriptsPackageVersion = 'latest';
-
-if (scriptsPackage?.isFilenamePackage) {
-  scriptsPackageVersion = scriptsPackage; // version is now the path to the scripts package
-  scriptsPackage = (await readPackageJson(String(scriptsPackage))).name!;
-}
-
-const dependencies = { ...templatePkg.dependencies, ...templatePkgPotaConfig.dependencies };
-
-const devDependencies = {
-  ...pkg.devDependencies,
-  ...templatePkg.devDependencies,
-  ...templatePkgPotaConfig.devDependencies,
-  ...(scriptsPackage && { [scriptsPackage]: scriptsPackageVersion }),
+const finalPkg: PackageJsonShape = {
+  name,
+  private: true,
+  version: '1.0.0',
+  ...(scriptsPackage && { pota: scriptsPackage }),
 };
 
-if (scriptsPackage) templatePkg.pota = scriptsPackage;
-templatePkg.name = name;
-templatePkg.version = '1.0.0';
+const templatePkg = await readPackageJson(projectPath);
 
-if (Object.keys(dependencies).length > 0) templatePkg.dependencies = dependencies;
-if (Object.keys(devDependencies).length > 0) templatePkg.devDependencies = devDependencies;
+// delete keys that we don't care about from the template pkg
+for (const k in templatePkg) {
+  const key = k as keyof typeof templatePkg;
+  if (!IGNORED_PACKAGE_KEYS.includes(key)) {
+    (finalPkg as any)[key] = templatePkg[key];
+  }
+}
 
-// write the merged package.json to the project
-await writePackageJson(projectPath, templatePkg);
+if (scriptsPackage) {
+  finalPkg.devDependencies ??= {};
+  finalPkg.devDependencies[scriptsPackage] = 'latest';
+}
+
+await writePackageJson(projectPath, finalPkg);
 
 // initialize git
 if (result.git) {
@@ -274,7 +204,7 @@ console.log(`  success 💁`);
 console.log();
 console.log(`  created   ${green(name)}`);
 console.log();
-console.log(`  template: ${yellow(templatePackage)}`);
+console.log(`  template: ${yellow(template)}`);
 if (scriptsPackage) console.log(`  scripts:  ${yellow(scriptsPackage)}`);
 console.log();
 console.log('  we suggest that you begin by typing:');

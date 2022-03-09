@@ -1,32 +1,7 @@
-import { join, relative, resolve } from 'path';
+import { join } from 'path';
 import { readFile, writeFile } from 'fs/promises';
 
-const IS_WINDOWS = process.platform === 'win32';
-const HAS_SLASHES = IS_WINDOWS ? /\\|[/]/ : /[/]/;
-
-const IS_URL_NPM_PACKAGE = /^(?:git[+])?[a-z]+:/i;
-const IS_GIT_NPM_PACKAGE = /^[^@]+@[^:.]+\.[^:]+:.+$/i;
-const IS_FILENAME_NPM_PACKAGE = /[.](?:tgz|tar.gz|tar)$/i;
-
-export function normalizePackageName(
-  name: string,
-  cwd: string,
-  projectPath: string,
-): string & { isFilenamePackage?: boolean; isGitPackage?: boolean } {
-  if (IS_GIT_NPM_PACKAGE.test(name) || IS_URL_NPM_PACKAGE.test(name)) {
-    const [gitServer, actualName] = name.split(':');
-    if (actualName && gitServer === 'git@github.com') {
-      return Object.assign(`github:${actualName.replace('.git', '')}`, { isGitPackage: true });
-    }
-    return Object.assign(name, { isGitPackage: true });
-  }
-
-  if (IS_FILENAME_NPM_PACKAGE.test(name) || (HAS_SLASHES.test(name) && !name.startsWith('@'))) {
-    return Object.assign(relative(projectPath, resolve(cwd, name)), { isFilenamePackage: true });
-  }
-
-  return name;
-}
+import { command } from './spawn.js';
 
 export function normalizePackagePath(path: string, filename: string = 'package.json') {
   if (!path.endsWith(filename)) {
@@ -37,6 +12,7 @@ export function normalizePackagePath(path: string, filename: string = 'package.j
 }
 
 export interface PackageJsonShape {
+  private?: true;
   exports?: unknown;
   license?: string;
   bin?: string | Record<string, string>;
@@ -73,4 +49,14 @@ export async function writePackageJson(path: string, pkg: PackageJsonShape) {
   path = normalizePackagePath(path);
 
   await writeFile(path, JSON.stringify(pkg, null, 2), { encoding: 'utf8' });
+}
+
+export type PackageInfo = PackageJsonShape & {
+  dist: { tarball: string };
+};
+
+export async function getPackageInfo(pkg: string): Promise<PackageInfo> {
+  const raw = await command(`npm info ${pkg} --json`, false);
+
+  return raw ? JSON.parse(raw) : null;
 }

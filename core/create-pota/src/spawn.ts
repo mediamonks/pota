@@ -1,7 +1,6 @@
+import crossSpawn from 'cross-spawn';
 import { exec } from 'child_process';
 import type { SpawnOptions } from 'child_process';
-
-import crossSpawn from 'cross-spawn';
 
 function createSpawn(options: SpawnOptions) {
   return (command: string, ...args: string[]): Promise<void> =>
