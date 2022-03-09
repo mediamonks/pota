@@ -36,8 +36,22 @@
     "clean:build": "tsc -b --clean && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
+  "pota": {
+    "commands": {
+      "build": {
+        "description": "Builds the app for production."
+      },
+      "preview": {
+        "description": "Locally preview the production build."
+      },
+      "dev": {
+        "description": "Starts the development server.",
+        "suggest": true
+      }
+    }
+  },
   "dependencies": {
-    "@pota/vite-scripts": "^0.0.2",
+    "@pota/vite-scripts": "^0.0.3",
     "@vitejs/plugin-react": "^1.2.0",
     "babel-plugin-formatjs": "^10.3.18",
     "vite": "^2.8.5"
