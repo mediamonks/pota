@@ -13,7 +13,7 @@ npm init pota -- --template templates/vanilla
 ```
 
 NOTE: [`create-pota`](core/create-pota) currently does not support project creation with local scripts packages.
-However, these can be easily installed after the project is created (see next section). To skip scripts selection you can pass `--scripts none`.
+However, these can be easily installed after the project is created (see next section). To skip scripts selection you can pass `--no-scripts`.
 
 > Example:
 
