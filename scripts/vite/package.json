@@ -36,6 +36,20 @@
     "clean:build": "tsc -b --clean && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
+  "pota": {
+    "commands": {
+      "build": {
+        "description": "Builds the app for production."
+      },
+      "preview": {
+        "description": "Locally preview the production build."
+      },
+      "dev": {
+        "description": "Starts the development server.",
+        "suggest": true
+      }
+    }
+  },
   "dependencies": {
     "vite": "^2.8.5"
   },
