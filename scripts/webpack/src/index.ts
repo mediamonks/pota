@@ -1,4 +1,4 @@
-import { localPath, defineOptions } from '@pota/cli/authoring';
+import { defineOptions } from '@pota/cli/authoring';
 import { isNumber } from 'isntnt';
 
 import type { Stats } from 'webpack';
@@ -50,12 +50,10 @@ function buildFinish(error: unknown, stats?: Stats, onFinish?: () => void) {
 
 type Dependencies = { config: WebpackConfig };
 
-const CONFIG_PATHS = ['pota.config.js', localPath(import.meta.url, 'config.js')];
-
 export class Build implements Command<BuildOptions, Dependencies> {
   name = 'build';
   description = 'Builds the app for production.';
-  dependsOn = { config: CONFIG_PATHS };
+  dependsOn = { config: 'config.js' };
 
   options() {
     return {
@@ -114,7 +112,7 @@ export class Build implements Command<BuildOptions, Dependencies> {
 export class Dev implements Command<DevOptions, Dependencies> {
   name = 'dev';
   description = 'Starts the development server.';
-  dependsOn = { config: CONFIG_PATHS };
+  dependsOn = { config: 'config.js' };
 
   options() {
     return {
