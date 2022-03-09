@@ -36,8 +36,19 @@
     "clean:build": "tsc -b --clean && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
+  "pota": {
+    "commands": {
+      "build": {
+        "description": "Builds the app for production."
+      },
+      "dev": {
+        "description": "Starts the development server.",
+        "suggest": true
+      }
+    }
+  },
   "dependencies": {
-    "@pota/webpack-scripts": "^0.0.13",
+    "@pota/webpack-scripts": "^0.0.17",
     "isntnt": "^1.5.2",
     "null-loader": "^4.0.1",
     "require-from-string": "^2.0.2"
