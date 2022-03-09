@@ -1,17 +1,29 @@
 import https from 'https';
 import { join, resolve } from 'path';
-import { rename } from 'fs/promises';
+import { rename, unlink as removeFile } from 'fs/promises';
 
 import { copy, Recursive } from './fs.js';
 import { getPackageInfo } from './package.js';
+
+const IGNORED_FILES = ['LICENSE'];
 
 const FILE_RENAMES = {
   gitignore: '.gitignore',
 };
 
+async function removeFiles(projectPath: string) {
+  for (const file of IGNORED_FILES) {
+    try {
+      await removeFile(join(projectPath, file));
+    } catch {}
+  }
+}
+
 async function renameFiles(projectPath: string) {
   for (const [file, newName] of Object.entries(FILE_RENAMES) as ReadonlyArray<[string, string]>) {
-    await rename(join(projectPath, file), join(projectPath, newName));
+    try {
+      await rename(join(projectPath, file), join(projectPath, newName));
+    } catch {}
   }
 }
 
@@ -32,7 +44,7 @@ export async function initNpmTemplate(pkg: string): Promise<void> {
 
   await getTar(pkgInfo.dist.tarball, projectPath);
 
-  await renameFiles(projectPath);
+  await Promise.all([renameFiles(projectPath), removeFiles(projectPath)]);
 }
 
 export async function initGitTemplate(repo: string): Promise<void> {
@@ -44,13 +56,14 @@ export async function initGitTemplate(repo: string): Promise<void> {
 
   await tiged(repo, { mode: 'git' }).clone(projectPath);
 
-  await renameFiles(projectPath);
+  await Promise.all([renameFiles(projectPath), removeFiles(projectPath)]);
 }
 
 export async function initFileTemplate(path: string) {
   const projectPath = process.cwd();
 
   for (let file of await Recursive.readdir(path, ['node_modules'])) {
+    if (file in IGNORED_FILES) continue;
     const src = resolve(path, file);
 
     if (file in FILE_RENAMES) file = FILE_RENAMES[file as keyof typeof FILE_RENAMES];

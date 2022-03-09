@@ -7,7 +7,13 @@ import prompts from 'prompts';
 import { nameValidator } from './validators.js';
 import { resolve, relative } from 'path';
 import { command } from './spawn.js';
-import { PackageJsonShape, readPackageJson, writePackageJson } from './package.js';
+import {
+  getPackageInfo,
+  PackageInfo,
+  PackageJsonShape,
+  readPackageJson,
+  writePackageJson,
+} from './package.js';
 import {
   CUSTOM_CHOICE_VALUE,
   IGNORED_PACKAGE_KEYS,
@@ -18,8 +24,9 @@ import {
 } from './constants.js';
 import { parseArguments } from './parseArguments.js';
 import { initFileTemplate, initGitTemplate, initNpmTemplate } from './template.js';
+import ora from 'ora';
 
-const { green, cyan, yellow, gray } = kleur;
+const { bold, green, cyan, yellow, gray } = kleur;
 
 // override prompts with passed args (if any)
 prompts.override(parseArguments(process.argv.slice(2)));
@@ -68,8 +75,7 @@ const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git
   {
     type: (prev) => (prev === CUSTOM_CHOICE_VALUE ? 'text' : null),
     name: 'template',
-    message: 'Custom template package:',
-    validate: nameValidator,
+    message: 'Custom template package/git url/local path:',
   },
   // query for scripts
   {
@@ -127,10 +133,13 @@ const result = await prompts(PROMPTS, {
 
 const { name, template } = result;
 
+console.log();
+const spinner = ora(`downloading ${yellow(template)}`).start();
+
 // setup project path
 const projectPath = resolve(CWD, name);
 
-let scriptsPackage = result.scripts === NONE_CHOICE.value ? null : result.scripts;
+const scriptsPackage: string | null = result.scripts === NONE_CHOICE.value ? null : result.scripts;
 // create project directory
 await mkdir(projectPath);
 
@@ -142,10 +151,9 @@ const HAS_SLASHES = IS_WINDOWS ? /\\|[/]/ : /[/]/;
 
 const GIT_REGEX = /((git|ssh|http(s)?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:/\-~]+)(\.git)(\/)?/;
 
-// install the template package
 try {
   if (
-    GIT_REGEX.test(result.template) ||
+    GIT_REGEX.test(template) ||
     result.template.startsWith('bitbucket:') ||
     result.template.startsWith('github:')
   ) {
@@ -156,10 +164,13 @@ try {
     await initNpmTemplate(template);
   }
 } catch (error) {
+  spinner.fail();
   console.error(`Error occurred initializing '${template}'`);
   console.error((error as Error).message || error);
   process.exit(1);
 }
+
+spinner.succeed();
 
 const finalPkg: PackageJsonShape = {
   name,
@@ -178,37 +189,70 @@ for (const k in templatePkg) {
   }
 }
 
+let scriptsPkgInfo: PackageInfo | null = null;
+
 if (scriptsPackage) {
+  spinner.start(`retrieving ${yellow(scriptsPackage)} metadata`);
+  try {
+    scriptsPkgInfo = await getPackageInfo(scriptsPackage);
+    spinner.succeed();
+  } catch {
+    spinner.fail();
+    process.exit(1);
+  }
+}
+
+if (scriptsPkgInfo?.name) {
   finalPkg.devDependencies ??= {};
-  finalPkg.devDependencies[scriptsPackage] = 'latest';
+  finalPkg.devDependencies[scriptsPkgInfo.name] = `^${scriptsPkgInfo['dist-tags'].latest}`;
 }
 
 await writePackageJson(projectPath, finalPkg);
 
 // initialize git
 if (result.git) {
+  spinner.start('initializing git');
   try {
     await command('git init -b main');
+    spinner.succeed();
   } catch (error) {
     // if `-b main` isn't supported fallback to renaming the branch
     if ((error as { code: number }).code === 129) {
       await command('git init');
       await command('git branch master -m main');
-    } else console.warn('Failed to initialize git.');
+      spinner.succeed();
+    } else spinner.fail();
   }
 }
 
 const relativeDir = relative(CWD, process.cwd());
 
-console.log(`  success 💁`);
+const commands =
+  scriptsPkgInfo?.pota && typeof scriptsPkgInfo.pota !== 'string'
+    ? Object.entries(scriptsPkgInfo.pota.commands)
+    : [];
+
+const suggestedCommand = commands.find(([, spec]) => spec.suggest)?.[0];
+
 console.log();
-console.log(`  created   ${green(name)}`);
+console.log(`Created ${bold(name)} 💁 ${green(projectPath)}`);
 console.log();
-console.log(`  template: ${yellow(template)}`);
-if (scriptsPackage) console.log(`  scripts:  ${yellow(scriptsPackage)}`);
-console.log();
-console.log('  we suggest that you begin by typing:');
+if (scriptsPkgInfo) {
+  if (commands.length > 0) {
+    console.log(`${yellow(scriptsPkgInfo.name)} provides the following commands:`);
+    console.log();
+    for (const [command, spec] of commands) {
+      console.log(`  ${cyan(`npm run ${command}`)}`);
+      if (spec.description) console.log(`    ${spec.description}`);
+      console.log();
+    }
+  } else {
+    console.log(`scripts:  ${yellow(scriptsPkgInfo.name)}`);
+    console.log();
+  }
+}
+console.log('We suggest that you begin by typing:');
 console.log();
 console.log(`    ${cyan('cd')} ${relativeDir}`);
-console.log();
-console.log(cyan('    npm install'));
+console.log(`    ${cyan('npm install')}`);
+if (suggestedCommand) console.log(`    ${cyan(`npm run ${suggestedCommand}`)}`);

@@ -32,8 +32,7 @@ export interface PackageJsonShape {
   pota?:
     | string
     | {
-        dependencies?: Record<string, string>;
-        devDependencies?: Record<string, string>;
+        commands: Record<string, { description?: string; suggest?: boolean }>;
       };
 }
 
@@ -53,6 +52,7 @@ export async function writePackageJson(path: string, pkg: PackageJsonShape) {
 
 export type PackageInfo = PackageJsonShape & {
   dist: { tarball: string };
+  'dist-tags': { latest: string };
 };
 
 export async function getPackageInfo(pkg: string): Promise<PackageInfo> {
