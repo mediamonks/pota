@@ -37,6 +37,17 @@
     "clean:build": "tsc -b --clean && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
+  "pota": {
+    "commands": {
+      "build": {
+        "description": "Builds the app for production."
+      },
+      "dev": {
+        "description": "Starts the development server.",
+        "suggest": true
+      }
+    }
+  },
   "dependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
