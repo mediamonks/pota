@@ -36,13 +36,23 @@
     "clean:build": "tsc -b --clean && tsc -b",
     "prepublishOnly": "npm run clean:build"
   },
+  "pota": {
+    "commands": {
+      "build": {
+        "description": "Builds the app for production."
+      },
+      "dev": {
+        "description": "Starts the development server.",
+        "suggest": true
+      }
+    }
+  },
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
-    "@pota/webpack-scripts": "^0.0.15",
+    "@pota/webpack-scripts": "^0.0.17",
     "@svgr/webpack": "^6.2.1",
-    "babel-plugin-named-asset-import": "^0.3.8",
-    "web-vitals": "^2.1.4"
+    "babel-plugin-named-asset-import": "^0.3.8"
   },
   "peerDependencies": {
     "@pota/cli": "^2.0.0-alpha.5"
