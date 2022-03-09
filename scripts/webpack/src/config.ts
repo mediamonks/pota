@@ -395,7 +395,13 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
       context: paths.user,
       entry: this.entry,
 
-      cache: this.options.cache && { type: 'filesystem' },
+      cache: this.options.cache && {
+        type: 'filesystem',
+        buildDependencies: {
+          // This makes all dependencies of this file - build dependencies
+          config: [join(paths.self, 'lib/config.js')],
+        },
+      },
 
       output: {
         path: outputPath,
