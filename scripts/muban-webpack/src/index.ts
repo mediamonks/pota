@@ -1,4 +1,4 @@
-import { defineOptions, localPath } from '@pota/cli/authoring';
+import { defineOptions } from '@pota/cli/authoring';
 import {
   Build as WebpackBuild,
   BuildOptions as WebpackBuildOptions,
@@ -28,10 +28,8 @@ export type BuildOptions = WebpackBuildOptions &
 
 type Dependencies = { config: MubanWebpackConfig };
 
-const CONFIG_PATHS = ['pota.config.js', localPath(import.meta.url, 'config.js')];
-
 export class Build extends WebpackBuild implements Command<BuildOptions, Dependencies> {
-  dependsOn = { config: CONFIG_PATHS };
+  dependsOn = { config: 'config.js' };
 
   options() {
     const superOptions = super.options();
@@ -53,7 +51,7 @@ export class Build extends WebpackBuild implements Command<BuildOptions, Depende
 export type DevOptions = WebpackDevOptions & CommonOptions;
 
 export class Dev extends WebpackDev implements Command<DevOptions, Dependencies> {
-  dependsOn = { config: CONFIG_PATHS };
+  dependsOn = { config: 'config.js' };
 
   options() {
     const superOptions = super.options();
