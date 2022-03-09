@@ -1,4 +1,4 @@
-import { localPath, defineOptions } from '@pota/cli/authoring';
+import { defineOptions } from '@pota/cli/authoring';
 
 import type { Command } from '@pota/cli/authoring';
 
@@ -53,12 +53,10 @@ const devAndBuildOptions = defineOptions<DevAndBuildOptions>({
 
 type Dependencies = { config: ViteConfig };
 
-const CONFIG_PATHS = ['pota.config.js', localPath(import.meta.url, 'config.js')];
-
 export class Build implements Command<BuildOptions, Dependencies> {
   name = 'build';
   description = 'Builds the app for production.';
-  dependsOn = { config: CONFIG_PATHS };
+  dependsOn = { config: 'config.js' };
 
   options() {
     return {
@@ -93,7 +91,7 @@ export class Build implements Command<BuildOptions, Dependencies> {
 export class Dev implements Command<DevOptions, Dependencies> {
   name = 'dev';
   description = 'Starts the development server.';
-  dependsOn = { config: CONFIG_PATHS };
+  dependsOn = { config: 'config.js' };
 
   options() {
     return {
@@ -120,7 +118,7 @@ export class Dev implements Command<DevOptions, Dependencies> {
 export class Preview implements Command<PreviewOptions, Dependencies> {
   name = 'preview';
   description = 'Locally preview the production build.';
-  dependsOn = { config: CONFIG_PATHS };
+  dependsOn = { config: 'config.js' };
 
   options() {
     return { ...commonOptions, ...devAndBuildOptions, ...devAndPreviewOptions };
