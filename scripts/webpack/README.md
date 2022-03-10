@@ -22,5 +22,5 @@ npm pkg set pota="@pota/webpack-scripts"
 
 ## Documentation
 
-* [webpack-scripts](https://mediamonks.github.io/pota/scripts/webpack)
-* [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
+- [webpack-scripts](https://mediamonks.github.io/pota/scripts/webpack)
+- [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
