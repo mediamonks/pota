@@ -1,15 +1,26 @@
-# muban-template [![downloads](https://badgen.now.sh/npm/dm/@pota/muban-template)](https://npmjs.org/package/@pota/muban-template)
+# @pota/muban-webpack-scripts [![version](https://img.shields.io/npm/v/@pota/muban-webpack-scripts.svg?label=%20)](https://npmjs.org/package/@pota/muban-webpack-scripts)
 
-This project follows the
-[Media.Monks Frontend Coding Standards](https://github.com/mediamonks/frontend-coding-standards).
+Commands for building Muban Frontend applications using [webpack](https://github.com/webpack/webpack).
 
-Documentation on the [`muban-template`](../../templates/muban) and `muban-webpack-scripts` can be
-found on https://mubanjs.github.io/muban-skeleton/.
+## Usage
 
-### Content Security Policy ([CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP))
+> Creating a new project with muban-webpack-scripts
 
-This application has been build with a
-[strict content security policy](https://csp.withgoogle.com/docs/strict-csp.html). To enforce this
-policy add the following CSP header to the request response.
+```bash
+npm init pota -- --scripts muban-webpack
+```
 
-`Content-Security-Policy: script-src 'sha256-+OVgFCkyF2/rZ6qyfsNnIisCRI6dtMZw3w0Y4xiYagw=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';`
+> Adding it to an existing project
+
+```bash
+# install the muban-webpack-scripts and cli packages
+npm install @pota/muban-webpack-scripts @pota-cli --save-dev
+
+# configure the cli package to use muban-webpack-scripts
+npm pkg set pota="@pota/muban-webpack-scripts"
+```
+
+## Documentation
+
+* [muban-webpack-scripts](https://mediamonks.github.io/pota/scripts/muban-webpack)
+* [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
