@@ -1,6 +1,7 @@
 # @pota/muban-webpack-scripts [![version](https://img.shields.io/npm/v/@pota/muban-webpack-scripts.svg?label=%20)](https://npmjs.org/package/@pota/muban-webpack-scripts)
 
-Commands for building Muban Frontend applications using [webpack](https://github.com/webpack/webpack).
+Commands for building Muban Frontend applications using
+[webpack](https://github.com/webpack/webpack).
 
 ## Usage
 
@@ -22,5 +23,5 @@ npm pkg set pota="@pota/muban-webpack-scripts"
 
 ## Documentation
 
-* [muban-webpack-scripts](https://mediamonks.github.io/pota/scripts/muban-webpack)
-* [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
+- [muban-webpack-scripts](https://mediamonks.github.io/pota/scripts/muban-webpack)
+- [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)

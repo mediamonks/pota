@@ -162,10 +162,13 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
     let plugins = await super.plugins();
 
     const findPlugin = createFindPlugin(plugins);
-    const htmlPlugin = findPlugin('HtmlWebpackPlugin');
-    const miniCssExtractPlugin = findPlugin('MiniCssExtractPlugin');
+    const excludedPlugins = [
+      findPlugin('FaviconsWebpackPlugin'),
+      findPlugin('HtmlWebpackPlugin'),
+      findPlugin('MiniCssExtractPlugin'),
+    ];
 
-    plugins = plugins.filter((plugin) => plugin !== htmlPlugin && plugin !== miniCssExtractPlugin);
+    plugins = plugins.filter((plugin) => !excludedPlugins.includes(plugin));
     return [
       ...plugins,
       // this plugin is generally applied only during production builds, but Muban requires a single `main.css` file 😁
