@@ -45,7 +45,7 @@ module.exports = {
   async managerWebpack(config) {
     if (!ENABLE_MOCK_API_MIDDLEWARE) return config;
 
-    return [config, await (await getConfig()).mocksConfig()];
+    return [config, await (await getConfig()).monckConfig()];
   },
 };
 
