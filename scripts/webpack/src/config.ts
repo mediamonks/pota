@@ -124,7 +124,7 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
    */
   public async plugins() {
     const env = await this.getEnv({
-      PUBLIC_PATH: this.options['public-path'] ?? '/',
+      PUBLIC_PATH: this.publicPath,
       VERSIONED_STATIC: `${this.versionPath}static/`,
     });
 
@@ -375,6 +375,14 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
     ];
   }
 
+  /**
+   * Allows you to specify the base path for all the assets within your application.
+   * @see https://webpack.js.org/guides/public-path/
+   */
+  public get publicPath() {
+    return process.env.PUBLIC_PATH ?? this.options['public-path'];
+  }
+
   public get entry() {
     return paths.entry;
   }
@@ -405,7 +413,7 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
 
       output: {
         path: outputPath,
-        publicPath: this.options['public-path'],
+        publicPath: this.publicPath,
         filename: `${this.versionPath}static/chunks/[name]${this.isDev ? '' : '.[contenthash]'}.js`,
         chunkFilename: `${this.versionPath}static/chunks/[name]${
           this.isDev ? '' : '.[contenthash]'
