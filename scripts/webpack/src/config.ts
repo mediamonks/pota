@@ -459,7 +459,8 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
       },
 
       devServer: this.finalDevServer(),
-
+      // silence `[webpack.cache.PackFileCacheStrategy]` warnings
+      infrastructureLogging: { level: 'error' },
       module: {
         rules: this.rules,
       },
