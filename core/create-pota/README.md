@@ -29,31 +29,30 @@ Then follow the prompts.
 | [react-base](npmjs.com/package/@pota/react-base-template) | ![react-base version](https://img.shields.io/npm/v/@pota/react-base-template.svg?label=%20) |
 | [muban](npmjs.com/package/@pota/muban-template)           | ![muban version](https://img.shields.io/npm/v/@pota/muban-template.svg?label=%20)           |
 
-### Shorthands
+### Combinations
 
-`create-pota` also has a few built-in shorthands to help with creating projects from recommended
-template & scripts combinations:
+`create-pota` also has a few built-in template & scripts combinations for recommended setups:
 
 ```bash
-# shorthand: muban
+# combination: muban
 # scripts:   @pota/muban-webpack-scripts
 # template:  @pota/muban-template
 
 npm init pota@latest muban
 
-# shorthand: react
+# combination: react
 # scripts:   @pota/react-webpack-scripts
 # template:  @pota/react-template
 
 npm init pota@latest react
 
-# shorthand: react-base
+# combination: react-base
 # scripts:   @pota/react-webpack-scripts
 # template:  @pota/react-base-template
 
 npm init pota@latest react-base
 
-# shorthand: vanilla
+# combination: vanilla
 # scripts:   @pota/webpack-scripts
 # template:  @pota/vanilla-template
 

@@ -8,7 +8,7 @@ You can create a new project using [`create-pota`](https://github.com/mediamonks
 npm init pota -- --template react
 ```
 
-> or use the shorthand, for the recommeded script setup
+> or use the `react` combination, for the recommeded setup
 
 ```bash
 npm init pota react

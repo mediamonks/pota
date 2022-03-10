@@ -8,9 +8,11 @@ You can create a new project using [`create-pota`](../../core/create-pota).
 npx pota --template vanilla
 ```
 
-<!--
-During project creation, everything above this comment should _ideally_ be replaced with a `Quick Start` on how to run & build the project, referencing the project title in the heading, instead of the skeleton's.
--->
+> or use the `vanilla` combination, for the recommeded setup
+
+```bash
+npm init pota vanilla
+```
 
 ## Standards 📒
 

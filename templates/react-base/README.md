@@ -8,9 +8,11 @@ You can create a new project using [`create-pota`](https://github.com/mediamonks
 npm init pota -- --template react-base
 ```
 
-<!--
-During project creation, everything above this comment should _ideally_ be replaced with a `Quick Start` on how to run & build the project, referencing the project title in the heading, instead of the skeleton's.
--->
+> or use the `react-base` combination, for the recommeded setup
+
+```bash
+npm init pota react-base
+```
 
 ## Standards 📒
 

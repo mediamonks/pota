@@ -8,7 +8,7 @@ You can create a new project using [`create-pota`](https://github.com/mediamonks
 npm init pota -- --template muban
 ```
 
-> or use the shorthand, for the recommeded script setup
+> or use the `muban` combination, for the recommeded setup
 
 ```bash
 npm init pota muban
