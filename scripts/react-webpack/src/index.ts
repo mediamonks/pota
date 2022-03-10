@@ -18,4 +18,4 @@ export class Build extends WebpackBuild implements Command<BuildOptions> {
   }
 }
 
-export { DevOptions, Dev } from '@pota/webpack-scripts'
+export { DevOptions, Dev } from '@pota/webpack-scripts';

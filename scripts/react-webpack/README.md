@@ -1,6 +1,7 @@
 # @pota/react-webpack-scripts [![version](https://img.shields.io/npm/v/@pota/react-webpack-scripts.svg?label=%20)](https://npmjs.org/package/@pota/react-webpack-scripts)
 
-Commands for building React Frontend applications using [webpack](https://github.com/webpack/webpack).
+Commands for building React Frontend applications using
+[webpack](https://github.com/webpack/webpack).
 
 ## Usage
 
@@ -22,5 +23,5 @@ npm pkg set pota="@pota/react-webpack-scripts"
 
 ## Documentation
 
-* [react-webpack-scripts](https://mediamonks.github.io/pota/scripts/react-webpack)
-* [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
+- [react-webpack-scripts](https://mediamonks.github.io/pota/scripts/react-webpack)
+- [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
