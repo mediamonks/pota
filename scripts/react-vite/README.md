@@ -22,5 +22,5 @@ npm pkg set pota="@pota/react-vite-scripts"
 
 ## Documentation
 
-* [react-vite-scripts](https://mediamonks.github.io/pota/scripts/react-vite)
-* [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
+- [react-vite-scripts](https://mediamonks.github.io/pota/scripts/react-vite)
+- [extending](https://github.com/mediamonks/pota/blob/main/core/cli/docs/extending.md)
