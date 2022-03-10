@@ -1,0 +1,5 @@
+/* .vitepress/theme/custom.css */
+:root {
+  --c-brand: #ef476f;
+  --c-brand-light: #f36a6d;
+}

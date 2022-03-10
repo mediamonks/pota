@@ -1,0 +1,299 @@
+# Components
+
+What is a site without components? In Muban - like most modern frontend frameworks - everything is a
+component. From the biggest page to the smallest atom, all of them - and most are composed of -
+components.
+
+## Component files and folders
+
+Within the Muban skeleton we have set on a standard way of writing, organizing and using components,
+based on lessons learned while working with it. If you wish, you're free to divert from this in your
+own project. Even then it is still useful to know why we went this way.
+
+### Folders
+
+All components reside in the `/src/components/` folder. Not for any technical reason, but purely for
+organisation. The default structure follows the atomic design principle of dividing components
+between atoms, molecules, organisms and templates. Feel free to to change this and organize them any
+way you feel, since this decision is project specific.
+
+Each component has its own folder to contain all the source files related to this component. At its
+core these are: the TypeScript component, the template and the styles. But other files like
+storybook stories, mock data or included assets can also be included here.
+
+A component folder has the same name as its component, but written in
+[`snake-case`](https://en.wikipedia.org/wiki/Snake_case).
+
+```
+/src
+  /components
+    /atoms
+      /my-atom-component
+        ...files
+      /my-other-atom
+        ...files
+
+    /my-component
+      ...files
+    /my-other-component
+      ...files
+```
+
+### Source files
+
+A component can have one or more source files, where each type is optional[^1], depending on the
+situation. Important note to keep in mind is that the TypeScript component and the template must be
+kept in separate files, because, in most cases, the template files are only used during development
+and for preview builds.
+
+[^1]: This depends on how we are going to include SCSS files by default.
+
+#### TypeScript Component
+
+This file is the actual component that gets initialized to make an HTML element interactive.
+
+It uses `PascalCase` for both the filename and the export.
+
+We have chosen to use named exports instead of default ones to be more explicit when importing and
+using them - keeping the names in sync.
+
+```ts
+// MyComponent.ts
+
+export const MyComponent = defineComponent({
+  name: 'my-component',
+});
+```
+
+An additional export that can exist in a component file is a `lazy` export, this supports importing
+these components lazily to allow code splitting.
+
+```ts
+// MyComponent.ts
+
+export const MyComponent = defineComponent({ ... });
+
+export const lazy = supportLazy(MyComponent);
+```
+
+In most cases **[TBD]**, this file also import the styles related to this component. Webpack will
+only include scss files that are imported through components that are actually used.
+
+```ts
+// MyComponent.ts
+
+import { defineComponent } from '@muban/muban';
+
+import './MyComponent.styles.scss';
+
+export const MyComponent = defineComponent({ ... });
+```
+
+Including child components can be done in 3 ways:
+
+1. Through the `components` option - these are initialized automatically, but you can't interact
+   with them. a. Directly referencing them - they are included in the main bundle b. using the
+   `lazy` function - these components are code-splitted, and only loaded if a matching
+   `data-component` element exists in the HTML.
+2. Using the `refComponent` or `refComponents` selector, allowing you to read props or apply
+   bindings to these components.
+
+```ts
+// MyComponent.ts
+
+export const MyComponent = defineComponent({
+  name: 'my-component',
+  components: [
+    // 1.a
+    MyChildComponent,
+    // 1.b
+    lazy('my-child-component', () => import(/* webpackExports: "lazy" */ '../MyChildComponent/MyChildComponent')),
+  ],
+  refs: {
+    // 2
+    myChildComponent: refComponent(MyChildComponent),
+  },
+  setup({ refs }) {
+    return [
+      bind(resf.myChildComponent, { ... }),
+    ];
+  },
+});
+
+// MyChildComponent.ts
+
+export const MyChildComponent = defineComponent({
+  name: 'my-child-component'
+});
+```
+
+::: tip Optional TypeScript components are not required - sometimes you have partials that only have
+templates (and styles), but don't require any interactions or data bindings. :::
+
+#### Template
+
+Because we love TypeScript, our templates are just typed functions that return an HTML string.
+Nesting templates is as easy as calling those functions and passing the right parameters.
+
+In storybook, we use the story Args to render individual component templates.
+
+For our preview pages, we use page data functions to pass to our application template, which passes
+down the data to its child components, where they use it, and pass down the rest, until we reached
+the last atom templates.
+
+As said above, templates are only used during development, or when creating a previous build -
+completely disconnected from the production HTML that is generated by something else. That's why
+templates live in their own separate files.
+
+It uses `PascalCase`, similar to the JS Component, and append `.template` after it. It exports a
+typed template function and the Props `type` to use in parent components and story files.
+
+To clearly indicate that the template is separate from the JS Component, and the props belong to the
+template function, we both append `Template` to their names.
+
+The `type` is `PascalCase` to follow the TypeScript conventions.
+
+The template function is `camelCase` to follow the JavaScript conventions.
+
+```ts
+// MyComponent.template.ts
+
+import { html } from '@muban/template';
+
+export type MyComponentTemplateProps = MyChildComponentProps & {
+  prop1: string;
+  prop2?: boolean;
+};
+
+export function myComponentTemplate(
+  { prop1, prop2, childProp }: MyComponentTemplateProps,
+  ref?: string,
+): string {
+  return html`
+    <div data-component=${MyComponent.displayName} data-ref=${ref} data-prop=${prop2}>
+      <!-- your component html -->
+      <h1>${prop1}</h1>
+
+      <!-- include child template -->
+      ${myChildComponentTemplate({ childProp }, 'child-ref')}
+    </div>
+  `;
+}
+```
+
+Some other things to note;
+
+- So you don't have to repeat any typings, or worry about them getting out of sync, try to reference
+  Prop types of child components a much as possible. Use `Pick` or `Omit` if you only need some of
+  those specified props.
+
+- Always have a container element (doesn't have to be a `div`) that includes the `data-component`
+  attribute, with the same value as the `name` property you give your Component. To keep these in
+  sync, you reference the `displayName` on the exported Component.
+- Except for the root component, it's good practice receiving a `ref` parameter from the parent
+  template and include it as a `data-ref` attribute in the same tag as the `data-component`
+  attribute. This will make sure the parent can choose to specifically target this child component
+  to apply bindings to.
+- Passing a `ref` as second parameter to child templates is completely optional.
+
+::: tip Optional The use of templates in Muban is optional. If you already have existing HTML,
+either statically or as part of existing website or CMS, it might not be sensible to duplicate
+everything locally as well. In those cases, you would only write TypeScript components and styles,
+and won't use storybook or the dev server at all. :::
+
+#### Stylesheet
+
+This file contains the styles that style the html for this component. Additionally, it can
+"override" styles from child components it knows it will include.
+
+It uses `PascalCase`, similar to the TypeScript component, and append `.styles` after it. The
+component is scoped with its `data-component` attribute, which is required in the HTML for each
+component.
+
+```scss
+// MyComponent.styles.scss
+
+[data-component='my-component'] {
+  // styles
+
+  [data-component='my-other-component'] {
+    // override styles of all child components of that type
+  }
+
+  [dat-ref='specific-component-instance'] {
+    // override styles of a single targeted child component
+  }
+}
+```
+
+::: tip Because the Muban library is impartial about how you implement your styling, it is up to
+each project to decide how to write stylesheets, and how to bundle them. In this skeleton, we've
+chosen SCSS.
+
+- Using "css-in-js" does not make sense if your HTML is generated on the server.
+- Going full post-css might still miss out on some useful features that SCSS offers.
+
+However, if your team decides to use something else for styling, that's perfectly possible. :::
+
+::: warning There are 3 ways to include your scss files to make them end up in your output bundle,
+each having their own downsides:
+
+1. **Import your styles in the Template files** - since styles are there to enhance your HTML,
+   linking them from the template files feels like the sensible option. It does require a separate
+   build step to extract all those styles from the templates.
+
+   In some cases however - either at the start of the project, or somewhere near the end - you might
+   choose to not use these local templates anymore, but instead use the server rendered pages.
+   Keeping the local and server templates in sync might take too much effort (with the main reason
+   to keep storybook available). In that scenario, there aren't any template files to include your
+   scss files anymore, which means you need to revert to option 3.
+
+2. **Import your styles in the Component files** - However, some "partials" only include HTML and
+   styles, and do not require any JavaScript logic to make them interactive. In that scenario, not
+   every component has a file to include your scss files. This forces us to create files with empty
+   components, or we have to revert to option 3.
+
+3. **Glob all scss files in the project** - Setup wise this is the simplest option, but with the
+   downside that if there are any unused components, they will still be included in the bundle. You
+   could manually exclude them from the globbing pattern, but that would never be in sync with the
+   imports to the components, potentially risking missing out on styles for your pages.
+
+**Currently, option 2 is implemented in this skeleton.** :::
+
+### Supporting files
+
+#### Stories
+
+Muban has its own storybook framework, which is included by default in this skeleton.
+
+The story file uses `PascalCase`, mimicking the TypeScript component, with a `.stories` suffix.
+
+```ts
+// MyComponent.stories.ts
+
+import type { Story } from '@muban/storybook';
+import type { MyComponentTemplateProps } from './MyComponent.template';
+import { MyComponent } from './MyComponent';
+import { myComponentTemplate } from './MyComponent.template';
+
+export default {
+  title: 'MyComponent',
+  argTypes: {
+    // Configure your props
+  },
+};
+
+export const Default: Story<ButtonTemplateProps> = {
+  render() {
+    return {
+      component: MyComponent,
+      template: myComponentTemplate,
+    };
+  },
+  args: {
+    prop1: 'hello',
+    prop2: true,
+    childProp: 'awesome',
+  },
+};
+```
