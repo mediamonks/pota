@@ -209,11 +209,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
         ...superConfig.optimization,
         runtimeChunk: undefined,
         splitChunks: {
-          ...superConfig.optimization?.splitChunks,
           cacheGroups: {
-            ...(superConfig.optimization?.splitChunks &&
-              superConfig.optimization?.splitChunks?.cacheGroups),
-            // but Muban is special and requires a single `main.css` file 😁
             styles: {
               name: 'main',
               type: 'css/mini-extract',
