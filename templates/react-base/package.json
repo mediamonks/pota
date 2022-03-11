@@ -16,6 +16,7 @@
     "build": "pota build",
     "dev": "pota dev",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
+    "postinstall": "husky install",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
