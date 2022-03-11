@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-vite-scripts",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Base React Vite configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -51,12 +51,11 @@
     }
   },
   "dependencies": {
-    "@pota/vite-scripts": "^0.0.3",
+    "@pota/vite-scripts": "~1.0.0",
     "@vitejs/plugin-react": "^1.2.0",
-    "babel-plugin-formatjs": "^10.3.18",
-    "vite": "^2.8.5"
+    "babel-plugin-formatjs": "^10.3.18"
   },
   "peerDependencies": {
-    "@pota/cli": "^2.0.0-alpha.5"
+    "@pota/cli": "~2.0.0"
   }
 }
