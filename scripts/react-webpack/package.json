@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-webpack-scripts",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "React related configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -50,11 +50,11 @@
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
-    "@pota/webpack-scripts": "^0.0.17",
+    "@pota/webpack-scripts": "~1.0.0",
     "@svgr/webpack": "^6.2.1",
     "babel-plugin-named-asset-import": "^0.3.8"
   },
   "peerDependencies": {
-    "@pota/cli": "^2.0.0-alpha.5"
+    "@pota/cli": "~2.0.0"
   }
 }
