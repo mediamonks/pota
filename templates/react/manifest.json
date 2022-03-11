@@ -1,0 +1,6 @@
+{
+  "short_name": "react",
+  "name": "Pota React Template",
+  "start_url": ".",
+  "display": "standalone"
+}
