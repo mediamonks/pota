@@ -16,7 +16,7 @@
     "build": "pota build",
     "build-storybook": "build-storybook",
     "dev": "pota dev",
-    "postinstall": "npx patch-package",
+    "postinstall": "npx patch-package && husky install",
     "plop": "TS_NODE_PROJECT=tsconfig.tools.json node --loader ts-node/esm ./scripts/plop.ts",
     "start-storybook": "start-storybook -p 9001",
     "test": "jest --config ./test-utils/jest.config.ts",
