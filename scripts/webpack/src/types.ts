@@ -2,7 +2,7 @@ export type CommonOptions = {
   'public-path': string;
   typecheck: boolean;
   'image-compression': boolean;
-  'source-map': string | false;
+  'source-map'?: string | false;
   cache: boolean;
 };
 

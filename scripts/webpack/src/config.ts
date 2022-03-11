@@ -383,6 +383,10 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
     return process.env.PUBLIC_PATH ?? this.options['public-path'];
   }
 
+  public get devtool() {
+    return this.options['source-map'] ?? (this.isDev ? 'cheap-source-map' : 'hidden-source-map');
+  }
+
   public get entry() {
     return paths.entry;
   }
@@ -399,7 +403,7 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
       // will bail compilation on the first error,
       // instead of the default behavior of tolerating the error
       bail: this.isProd,
-      devtool: this.options['source-map'],
+      devtool: this.devtool,
       context: paths.user,
       entry: this.entry,
 

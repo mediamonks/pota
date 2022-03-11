@@ -30,7 +30,7 @@ const commonOptions = defineOptions<CommonOptions>({
   'source-map': {
     description:
       'Sets the style of source-map, for enhanced debugging. Disable or use faster options in you are having out of memory or other performance issues. (https://webpack.js.org/configuration/devtool/#devtool)',
-    default: 'eval-source-map',
+    default: undefined,
   },
   cache: {
     description:
