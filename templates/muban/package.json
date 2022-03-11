@@ -15,7 +15,7 @@
   "scripts": {
     "build": "pota build --output=dist/site",
     "build:preview": "npm run build -- --preview",
-    "dev": "pota dev --port 9000 --source-map=cheap-source-map",
+    "dev": "pota dev --port 9000",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
