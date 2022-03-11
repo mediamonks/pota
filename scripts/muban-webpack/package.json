@@ -1,6 +1,6 @@
 {
   "name": "@pota/muban-webpack-scripts",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Muban related configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -48,7 +48,7 @@
     }
   },
   "dependencies": {
-    "@pota/webpack-scripts": "^0.0.17",
+    "@pota/webpack-scripts": "~1.0.0",
     "isntnt": "^1.5.2",
     "null-loader": "^4.0.1",
     "require-from-string": "^2.0.2"
@@ -59,6 +59,6 @@
   },
   "peerDependencies": {
     "@mediamonks/monck": "^1.0.6",
-    "@pota/cli": "^2.0.0-alpha.5"
+    "@pota/cli": "~2.0.0"
   }
 }
