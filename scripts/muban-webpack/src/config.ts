@@ -195,6 +195,12 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
     return {
       ...superConfig,
       name: MUBAN_NAME,
+
+      cache: this.options.cache && {
+        ...(typeof superConfig.cache !== 'boolean' ? superConfig.cache : {}),
+        type: 'filesystem',
+        name: `${MUBAN_NAME}-${this.isDev ? 'development' : 'production'}`,
+      },
       output: {
         ...superConfig.output,
         filename: `static/chunks/[name].js`,
@@ -252,9 +258,11 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
       target: 'node',
       mode: 'development', // we do not care about the size of the output, it just needs to be built fast
       devtool: false, // source maps will not be used
+
       entry: { pages: resolve(paths.pagesSource, '_main.ts') },
 
       cache: this.options.cache && {
+        ...(typeof superConfig.cache !== 'boolean' ? superConfig.cache : {}),
         type: 'filesystem',
         name: `${PAGES_NAME}-${this.isDev ? 'development' : 'production'}`,
       },
@@ -317,6 +325,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
       entry,
 
       cache: this.options.cache && {
+        ...(typeof superConfig.cache !== 'boolean' ? superConfig.cache : {}),
         type: 'filesystem',
         name: `${MOCKS_NAME}-${this.isDev ? 'development' : 'production'}`,
       },
