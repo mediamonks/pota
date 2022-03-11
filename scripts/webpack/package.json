@@ -82,7 +82,7 @@
     "style-loader": "^3.3.0",
     "ts-loader": "^9.2.6",
     "url-loader": "^4.1.1",
-    "webpack": "^5.57.1",
+    "webpack": "^5.70.0",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-dev-server": "^4.7.3",
     "workbox-webpack-plugin": "^6.4.2"
