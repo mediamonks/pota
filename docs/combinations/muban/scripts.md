@@ -88,7 +88,7 @@ npx http-server ./dist/site
 > with SSL/TLS enabled (https)
 
 ```bash
-npx create-ssl-certificate && npx http-server -S -C ssl.crt -K ssl.key
+npx create-ssl-certificate && npx http-server ./dist/site -S -C ssl.crt -K ssl.key
 ```
 
 > include running the built mocks from `./dist/node/mocks`
