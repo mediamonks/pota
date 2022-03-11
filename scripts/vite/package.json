@@ -1,6 +1,6 @@
 {
   "name": "@pota/vite-scripts",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Base Vite configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -54,6 +54,6 @@
     "vite": "^2.8.5"
   },
   "peerDependencies": {
-    "@pota/cli": "^2.0.0-alpha.5"
+    "@pota/cli": "~2.0.0"
   }
 }
