@@ -35,9 +35,3 @@ export function defineOptions<Options extends Record<string, unknown>>(
 ): OptionsToOptionsDef<Options> {
   return options;
 }
-
-export function localPath(localFileUrl: string | URL, path: string) {
-  const directory = dirname(fileURLToPath(localFileUrl));
-
-  return join(directory, path);
-}
