@@ -133,11 +133,11 @@ export const App = defineComponent({
   components: [
     lazy(
       'layout-default',
-      () => import(/* webpackExports: "lazy" */ './components/layouts/DefaultLayout'),
+      () => import('./components/layouts/DefaultLayout'),
     ),
     lazy(
       'layout-custom',
-      () => import(/* webpackExports: "lazy" */ './components/layouts/CustomLayout'),
+      () => import('./components/layouts/CustomLayout'),
     ),
   ],
   setup() {
