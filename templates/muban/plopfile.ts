@@ -117,7 +117,7 @@ export default function plopfile(plop: NodePlopAPI): void {
           type: 'append',
           path: 'src/block-renderer/BlockRenderer.components.ts',
           pattern: /(\/\* PLOP_INJECT_COMPONENT \*\/)/gi,
-          template: `    lazy('{{dashCase componentName}}', () => import( /* webpackExports: "lazy" */ '@/components/{{type}}/{{dashCase componentName}}/{{pascalCase componentName}}'),),`,
+          template: `    lazy('{{dashCase componentName}}', () => import('@/components/{{type}}/{{dashCase componentName}}/{{pascalCase componentName}}'),),`,
         });
       }
 
