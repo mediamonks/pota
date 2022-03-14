@@ -65,18 +65,7 @@ export const MyComponent = defineComponent({
 });
 ```
 
-An additional export that can exist in a component file is a `lazy` export, this supports importing
-these components lazily to allow code splitting.
-
-```ts
-// MyComponent.ts
-
-export const MyComponent = defineComponent({ ... });
-
-export const lazy = supportLazy(MyComponent);
-```
-
-In most cases **[TBD]**, this file also import the styles related to this component. Webpack will
+In most cases **[TBD]**, this file also imports the styles related to this component. Webpack will
 only include scss files that are imported through components that are actually used.
 
 ```ts
@@ -107,7 +96,7 @@ export const MyComponent = defineComponent({
     // 1.a
     MyChildComponent,
     // 1.b
-    lazy('my-child-component', () => import(/* webpackExports: "lazy" */ '../MyChildComponent/MyChildComponent')),
+    lazy('my-child-component', () => import('../MyChildComponent/MyChildComponent')),
   ],
   refs: {
     // 2

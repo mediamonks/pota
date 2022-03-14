@@ -7,7 +7,7 @@ export const BlockRenderer = defineComponent({
   components: [
     lazy(
       'toggle-expand',
-      () => import(/* webpackExports: "lazy" */ '../components/atoms/toggle-expand/ToggleExpand'),
+      () => import('../components/atoms/toggle-expand/ToggleExpand'),
     ),
     ImageTest,
     VideoTest,

@@ -1,4 +1,4 @@
-import { defineComponent{{#if isCmsComponent}}, supportLazy{{/if}} } from '@muban/muban';
+import { defineComponent } from '@muban/muban';
 
 import './{{pascalCase componentName}}.styles.scss';
 
@@ -11,8 +11,3 @@ export const {{pascalCase componentName}} = defineComponent({
     return [];
   },
 });
-
-{{#if isCmsComponent}}
-export const lazy = supportLazy({{pascalCase componentName}});
-{{/if}}
-
