@@ -6,6 +6,8 @@ import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import historyApiFallback from 'connect-history-api-fallback';
 import { createMockMiddleware } from '@mediamonks/monck';
+// @ts-expect-error
+import jsonImporter from 'node-sass-json-importer';
 
 import { WebpackConfigOptions, WebpackConfig } from '@pota/webpack-scripts/config';
 
@@ -64,6 +66,9 @@ function makeCssRuleCompatible(rule: RuleSetRule) {
                   @import "~seng-scss";
                   @import "@/styles/_global.scss";
                   `,
+                sassOptions: {
+                  importer: jsonImporter(),
+                },
               },
             };
           }

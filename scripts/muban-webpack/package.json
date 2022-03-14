@@ -50,6 +50,7 @@
   "dependencies": {
     "@pota/webpack-scripts": "~1.0.0",
     "isntnt": "^1.5.2",
+    "node-sass-json-importer": "^4.3.0",
     "null-loader": "^4.0.1",
     "require-from-string": "^2.0.2"
   },
