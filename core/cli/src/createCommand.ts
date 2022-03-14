@@ -1,5 +1,7 @@
-import { paramCase } from 'param-case';
 import { resolve, isAbsolute, dirname, basename, extname } from 'path';
+import { pathToFileURL } from 'url';
+
+import { paramCase } from 'param-case';
 import sade from 'sade';
 
 import { Command, CommandConstructor, CommandFunction, CommandModule } from './authoring.js';
@@ -67,7 +69,7 @@ async function loadDependencies(
   for (const [dependency, path] of Object.entries(dependencyPaths)) {
     const paths = (Array.isArray(path) ? path : [path]).flatMap((p) =>
       isAbsolute(p) ? p : [resolveLocalPath(p, cwd), resolvePackagePath(p, packagePath)],
-    );
+    ).map(p => isAbsolute(p) ? pathToFileURL(p).toString() : p)
 
     let error: Error | null = null;
     for (const path of paths) {
