@@ -33,6 +33,12 @@
     "not dead"
   ],
   "prettier": "@mediamonks/prettier-config",
+  "eslintConfig": {
+    "extends": "@mediamonks/eslint-config-base",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    }
+  },
   "devDependencies": {
     "@mediamonks/eslint-config-base": "^2.0.0",
     "@mediamonks/prettier-config": "^1.0.0",

@@ -20,5 +20,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", ".eslintrc.cjs", "lint-staged.config.js"]
+  "include": ["src/**/*.ts", "lint-staged.config.js"]
 }
