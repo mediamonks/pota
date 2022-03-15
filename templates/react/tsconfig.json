@@ -29,5 +29,11 @@
     "jsx": "react-jsx"
   },
 
-  "include": ["src/**/*.ts", "src/**/*.tsx", ".eslintrc.cjs", "plopfile.ts", "./scripts/*.ts", "./test-utils/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "plopfile.ts",
+    "./scripts/*.ts",
+    "./test-utils/**/*.ts"
+  ]
 }

@@ -37,6 +37,12 @@
     "not dead"
   ],
   "prettier": "@mediamonks/prettier-config",
+  "eslintConfig": {
+    "extends": "@mediamonks/eslint-config-react",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    }
+  },
   "dependencies": {
     "isntnt": "^1.5.2",
     "jest": "^27.3.1",
@@ -55,7 +61,7 @@
     "web-vitals": "^2.1.1"
   },
   "devDependencies": {
-    "@mediamonks/eslint-config-react": "^2.0.0-rc.1",
+    "@mediamonks/eslint-config-react": "^2.0.0",
     "@mediamonks/prettier-config": "^1.0.0",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
@@ -68,6 +74,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.2",
     "@types/minimist": "^1.2.2",
+    "@types/node": "^17.0.21",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "@types/styled-components": "^5.1.15",
