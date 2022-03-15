@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/react';
 
-import Paragraph, { ParagraphProps } from './Paragraph';
 import { createTextTemplate } from '../../../storybook-helpers/stories';
+import Paragraph, { ParagraphProps } from './Paragraph';
 
 export default {
   title: 'Paragraph',

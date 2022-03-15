@@ -2,7 +2,8 @@
 
 ## Setup 🚀
 
-You can create a new project using [`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
+You can create a new project using
+[`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
 
 ```bash
 npm init pota -- --template react
@@ -13,7 +14,6 @@ npm init pota -- --template react
 ```bash
 npm init pota react
 ```
-
 
 <!--
 During project creation, everything above this comment should _ideally_ be replaced with a `Quick Start` on how to run & build the project, referencing the project title in the heading, instead of the skeleton's.
