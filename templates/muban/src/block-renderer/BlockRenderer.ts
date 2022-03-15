@@ -5,10 +5,7 @@ import { VideoTest } from '../components/video-test/VideoTest';
 export const BlockRenderer = defineComponent({
   name: 'block-renderer',
   components: [
-    lazy(
-      'toggle-expand',
-      () => import('../components/atoms/toggle-expand/ToggleExpand'),
-    ),
+    lazy('toggle-expand', () => import('../components/atoms/toggle-expand/ToggleExpand')),
     ImageTest,
     VideoTest,
   ],

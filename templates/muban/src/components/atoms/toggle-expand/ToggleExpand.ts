@@ -2,16 +2,17 @@ import type { Ref } from '@muban/muban';
 import { defineComponent, ref, propType, computed, bind } from '@muban/muban';
 import { isBoolean, optional } from 'isntnt';
 
-import './toggle-expand.scss';
 import { CfA2Icon } from '../cf-a2-icon/CfA2Icon';
 
 import data from '../../../assets/json/test.json';
+
+import './toggle-expand.scss';
 
 // eslint-disable-next-line no-console
 console.log('json data test', data);
 
 export const useToggle = (
-  initialValue: boolean
+  initialValue: boolean,
 ): readonly [Ref<boolean>, (force?: boolean) => void] => {
   const state = ref(initialValue);
   const toggle = (force?: boolean): void => {

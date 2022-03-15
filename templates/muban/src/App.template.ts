@@ -5,8 +5,10 @@ import { defaultLayoutTemplate } from './layouts/default/DefaultLayout.template'
 import { renderLazyComponentTemplate } from './utils/createComponentRenderer';
 
 const componentMap = {
+  /* eslint-disable @typescript-eslint/naming-convention */
   'default-layout': defaultLayoutTemplate,
   'custom-layout': customLayoutTemplate,
+  /* eslint-enable @typescript-eslint/naming-convention */
 };
 
 export type AppTemplateProps = {

@@ -1,10 +1,7 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import minimist from 'minimist';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Plop, run } from 'plop';
 import path, { dirname } from 'node:path';
-
 import { fileURLToPath } from 'node:url';
+import minimist from 'minimist';
+import { Plop, run } from 'plop';
 
 const args = process.argv.slice(2);
 const argv = minimist(args);

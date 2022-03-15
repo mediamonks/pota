@@ -2,7 +2,8 @@
 
 ## Setup 🚀
 
-You can create a new project using [`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
+You can create a new project using
+[`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
 
 ```bash
 npm init pota -- --template muban

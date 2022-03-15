@@ -20,5 +20,12 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "./.eslintrc.cjs"]
+  "include": [
+    "src/**/*.ts",
+    "lint-staged.config.js",
+    "plopfile.ts",
+    "./scripts/*.ts",
+    "./mocks/**/*.ts",
+    "src/assets.d.ts"
+  ]
 }

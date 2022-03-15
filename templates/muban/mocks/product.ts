@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { RequestConfig } from '@mediamonks/monck';
 import path from 'path';
 import { existsSync } from 'fs';
+
+import type { RequestConfig } from '@mediamonks/monck';
 
 export default {
   'GET /products': (_, ressponse) => {

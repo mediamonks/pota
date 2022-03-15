@@ -29,19 +29,12 @@
     "storybook": "start-storybook -p 6006",
     "storybook:build": "npm run apply-storybook-patches ; build-storybook -o ./dist/storybook",
     "storybook:mock-api": "cross-env MOCK_API=true npm run storybook",
-    "typecheck": "run-s typecheck:*",
-    "typecheck:main": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
-    "typecheck:tools": "tsc --project tsconfig.tools.json --noEmit --noUnusedLocals"
+    "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals"
   },
   "config": {
     "host": "TODO: Add a host name."
   },
-  "browserslist": [
-    "last 2 versions",
-    "not ie <= 11, not ie_mob <= 11",
-    "not dead"
-  ],
-  "prettier": "@mediamonks/prettier-config",
+  "browserslist": ["last 2 versions", "not ie <= 11, not ie_mob <= 11", "not dead"],
   "dependencies": {
     "@mediamonks/monck": "^1.0.6",
     "@mediamonks/muban-transition-component": "^1.0.0",
@@ -56,7 +49,7 @@
   "devDependencies": {
     "@mediamonks/muban-storybook-addon-transition": "^1.0.0",
     "@mediamonks/prettier-config": "^1.0.0",
-    "@muban/eslint-config": "^1.0.0-alpha.5",
+    "@muban/eslint-config": "^1.0.0-alpha.6",
     "@muban/storybook": "^7.0.0-alpha.20",
     "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.9",
@@ -73,6 +66,32 @@
     "lint-staged": "^12.3.1",
     "npm-run-all": "^4.1.5",
     "plop": "^3.0.5",
-    "ts-node": "^10.4.0"
+    "ts-node": "^10.4.0",
+    "typescript": "^4.6.2"
+  },
+  "prettier": "@mediamonks/prettier-config",
+  "eslintConfig": {
+    "extends": "@muban/eslint-config",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [
+            "**/*.test.ts",
+            "./mocks/**/*.ts",
+            "**/*.stories.ts",
+            "./scripts/**/*.ts"
+          ]
+        }
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7",
+    "yarn": "unsupported"
   }
 }
