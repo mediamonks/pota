@@ -14,7 +14,7 @@ npm init pota -- --scripts react-vite
 
 ```bash
 # install the react-vite-scripts and cli packages
-npm install @pota/react-vite-scripts @pota-cli --save-dev
+npm install @pota/react-vite-scripts @pota/cli --save-dev
 
 # configure the cli package to use react-vite-scripts
 npm pkg set pota="@pota/react-vite-scripts"

@@ -23,7 +23,7 @@ npm init pota -- --scripts muban-webpack
 
 ```bash
 # install the muban-webpack-scripts and cli packages
-npm install @pota/muban-webpack-scripts @pota-cli --save-dev
+npm install @pota/muban-webpack-scripts @pota/cli --save-dev
 
 # configure the cli package to use muban-webpack-scripts
 npm pkg set pota="@pota/muban-webpack-scripts"

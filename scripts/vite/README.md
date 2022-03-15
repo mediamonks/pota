@@ -14,7 +14,7 @@ npm init pota -- --scripts vite
 
 ```bash
 # install the vite-scripts and cli packages
-npm install @pota/vite-scripts @pota-cli --save-dev
+npm install @pota/vite-scripts @pota/cli --save-dev
 
 # configure the cli package to use vite-scripts
 npm pkg set pota="@pota/vite-scripts"

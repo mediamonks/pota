@@ -15,7 +15,7 @@ npm init pota -- --scripts react-webpack
 
 ```bash
 # install the react-webpack-scripts and cli packages
-npm install @pota/react-webpack-scripts @pota-cli --save-dev
+npm install @pota/react-webpack-scripts @pota/cli --save-dev
 
 # configure the cli package to use react-webpack-scripts
 npm pkg set pota="@pota/react-webpack-scripts"
