@@ -129,6 +129,8 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
     });
 
     const useServiceWorker = this.isProd && (await exists(paths.serviceWorker));
+    const staticDir = join(paths.user, 'static');
+    const useStaticDir = await exists(staticDir);
 
     return [
       new HTMLPlugin({
@@ -146,18 +148,17 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
         patterns: [
           {
             from: paths.publicDir,
-            toType: 'dir',
+            toType: 'dir' as const,
             globOptions: {
               ignore: ['**/.*'],
             },
           },
-          {
-            from: 'static',
+          useStaticDir && {
+            from: staticDir,
             to: `${this.versionPath}static`,
-            noErrorOnMissing: true,
             globOptions: { ignore: ['**/.*'] },
           },
-        ],
+        ].filter((pattern): pattern is Exclude<typeof pattern, boolean> => Boolean(pattern)),
       }),
       this.options['image-compression'] &&
         new ImageMinimizerPlugin({
