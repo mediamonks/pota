@@ -27,7 +27,7 @@
     "rsync:mocks": "cross-env rsync -avPx dist/node/* ${npm_package_name}@${npm_package_config_host}:~/node --delete-after",
     "rsync:storybook": "cross-env rsync -avPx dist/storybook/* ${npm_package_name}@${npm_package_config_host}:~/public/storybook/ --delete-after",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "npm run apply-storybook-patches ; build-storybook -o ./dist/storybook",
+    "storybook:build": "build-storybook -o ./dist/storybook",
     "storybook:mock-api": "cross-env MOCK_API=true npm run storybook",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals"
   },
