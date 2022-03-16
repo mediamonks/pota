@@ -1,6 +1,6 @@
 {
   "name": "@pota/muban-template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -34,7 +34,11 @@
   "config": {
     "host": "TODO: Add a host name."
   },
-  "browserslist": ["last 2 versions", "not ie <= 11, not ie_mob <= 11", "not dead"],
+  "browserslist": [
+    "last 2 versions",
+    "not ie <= 11, not ie_mob <= 11",
+    "not dead"
+  ],
   "dependencies": {
     "@mediamonks/monck": "^1.0.6",
     "@mediamonks/muban-transition-component": "^1.0.0",
