@@ -25,7 +25,7 @@ module.exports = {
       resolve: {
         ...config.resolve,
         alias: { ...config.resolve.alias, ...mubanConfig.resolve.alias },
-        modules: mubanConfig.modules,
+        modules: mubanConfig.resolve.modules,
       },
       module: {
         ...config.module,
