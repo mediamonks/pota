@@ -210,9 +210,9 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
 
     // handle cases of different module directories when e.g. localy developing within templates
     if (isSubDirectory(paths.user, paths.selfNodeModules)) baseModules.push(paths.selfNodeModules);
-    if (paths.self.endsWith('pota/scripts/webpack'))
+    if (paths.self.endsWith('scripts/webpack')) {
       baseModules.push(join(paths.self, '../node_modules'));
-
+    }
     return baseModules;
   }
 
