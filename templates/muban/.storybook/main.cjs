@@ -52,6 +52,7 @@ module.exports = {
 async function getConfig() {
   return (await import('@pota/muban-webpack-scripts/config')).default({
     'mock-api': ENABLE_MOCK_API_MIDDLEWARE,
+    'public-path': '/'
   });
 }
 
