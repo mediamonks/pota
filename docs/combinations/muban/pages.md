@@ -60,10 +60,12 @@ export const link = (): AppTemplateProps => [
 ];
 ```
 
-::: tip Ignoring files and folders Any file or folder in the `src/pages` folder starting with a `_`
+::: tip Ignoring files and folders
+Any file or folder in the `src/pages` folder starting with a `_`
 will be ignored when generating page templates. So if you're looking to share some data or utilities
 only used for pages, you can prefix the file with a `_` and still have it located in the `src/pages`
-folder, without a page being created for it. :::
+folder, without a page being created for it.
+:::
 
 ### Template
 
@@ -73,10 +75,12 @@ child templates to render for each specific page based on the data provided for 
 so by creating a "map" with all possible templates, and based on the data for that page, it picks
 one (or multiple) templates to render, passing along the props that belong with that child template.
 
-::: tip Types Note that the data function's return type is typed as `AppTemplateProps`. This is
+::: tip Types
+Note that the data function's return type is typed as `AppTemplateProps`. This is
 because this function must return data that will be passed to the `appTemplate`. In turn, the
 `AppTemplateProps` will include the types of its child templates, making sure everything is typed,
-down to the leaf components. :::
+down to the leaf components.
+:::
 
 The corresponding `App` component registers the same child components to initialize them whenever
 they are rendered on the page.

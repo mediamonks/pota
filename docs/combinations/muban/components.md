@@ -116,8 +116,10 @@ export const MyChildComponent = defineComponent({
 });
 ```
 
-::: tip Optional TypeScript components are not required - sometimes you have partials that only have
-templates (and styles), but don't require any interactions or data bindings. :::
+::: tip Optional 
+TypeScript components are not required - sometimes you have partials that only have
+templates (and styles), but don't require any interactions or data bindings. 
+:::
 
 #### Template
 
@@ -185,10 +187,12 @@ Some other things to note;
   to apply bindings to.
 - Passing a `ref` as second parameter to child templates is completely optional.
 
-::: tip Optional The use of templates in Muban is optional. If you already have existing HTML,
+::: tip Optional 
+The use of templates in Muban is optional. If you already have existing HTML,
 either statically or as part of existing website or CMS, it might not be sensible to duplicate
 everything locally as well. In those cases, you would only write TypeScript components and styles,
-and won't use storybook or the dev server at all. :::
+and won't use storybook or the dev server at all. 
+:::
 
 #### Stylesheet
 
@@ -215,16 +219,19 @@ component.
 }
 ```
 
-::: tip Because the Muban library is impartial about how you implement your styling, it is up to
+::: tip 
+Because the Muban library is impartial about how you implement your styling, it is up to
 each project to decide how to write stylesheets, and how to bundle them. In this skeleton, we've
 chosen SCSS.
 
 - Using "css-in-js" does not make sense if your HTML is generated on the server.
 - Going full post-css might still miss out on some useful features that SCSS offers.
 
-However, if your team decides to use something else for styling, that's perfectly possible. :::
+However, if your team decides to use something else for styling, that's perfectly possible. 
+:::
 
-::: warning There are 3 ways to include your scss files to make them end up in your output bundle,
+::: warning 
+There are 3 ways to include your scss files to make them end up in your output bundle,
 each having their own downsides:
 
 1. **Import your styles in the Template files** - since styles are there to enhance your HTML,
