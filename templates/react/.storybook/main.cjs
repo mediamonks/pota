@@ -13,8 +13,8 @@ module.exports = {
   staticDirs: ['../public', 'static'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   async webpackFinal(config) {
-    const skeletonWebpackConfig = await (await import('@pota/react-webpack-scripts/config'))
-      .default({})
+    const skeletonWebpackConfig = await (await import('../../../scripts/react-webpack/lib/config.js'))
+      .default({ 'public-path': '/' })
       .final();
 
     return {
@@ -28,7 +28,7 @@ module.exports = {
       module: { ...config.module, rules: skeletonWebpackConfig.module.rules },
       plugins: [
         ...config.plugins,
-        // findPlugin(skeletonWebpackConfig, 'DefinePlugin'),
+        findPlugin(skeletonWebpackConfig, 'DefinePlugin'),
         findPlugin(skeletonWebpackConfig, 'ReactRefreshPlugin'),
       ],
     };
