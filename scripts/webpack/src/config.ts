@@ -2,6 +2,8 @@ import { access } from 'fs/promises';
 import { isAbsolute, resolve, join } from 'path';
 
 import babelPresetEnv from '@babel/preset-env';
+import postcssPresetEnv from 'postcss-preset-env';
+import postcssNormalize from 'postcss-normalize';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HTMLPlugin from 'html-webpack-plugin';
@@ -95,7 +97,15 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
     return [
       this.isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
       { loader: 'css-loader', options: { importLoaders: preProcessor ? 3 : 1 } },
-      { loader: 'postcss-loader' },
+      {
+        loader: 'postcss-loader',
+        options: {
+          postcssOptions: {
+            config: false,
+            plugins: [[postcssPresetEnv, { stage: 3 }], postcssNormalize],
+          },
+        },
+      },
       ...(preProcessor
         ? [{ loader: 'resolve-url-loader' }, { loader: preProcessor, options: preProcessorOptions }]
         : []),
@@ -208,12 +218,12 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
    * Only used when the scripts are outside of the main project directory.
    */
   public get modules() {
-    const baseModules = ['node_modules', paths.selfNodeModules];
+    const baseModules = ['node_modules'];
 
     // handle cases of different module directories when e.g. localy developing within templates
-    if (isSubDirectory(paths.user, paths.selfNodeModules)) baseModules.push(paths.selfNodeModules);
+    if (isSubDirectory(paths.user, paths.selfNodeModules)) baseModules.unshift(paths.selfNodeModules);
     if (paths.self.endsWith('scripts/webpack')) {
-      baseModules.push(join(paths.self, '../node_modules'));
+      baseModules.unshift(join(paths.self, '../node_modules'));
     }
     return baseModules;
   }
