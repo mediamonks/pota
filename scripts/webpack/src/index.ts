@@ -3,10 +3,8 @@ import { isNumber } from 'isntnt';
 
 import type { Stats } from 'webpack';
 import type { Command } from '@pota/cli/authoring';
-import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 
 import { parsePort } from './parsePort.js';
-import { loadProxySetup } from './loadProxySetup.js';
 import { createCompiler } from './createCompiler.js';
 import { createLogger } from './createLogger.js';
 import { paths } from './paths.js';
@@ -148,40 +146,17 @@ export class Dev implements Command<DevOptions, Dependencies> {
 
     if (isNumber(options.port) && port !== options.port) {
       log.warn(`Port ${red(options.port)} is unavailable, using ${green(port)} as a fallback.`);
+      options.port = port;
     }
 
     console.log(); // spacing
-    const proxySetup = await loadProxySetup(paths.proxySetup);
-
-    const devServerConfig = config.finalDevServer();
-    const finalDevServerConfig: DevServerConfiguration = {
-      ...devServerConfig,
-      port,
-      https: options.https,
-      open: options.open,
-      ...(proxySetup && {
-        setupMiddlewares(middlewares, devServer) {
-          if (!devServer) throw new Error('webpack-dev-server is not defined');
-
-          if (devServerConfig.setupMiddlewares) {
-            middlewares.unshift(
-              ...(devServerConfig.setupMiddlewares(middlewares, devServer) ?? []),
-            );
-          }
-
-          middlewares.unshift(proxySetup(devServer.app!));
-
-          return middlewares;
-        },
-      }),
-    };
 
     const compiler = await createCompiler(await config.final());
     if (!compiler) return;
 
     const Server = (await import('webpack-dev-server')).default;
 
-    const server = new Server(finalDevServerConfig, compiler);
+    const server = new Server(await config.finalDevServer(), compiler);
 
     console.log(cyan('Starting the development server...'));
     console.log(); // spacing

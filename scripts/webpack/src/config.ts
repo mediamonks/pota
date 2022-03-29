@@ -20,6 +20,7 @@ import type { Configuration, RuleSetRule } from 'webpack';
 import type { BuildOptions, DevOptions, CommonOptions } from './types.js';
 
 import { paths, isSubDirectory } from './paths.js';
+import { loadProxySetup } from './loadProxySetup.js';
 
 export type WebpackConfigOptions = CommonOptions & Partial<BuildOptions> & Partial<DevOptions>;
 
@@ -217,7 +218,9 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
     return baseModules;
   }
 
-  public finalDevServer(): DevServerConfiguration {
+  public async finalDevServer(): Promise<DevServerConfiguration> {
+    const proxySetup = await loadProxySetup(paths.proxySetup);
+
     return {
       hot: true,
       historyApiFallback: true,
@@ -226,6 +229,16 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
         progress: true,
         overlay: false,
       },
+      port: this.options.port,
+      https: this.options.https,
+      open: this.options.open,
+      ...(proxySetup && {
+        setupMiddlewares(middlewares, devServer) {
+          middlewares.unshift(proxySetup(devServer.app!));
+
+          return middlewares;
+        },
+      }),
     };
   }
 
@@ -470,8 +483,6 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
           name: 'runtime',
         },
       },
-
-      devServer: this.finalDevServer(),
       // silence `[webpack.cache.PackFileCacheStrategy]` warnings
       infrastructureLogging: { level: 'error' },
       module: {
