@@ -13,7 +13,7 @@ module.exports = {
   staticDirs: ['../public', 'static'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   async webpackFinal(config) {
-    const skeletonWebpackConfig = await (await import('../../../scripts/react-webpack/lib/config.js'))
+    const skeletonWebpackConfig = await (await import('@pota/react-webpack-scripts/config'))
       .default({ 'public-path': '/' })
       .final();
 
