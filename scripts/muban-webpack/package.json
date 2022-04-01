@@ -32,9 +32,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc -b -i",
-    "clean:build": "tsc -b --clean && tsc -b",
-    "prepublishOnly": "npm run clean:build"
+    "build": "cd .. && npx tsc -p muban-webpack",
+    "prepublishOnly": "npm run build"
   },
   "pota": {
     "commands": {
@@ -48,7 +47,7 @@
     }
   },
   "dependencies": {
-    "@pota/webpack-scripts": "~1.0.0",
+    "@pota/webpack-scripts": "~1.0.3",
     "isntnt": "^1.5.2",
     "node-sass-json-importer": "^4.3.0",
     "null-loader": "^4.0.1",

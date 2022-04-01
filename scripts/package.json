@@ -10,6 +10,7 @@
     "vite"
   ],
   "scripts": {
+    "build": "npm run build -ws",
     "format": "prettier \"**/*.{js,ts,md,json}\" --write --loglevel warn"
   },
   "prettier": "@mediamonks/prettier-config",

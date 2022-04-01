@@ -32,9 +32,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc -b -i",
-    "clean:build": "tsc -b --clean && tsc -b",
-    "prepublishOnly": "npm run clean:build"
+    "build": "cd .. && npx tsc -p react-webpack",
+    "prepublishOnly": "npm run build"
   },
   "pota": {
     "commands": {
@@ -50,6 +49,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+    "react-refresh": "~0.11.0",
     "@pota/webpack-scripts": "~1.0.0",
     "@svgr/webpack": "^6.2.1",
     "babel-plugin-named-asset-import": "^0.3.8"

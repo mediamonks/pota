@@ -32,9 +32,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc -b -i",
-    "clean:build": "tsc -b --clean && tsc -b",
-    "prepublishOnly": "npm run clean:build"
+    "build": "cd .. && npx tsc -p react-vite",
+    "prepublishOnly": "npm run build"
   },
   "pota": {
     "commands": {
