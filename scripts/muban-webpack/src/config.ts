@@ -83,14 +83,14 @@ const PAGES_NAME = 'pages';
 const MUBAN_NAME = 'muban';
 
 export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions> {
-  public finalDevServer(): DevServerConfiguration {
+  public async finalDevServer(): Promise<DevServerConfiguration> {
     const mocksDir = join(paths.mocksOutputDir, './mocks');
     const mocksHotUpdateDir = join(mocksDir, './static', './webpack');
 
     const useMockApi = this.options['mock-api'];
 
     return {
-      ...super.finalDevServer(),
+      ...(await super.finalDevServer()),
       static: {
         serveIndex: false,
       },
