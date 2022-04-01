@@ -160,11 +160,10 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
           {
             from: paths.publicDir,
             toType: 'dir' as const,
-            globOptions: {
-              ignore: ['**/.*'],
-            },
+            globOptions: { ignore: ['**/.*'] },
           },
           useStaticDir && {
+            noErrorOnMissing: true,
             from: staticDir,
             to: `${this.versionPath}static`,
             globOptions: { ignore: ['**/.*'] },
@@ -221,7 +220,9 @@ export class WebpackConfig<C extends WebpackConfigOptions = WebpackConfigOptions
     const baseModules = ['node_modules'];
 
     // handle cases of different module directories when e.g. localy developing within templates
-    if (isSubDirectory(paths.user, paths.selfNodeModules)) baseModules.unshift(paths.selfNodeModules);
+    if (isSubDirectory(paths.user, paths.selfNodeModules)) {
+      baseModules.unshift(paths.selfNodeModules);
+    }
     if (paths.self.endsWith('scripts/webpack')) {
       baseModules.unshift(join(paths.self, '../node_modules'));
     }
