@@ -22,7 +22,7 @@
     "postinstall": "npx patch-package && husky install",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
-    "plop": "node --loader ts-node/esm ./scripts/plop.ts",
+    "plop": "pota plop",
     "rsync": "cross-env rsync -avPx dist/site/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete-after",
     "rsync:mocks": "cross-env rsync -avPx dist/node/* ${npm_package_name}@${npm_package_config_host}:~/node --delete-after",
     "rsync:storybook": "cross-env rsync -avPx dist/storybook/* ${npm_package_name}@${npm_package_config_host}:~/public/storybook/ --delete-after",
@@ -69,8 +69,6 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.1",
     "npm-run-all": "^4.1.5",
-    "plop": "^3.0.5",
-    "ts-node": "^10.4.0",
     "typescript": "^4.6.2"
   },
   "prettier": "@mediamonks/prettier-config",
