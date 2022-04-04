@@ -9,6 +9,7 @@
 | [react-webpack](react-webpack) | [webpack](webpack) | ![react-webpack version](https://img.shields.io/npm/v/@pota/react-webpack-scripts.svg?label=%20) |
 | [vite](vite)                   |                    | ![vite version](https://img.shields.io/npm/v/@pota/vite-scripts.svg?label=%20)                   |
 | [webpack](webpack)             |                    | ![webpack version](https://img.shields.io/npm/v/@pota/webpack-scripts.svg?label=%20)             |
+| [plop](plop)                   |                    | ![plop version](https://img.shields.io/npm/v/@pota/plop-scripts.svg?label=%20)                   |
 
 ## Contributing
 
