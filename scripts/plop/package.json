@@ -1,0 +1,52 @@
+{
+  "name": "@pota/plop-scripts",
+  "version": "1.0.0-rc.0",
+  "description": "Pota wrapper around plop to support TypeScript plopfiles",
+  "bugs": {
+    "url": "https://github.com/mediamonks/pota/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/pota.git",
+    "directory": "scripts/plop"
+  },
+  "author": "frontend.monks",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./config": "./lib/config.js",
+    "./paths": "./lib/paths.js"
+  },
+  "typesVersions": {
+    "*": {
+      "config": [
+        "./lib/config.d.ts"
+      ],
+      "paths": [
+        "./lib/paths.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "cd .. && npx tsc -p plop",
+    "prepublishOnly": "npm run build"
+  },
+  "pota": {
+    "commands": {
+      "plop": {
+        "description": "Create a plop component"
+      }
+    }
+  },
+  "dependencies": {
+    "esbuild": "^0.14.31",
+    "plop": "^3.0.5"
+  },
+  "peerDependencies": {
+    "@pota/cli": "~2.0.0"
+  }
+}
