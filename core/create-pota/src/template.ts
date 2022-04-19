@@ -9,6 +9,7 @@ const IGNORED_FILES = ['LICENSE'];
 
 const FILE_RENAMES = {
   gitignore: '.gitignore',
+  npmrc: '.npmrc',
 };
 
 async function removeFiles(projectPath: string) {
