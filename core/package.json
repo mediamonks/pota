@@ -13,6 +13,6 @@
   "devDependencies": {
     "@mediamonks/prettier-config": "^1.0.0",
     "@tsconfig/node16": "^1.0.2",
-    "typescript": "4.7.0-dev.20220315"
+    "typescript": "^4.7.0-beta"
   }
 }
