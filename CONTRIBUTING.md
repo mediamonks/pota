@@ -1,4 +1,4 @@
-# Contributing to Pota [WIP]
+# Contributing to Pota
 
 Please look through this document for insights in how the project is setup and how to contribute.
 
@@ -69,10 +69,12 @@ npm run build -w webpack
 A folder with individual template packages.
 
 ```bash
-# setup dependencies
-# cd into each template folder
-cd vanilla/
-npm install
+# setup dependencies for each template
+
+npm install --prefix=vanilla
+npm install --prefix=muban
+npm install --prefix=react
+npm install --prefix=<template-folder>
 ```
 
 ## Working with local `templates`, `scripts` and `@pota/cli`
