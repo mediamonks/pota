@@ -112,3 +112,18 @@ However, these can be easily installed after the project is created (see next se
 ```bash
 npm init pota -- --template templates/vanilla --no-scripts
 ```
+
+## Known Issues
+
+### explicit usage of a scripts package in storybook configuration
+
+Currently, we have 2 templates that are using storybook - [`muban`](./templates/muban) and [`react`](./templates/react).
+It is expected that the storybook bundle configuration matches that of the application. Because the application bundle
+configuration is provided by scripts packages, we need to somehow pass that configuration to storybook.
+
+The way its currently done, is that we assume what scripts package the developer will choose for a given template, and hardcode
+its usage in the `.storybook/main.cjs` file.
+
+We must not make any assumptions on what the user will use, as that can and will cause issues.
+
+The fix is being tracked in https://github.com/mediamonks/pota/issues/41
