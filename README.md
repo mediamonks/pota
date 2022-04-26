@@ -30,6 +30,7 @@ npm init pota@latest
 | [@pota/react-template](templates/react)              | [Template](templates) | ![react version](https://img.shields.io/npm/v/@pota/react-template.svg?label=%20)                |
 | [@pota/react-base-template](templates/react-base)    | [Template](templates) | ![react-base version](https://img.shields.io/npm/v/@pota/react-base-template.svg?label=%20)      |
 | [@pota/muban-template](templates/muban)              | [Template](templates) | ![muban version](https://img.shields.io/npm/v/@pota/muban-template.svg?label=%20)                |
+| [@pota/next-template](next/muban)                    | [Template](templates) | ![next version](https://img.shields.io/npm/v/@pota/next-template.svg?label=%20)                  |
 
 ## Contributing
 

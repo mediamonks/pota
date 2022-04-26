@@ -12,3 +12,4 @@ skeletons/scaffolds, providing:
 | [muban](/combinations/muban/)           |
 | [react](/combinations/react/)           |
 | [react-base](/combinations/react-base/) |
+| [next](/combinations/next/) |
