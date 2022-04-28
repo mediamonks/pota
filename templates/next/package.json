@@ -13,10 +13,11 @@
   "author": "frontend.monks",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 2001",
     "build": "next build",
     "preview": "next start",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
+    "postinstall": "npx patch-package",
     "prepare": "husky install",
     "plop": "node --loader ts-node/esm ./scripts/plop.ts",
     "fix": "run-s fix:* && npm run format",
@@ -24,7 +25,11 @@
     "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
     "lint": "run-s lint:*",
     "lint:eslint": "next lint --cache-location node_modules/.cache/.eslintcache",
-    "rsync": "cross-env rsync -avPx .next/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete"
+    "rsync": "rsync -avPx .next/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete",
+    "rsync:storybook": "rsync -avPx storybook-static/* ${npm_package_name}@${npm_package_config_host}:~/public/storybook --delete",
+    "storybook": "start-storybook -p 9001",
+    "build:storybook": "build-storybook",
+    "preview:storybook": "npx serve storybook-static"
   },
   "config": {
     "host": "TODO: Add a host name."
@@ -46,8 +51,8 @@
   },
   "dependencies": {
     "next": "~12.1.5",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "styled-components": "^5.3.5",
     "styled-normalize": "^8.0.7"
   },
@@ -55,6 +60,14 @@
     "@mediamonks/eslint-config-react": "^2.0.0",
     "@mediamonks/prettier-config": "^1.0.0",
     "@next/eslint-plugin-next": "^12.1.5",
+    "@storybook/addon-actions": "^6.4.22",
+    "@storybook/addon-essentials": "^6.4.22",
+    "@storybook/addon-interactions": "^6.4.22",
+    "@storybook/addon-links": "^6.4.22",
+    "@storybook/builder-webpack5": "^6.4.22",
+    "@storybook/manager-webpack5": "^6.4.22",
+    "@storybook/react": "^6.4.22",
+    "@storybook/testing-library": "^0.0.11",
     "@types/minimist": "^1.2.2",
     "@types/node": "17.0.27",
     "@types/react": "18.0.7",
@@ -68,7 +81,8 @@
     "plop": "^3.1.0",
     "prettier": "^2.4.1",
     "ts-node": "^10.7.0",
-    "typescript": "4.6.3"
+    "typescript": "4.6.3",
+    "webpack": "^5.72.0"
   },
   "engines": {
     "node": ">=16",

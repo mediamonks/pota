@@ -104,6 +104,7 @@ function getActions(
       return [
         {
           data: {
+            type,
             componentName: `${componentPrefix}${componentPrefix && '-'}${typePrefix}${id}-${name}`,
           },
           type: 'addMany',

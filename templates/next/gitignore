@@ -23,6 +23,8 @@ pids
 
 build
 dist
+.next
+storybook-static
 
 # Dependency directories
 node_modules/
@@ -45,5 +47,3 @@ node_modules/
 # dotenv environment variables file
 .env
 .env.test
-
-.next

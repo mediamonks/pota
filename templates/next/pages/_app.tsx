@@ -1,8 +1,7 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 
-import { GlobalStyle } from '../theme/GlobalStyle';
-import { theme } from '../theme/theme';
+import { theme, GlobalStyle } from '../theme';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
