@@ -1,3 +1,6 @@
+import withPlugins from 'next-compose-plugins';
+import optimizedImages from 'next-optimized-images';
+
 /**
  * @type {import('next').NextConfig}
  */
@@ -11,4 +14,4 @@ const NEXT_CONFIG = {
   },
 };
 
-export default NEXT_CONFIG;
+export default withPlugins([[optimizedImages]], NEXT_CONFIG);
