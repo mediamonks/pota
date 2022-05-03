@@ -73,6 +73,11 @@
     "ts-node": "^10.4.0",
     "typescript": "^4.6.2"
   },
+  "create-pota": {
+    "scripts": {
+      "builders": ["@pota/muban-webpack-scripts"]
+    }
+  },
   "prettier": "@mediamonks/prettier-config",
   "eslintConfig": {
     "extends": "@muban/eslint-config",
