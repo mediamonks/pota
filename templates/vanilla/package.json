@@ -1,6 +1,6 @@
 {
   "name": "@pota/vanilla-template",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -53,7 +53,10 @@
   },
   "create-pota": {
     "scripts": {
-      "builders": ["@pota/webpack-scripts", "@pota/vite-scripts"]
+      "builders": [
+        "@pota/webpack-scripts",
+        "@pota/vite-scripts"
+      ]
     }
   },
   "engines": {
