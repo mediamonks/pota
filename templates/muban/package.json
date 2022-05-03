@@ -1,6 +1,6 @@
 {
   "name": "@pota/muban-template",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -75,7 +75,9 @@
   },
   "create-pota": {
     "scripts": {
-      "builders": ["@pota/muban-webpack-scripts"]
+      "builders": [
+        "@pota/muban-webpack-scripts"
+      ]
     }
   },
   "prettier": "@mediamonks/prettier-config",
