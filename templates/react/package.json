@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-template",
-  "version": "1.0.5",
+  "version": "1.2.0",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -85,7 +85,9 @@
   },
   "create-pota": {
     "scripts": {
-      "builders": ["@pota/react-webpack-scripts"]
+      "builders": [
+        "@pota/react-webpack-scripts"
+      ]
     }
   },
   "engines": {
