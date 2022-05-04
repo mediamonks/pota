@@ -97,7 +97,7 @@ function getActions(
           },
           type: 'add',
           templateFile: 'plop-templates/page.hbs',
-          path: `./pages/{{pathname}}{{dashCase name}}.tsx`,
+          path: `./src/pages/{{pathname}}{{dashCase name}}.tsx`,
         },
       ];
     default:
@@ -110,7 +110,7 @@ function getActions(
           type: 'addMany',
           base: 'plop-templates/component',
           templateFiles: 'plop-templates/component/*.*',
-          destination: `components/${getDirectory(type)}/{{dashCase componentName}}/`,
+          destination: `src/components/${getDirectory(type)}/{{dashCase componentName}}/`,
         },
       ];
   }

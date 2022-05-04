@@ -7,7 +7,7 @@ import optimizedImages from 'next-optimized-images';
 const NEXT_CONFIG = {
   reactStrictMode: true,
   eslint: {
-    dirs: ['pages', 'components', 'theme', 'storybook-helpers'],
+    dirs: ['src'],
   },
   compiler: {
     styledComponents: true,
