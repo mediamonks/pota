@@ -29,7 +29,10 @@ async function initNpmTemplate(pkg: string): Promise<void> {
 
   await getTar(tarball, projectPath);
 
-  await Promise.all([renameFiles(projectPath, FILE_RENAMES), removeFiles(projectPath, IGNORED_FILES)]);
+  await Promise.all([
+    renameFiles(projectPath, FILE_RENAMES),
+    removeFiles(projectPath, IGNORED_FILES),
+  ]);
 }
 
 async function initGitTemplate(repo: string): Promise<void> {
@@ -41,7 +44,10 @@ async function initGitTemplate(repo: string): Promise<void> {
 
   await tiged(repo, { mode: 'git' }).clone(projectPath);
 
-  await Promise.all([renameFiles(projectPath, FILE_RENAMES), removeFiles(projectPath, IGNORED_FILES)]);
+  await Promise.all([
+    renameFiles(projectPath, FILE_RENAMES),
+    removeFiles(projectPath, IGNORED_FILES),
+  ]);
 }
 
 async function initFileTemplate(path: string) {

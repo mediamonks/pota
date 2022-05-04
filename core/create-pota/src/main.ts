@@ -18,7 +18,7 @@ import {
   ScriptsPackageJson,
   TemplatePackageJson,
   writePackageJson,
-  IGNORED_PACKAGE_KEYS
+  IGNORED_PACKAGE_KEYS,
 } from './package.js';
 import { downloadTemplate } from './downloadTemplate.js';
 import args from './args.js';
@@ -177,9 +177,10 @@ let commandsRecord: NonNullable<ScriptsPackageJson['create-pota']>['commands'] =
 
 if (scripts.builders) {
   try {
-    commandsRecord = (await getPackageInfo(scripts.builders, 'create-pota.commands')) as NonNullable<
-      ScriptsPackageJson['create-pota']
-    >['commands'];
+    commandsRecord = (await getPackageInfo(
+      scripts.builders,
+      'create-pota.commands',
+    )) as NonNullable<ScriptsPackageJson['create-pota']>['commands'];
   } catch {}
 }
 

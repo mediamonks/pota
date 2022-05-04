@@ -39,7 +39,7 @@ export async function removeFiles(projectPath: string, files: ReadonlyArray<stri
   for (const file of files) {
     try {
       await removeFile(join(projectPath, file));
-    } catch { }
+    } catch {}
   }
 }
 
@@ -47,6 +47,6 @@ export async function renameFiles(projectPath: string, renames: Record<string, s
   for (const [file, newName] of typedObjectEntries(renames)) {
     try {
       await rename(join(projectPath, file), join(projectPath, newName));
-    } catch { }
+    } catch {}
   }
 }
