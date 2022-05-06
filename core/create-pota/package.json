@@ -1,6 +1,6 @@
 {
   "name": "create-pota",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0",
   "description": "Command for creating Pota projects",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
