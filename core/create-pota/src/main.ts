@@ -73,19 +73,22 @@ const downloadTemplatePromise = downloadTemplate(template, CWD).finally(() => {
 const scripts =
   args.scripts && Object.keys(args.scripts).length > 0
     ? { ...args.scripts }
-    : isRegistryPackage(template)
+    : isRegistryPackage(template) || isFilePackage(template)
     ? await (async () => {
         SPINNER ??= ora();
         SPINNER.start(`retrieving ${yellow(template)} metadata`);
 
         // retrieve the `pota.scripts` metadata of the selected template package
-        const templatePota = (await getPackageInfo(template, 'create-pota.scripts')) as NonNullable<
-          NonNullable<TemplatePackageJson['create-pota']>['scripts']
-        >;
+        const { scripts = {} } = isFilePackage(template)
+          ? (await readPackageJson<TemplatePackageJson>(resolve(CWD, template)))['create-pota'] ??
+            {}
+          : ((await getPackageInfo(template, 'create-pota')) as NonNullable<
+              TemplatePackageJson['create-pota']
+            >);
 
         SPINNER.succeed();
 
-        return await promptScripts(templatePota);
+        return await promptScripts(scripts);
       })()
     : {};
 

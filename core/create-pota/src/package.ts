@@ -88,7 +88,7 @@ export function isRegistryPackage(pkg: string) {
 /**
  * reads the package.json of the specified path
  */
-export async function readPackageJson(path: string): Promise<PackageJsonShape> {
+export async function readPackageJson<T = PackageJsonShape>(path: string): Promise<T> {
   path = normalizePackagePath(path);
 
   return JSON.parse(await readFile(path, { encoding: 'utf8' }));

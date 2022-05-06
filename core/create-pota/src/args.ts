@@ -2,9 +2,15 @@ import minimist from 'minimist';
 import { SelectedScripts } from './prompts/scripts.js';
 
 const COMBINATIONS = {
-  muban: { template: '@pota/muban-template', scripts: { builders: '@pota/muban-webpack-scripts', codeGen: '@pota/plop-scripts' } },
+  muban: {
+    template: '@pota/muban-template',
+    scripts: { builders: '@pota/muban-webpack-scripts', codeGen: '@pota/plop-scripts' },
+  },
   vanilla: { template: '@pota/vanilla-template', scripts: { builders: '@pota/webpack-scripts' } },
-  react: { template: '@pota/react-template', scripts: { builders: '@pota/react-webpack-scripts', codeGen: '@pota/plop-scripts' } },
+  react: {
+    template: '@pota/react-template',
+    scripts: { builders: '@pota/react-webpack-scripts', codeGen: '@pota/plop-scripts' },
+  },
   'react-base': {
     template: '@pota/react-base-template',
     scripts: { builders: '@pota/react-webpack-scripts' },
