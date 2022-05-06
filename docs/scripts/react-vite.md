@@ -12,12 +12,6 @@ extends **[vite-scripts](/scripts/vite)**
 
 ## Usage
 
-> Creating a new project with react-vite-scripts
-
-```bash
-npm init pota -- --scripts react-vite
-```
-
 > Adding it to an existing project
 
 ```bash

@@ -1,245 +1,199 @@
-import { access, mkdir } from 'fs/promises';
-
-// @ts-ignore TS is drunk, AGAIN!
-import kleur from 'kleur';
-import prompts from 'prompts';
-
-import { nameValidator } from './validators.js';
 import { resolve, relative } from 'path';
-import { command } from './spawn.js';
+import { mkdir } from 'fs/promises';
+
+import ora, { Ora } from 'ora';
+// @ts-ignore cannot find ts definitions for kleur, even though there are there...
+import kleur from 'kleur';
+
+import { promptName } from './prompts/name.js';
+import { promptTemplate } from './prompts/template.js';
+import { promptScripts } from './prompts/scripts.js';
+import { promptGit } from './prompts/git.js';
+import { command } from './util/spawn.js';
 import {
   getPackageInfo,
-  PackageInfo,
-  PackageJsonShape,
+  isFilePackage,
+  isRegistryPackage,
   readPackageJson,
+  ScriptsPackageJson,
+  TemplatePackageJson,
   writePackageJson,
-} from './package.js';
-import {
-  CUSTOM_CHOICE_VALUE,
   IGNORED_PACKAGE_KEYS,
-  NONE_CHOICE,
-  OFFICIAL_SCRIPTS,
-  OFFICIAL_TEMPLATES,
-  TEMPLATE_VALUES_AS_KEYS,
-} from './constants.js';
-import { parseArguments } from './parseArguments.js';
-import { initFileTemplate, initGitTemplate, initNpmTemplate } from './template.js';
-import ora from 'ora';
+} from './package.js';
+import { downloadTemplate } from './downloadTemplate.js';
+import args from './args.js';
 
-const { bold, green, cyan, yellow, gray } = kleur;
+const { bold, green, cyan, yellow } = kleur;
 
-// override prompts with passed args (if any)
-prompts.override(parseArguments(process.argv.slice(2)));
+let SPINNER: Ora;
 
 // cwd will change in the exection of this script
 // so we need to make sure we are always using the same value
 // when referencing this variable
 const CWD = process.cwd();
 
-const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git'>> = [
-  // query project name
-  {
-    type: 'text',
-    name: 'name',
-    message: 'Type in your project name:',
-    initial: 'pota-project',
-    async validate(name) {
-      const nameOkorError = nameValidator(name);
+// prefetch the data required for the `promptTemplate`
+let isPrefetching = true;
+const prefetchPromise = args.template
+  ? Promise.resolve()
+  : promptTemplate.prefetch({ keyword: '@pota', scopes: ['pota'] }).finally(() => {
+      isPrefetching = false;
+    });
 
-      if (typeof nameOkorError === 'string') return nameOkorError;
+// prompt the project name
+const name = args.name || (await promptName(CWD));
 
-      try {
-        await access(resolve(CWD, name));
-        return `The directory of the specified name already exists.`;
-      } catch {
-        return true;
-      }
-    },
-  },
-  // query for template
-  {
-    type: 'select',
-    name: 'template',
-    message: 'Select a template:',
-    initial: 0,
-    choices: [
-      ...Object.entries(OFFICIAL_TEMPLATES).map(([title, { value }]) => ({ title, value })),
-      {
-        title: yellow(CUSTOM_CHOICE_VALUE),
-        value: CUSTOM_CHOICE_VALUE,
-        description: `bring your own custom template`,
-      },
-    ],
-  },
-  // custom choice: query for template
-  {
-    type: (prev) => (prev === CUSTOM_CHOICE_VALUE ? 'text' : null),
-    name: 'template',
-    message: 'Custom template package/git url/local path:',
-  },
-  // query for scripts
-  {
-    type: (prev: keyof typeof OFFICIAL_TEMPLATES) => "no-scripts" in OFFICIAL_TEMPLATES[TEMPLATE_VALUES_AS_KEYS[prev]] ? null : 'select',
-    name: 'scripts',
-    message: 'Select a scripts package:',
-    initial: 0,
-    choices(prev: string) {
-      const { recommended = [] as ReadonlyArray<string> } =
-        OFFICIAL_TEMPLATES[TEMPLATE_VALUES_AS_KEYS[prev] as keyof typeof OFFICIAL_TEMPLATES] ?? {};
-
-      return [
-        ...Object.entries(OFFICIAL_SCRIPTS).map(([title, value]) => {
-          if (recommended.length > 0 && !recommended.includes(value)) {
-            return { value, title: gray(title), description: 'not tested with selected template' };
-          }
-          return { title, value, description: 'recommended' };
-        }),
-        {
-          title: yellow(CUSTOM_CHOICE_VALUE),
-          value: CUSTOM_CHOICE_VALUE,
-          description: `bring your own custom script`,
-        },
-        NONE_CHOICE,
-      ];
-    },
-  },
-  // custom choice: query for scripts
-  {
-    type: (prev) => (prev === CUSTOM_CHOICE_VALUE ? 'text' : null),
-    name: 'scripts',
-    message: 'Custom script package:',
-    validate: nameValidator,
-  },
-  // query if the user wants git initialized in the project
-  {
-    type: 'toggle',
-    name: 'git',
-    message: 'Do you want to initialize git in the project directory?',
-    initial: true,
-    active: 'yes',
-    inactive: 'no',
-  },
-];
-
-// prompt the user
-const result = await prompts(PROMPTS, {
-  onCancel() {
-    throw new Error('Cancelled.');
-  },
-}).catch((error) => {
-  console.warn((error as Error).message);
-  process.exit(1);
-});
-
-const { name, template } = result;
-
-console.log();
-const spinner = ora(`downloading ${yellow(template)}`).start();
-
-// setup project path
+// create the project path
 const projectPath = resolve(CWD, name);
 
-const scriptsPackage: string | null = result.scripts === NONE_CHOICE.value ? null : result.scripts;
 // create project directory
 await mkdir(projectPath);
 
 // change cwd to project directory
 process.chdir(projectPath);
 
-const IS_WINDOWS = process.platform === 'win32';
-const HAS_SLASHES = IS_WINDOWS ? /\\|[/]/ : /[/]/;
-
-const GIT_REGEX = /((git|ssh|http(s)?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:/\-~]+)(\.git)(\/)?/;
-
-try {
-  if (
-    GIT_REGEX.test(template) ||
-    result.template.startsWith('bitbucket:') ||
-    result.template.startsWith('github:')
-  ) {
-    await initGitTemplate(template);
-  } else if (HAS_SLASHES.test(template) && !template.startsWith('@')) {
-    await initFileTemplate(resolve(CWD, template));
-  } else {
-    await initNpmTemplate(template);
-  }
-} catch (error) {
-  spinner.fail();
-  console.error(`Error occurred initializing '${template}'`);
-  console.error((error as Error).message || error);
-  process.exit(1);
+// if the `promptTemplate` prefetch hasn't finished,
+// then inform the user and await it
+if (isPrefetching) {
+  SPINNER = ora();
+  SPINNER.start(`retrieving available templates`);
+  await prefetchPromise;
+  SPINNER.stop();
 }
 
-spinner.succeed();
+// prompt for a template
+const template = args.template || (await promptTemplate());
 
-const finalPkg: PackageJsonShape = {
-  name,
-  private: true,
-  version: '1.0.0',
-  ...(scriptsPackage && { pota: scriptsPackage }),
-};
+// initiate the downloading the template package
+let isDownloadingTemplate = true;
+const downloadTemplatePromise = downloadTemplate(template, CWD).finally(() => {
+  isDownloadingTemplate = false;
+});
 
+const scripts =
+  args.scripts && Object.keys(args.scripts).length > 0
+    ? { ...args.scripts }
+    : isRegistryPackage(template)
+    ? await (async () => {
+        SPINNER ??= ora();
+        SPINNER.start(`retrieving ${yellow(template)} metadata`);
+
+        // retrieve the `pota.scripts` metadata of the selected template package
+        const templatePota = (await getPackageInfo(template, 'create-pota.scripts')) as NonNullable<
+          NonNullable<TemplatePackageJson['create-pota']>['scripts']
+        >;
+
+        SPINNER.succeed();
+
+        return await promptScripts(templatePota);
+      })()
+    : {};
+
+const git = typeof args.git === 'undefined' ? await promptGit() : args.git;
+
+// if by this point we have not finished downloading the template
+// then inform the user and await it
+if (isDownloadingTemplate) {
+  SPINNER ??= ora();
+  SPINNER.start(`downloading ${yellow(template)}`);
+  await downloadTemplatePromise;
+  SPINNER.succeed();
+}
+
+const potaField: Array<string> = [];
+const devDependenciesField: Record<string, string> = {};
+
+if (Object.keys(scripts).length > 0) {
+  SPINNER ??= ora();
+  SPINNER.start(`retrieving scripts metadata`);
+
+  // retrieve the correct version for all selected scripts
+  await Promise.all(
+    Object.values(scripts).map(async (pkg) => {
+      if (isFilePackage(pkg)) return;
+
+      let version = null;
+
+      try {
+        version = (await getPackageInfo(pkg, 'dist-tags.latest')) as string;
+      } catch {}
+
+      devDependenciesField[pkg] = version ? `~${version}` : 'latest';
+
+      potaField.push(pkg);
+    }),
+  );
+
+  SPINNER.succeed();
+}
+
+// read the download tempate's package.json
 const templatePkg = await readPackageJson(projectPath);
 
 // delete keys that we don't care about from the template pkg
 for (const k in templatePkg) {
   const key = k as keyof typeof templatePkg;
-  if (!IGNORED_PACKAGE_KEYS.includes(key)) {
-    (finalPkg as any)[key] = templatePkg[key];
-  }
+  if (IGNORED_PACKAGE_KEYS.includes(key)) delete templatePkg[key];
 }
 
-let scriptsPkgInfo: PackageInfo | null = null;
-
-if (scriptsPackage) {
-  spinner.start(`retrieving ${yellow(scriptsPackage)} metadata`);
-  try {
-    scriptsPkgInfo = await getPackageInfo(scriptsPackage);
-    spinner.succeed();
-  } catch {
-    spinner.fail();
-    process.exit(1);
-  }
+// insert the scripts dev dependencies into the template dev dependencies
+if (Object.entries(devDependenciesField).length > 0) {
+  templatePkg.devDependencies ??= {};
+  templatePkg.devDependencies = { ...templatePkg.devDependencies, ...devDependenciesField };
+}
+// add pota field
+if (potaField.length > 0) {
+  templatePkg.pota ??= [];
+  templatePkg.pota = [...templatePkg.pota, ...potaField];
 }
 
-if (scriptsPkgInfo?.name) {
-  finalPkg.devDependencies ??= {};
-  finalPkg.devDependencies[scriptsPkgInfo.name] = `^${scriptsPkgInfo['dist-tags'].latest}`;
-}
-
-await writePackageJson(projectPath, finalPkg);
+// write back the final package.json
+await writePackageJson(projectPath, {
+  name,
+  private: true,
+  version: '1.0.0',
+  ...templatePkg,
+});
 
 // initialize git
-if (result.git) {
-  spinner.start('initializing git');
+if (git) {
+  SPINNER ??= ora();
+  SPINNER.start('initializing git');
   try {
     await command('git init -b main');
-    spinner.succeed();
+    SPINNER.succeed();
   } catch (error) {
     // if `-b main` isn't supported fallback to renaming the branch
     if ((error as { code: number }).code === 129) {
       await command('git init');
       await command('git branch master -m main');
-      spinner.succeed();
-    } else spinner.fail();
+      SPINNER.succeed();
+    } else SPINNER.fail();
   }
 }
 
-const relativeDir = relative(CWD, process.cwd());
+// retrieve the bundler scripts `pota` field
+let commandsRecord: NonNullable<ScriptsPackageJson['create-pota']>['commands'] = {};
 
-const commands =
-  scriptsPkgInfo?.pota && typeof scriptsPkgInfo.pota !== 'string'
-    ? Object.entries(scriptsPkgInfo.pota.commands)
-    : [];
+if (scripts.builders) {
+  try {
+    commandsRecord = (await getPackageInfo(
+      scripts.builders,
+      'create-pota.commands',
+    )) as NonNullable<ScriptsPackageJson['create-pota']>['commands'];
+  } catch {}
+}
+
+const commands = Object.entries(commandsRecord);
 
 const suggestedCommand = commands.find(([, spec]) => spec.suggest)?.[0];
 
 console.log();
 console.log(`Created ${bold(name)} 💁 ${green(projectPath)}`);
 console.log();
-if (scriptsPkgInfo) {
+if (scripts.builders) {
   if (commands.length > 0) {
-    console.log(`${yellow(scriptsPkgInfo.name)} provides the following commands:`);
+    console.log(`${yellow(scripts.builders)} provides the following commands:`);
     console.log();
     for (const [command, spec] of commands) {
       console.log(`  ${cyan(`npm run ${command}`)}`);
@@ -247,12 +201,12 @@ if (scriptsPkgInfo) {
       console.log();
     }
   } else {
-    console.log(`scripts:  ${yellow(scriptsPkgInfo.name)}`);
+    console.log(`scripts:  ${yellow(scripts.builders)}`);
     console.log();
   }
 }
 console.log('We suggest that you begin by typing:');
 console.log();
-console.log(`    ${cyan('cd')} ${relativeDir}`);
+console.log(`    ${cyan('cd')} ${relative(CWD, process.cwd())}`);
 console.log(`    ${cyan('npm install')}`);
 if (suggestedCommand) console.log(`    ${cyan(`npm run ${suggestedCommand}`)}`);

@@ -1,5 +1,7 @@
 import { join, dirname } from 'path';
-import { readdir, access, copyFile, mkdir } from 'fs/promises';
+import { readdir, access, copyFile, mkdir, rename, unlink as removeFile } from 'fs/promises';
+
+import typedObjectEntries from './typedObjectEntries.js';
 
 export class Recursive {
   static async readdir(dir: string, ignoredDirectories: ReadonlyArray<string>) {
@@ -31,4 +33,20 @@ export async function copy(src: string, dst: string) {
   }
 
   await copyFile(src, dst);
+}
+
+export async function removeFiles(projectPath: string, files: ReadonlyArray<string>) {
+  for (const file of files) {
+    try {
+      await removeFile(join(projectPath, file));
+    } catch {}
+  }
+}
+
+export async function renameFiles(projectPath: string, renames: Record<string, string>) {
+  for (const [file, newName] of typedObjectEntries(renames)) {
+    try {
+      await rename(join(projectPath, file), join(projectPath, newName));
+    } catch {}
+  }
 }

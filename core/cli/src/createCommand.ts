@@ -67,9 +67,11 @@ async function loadDependencies(
   const loadedDependencies: Record<string, unknown> = {};
 
   for (const [dependency, path] of Object.entries(dependencyPaths)) {
-    const paths = (Array.isArray(path) ? path : [path]).flatMap((p) =>
-      isAbsolute(p) ? p : [resolveLocalPath(p, cwd), resolvePackagePath(p, packagePath)],
-    ).map(p => isAbsolute(p) ? pathToFileURL(p).toString() : p)
+    const paths = (Array.isArray(path) ? path : [path])
+      .flatMap((p) =>
+        isAbsolute(p) ? p : [resolveLocalPath(p, cwd), resolvePackagePath(p, packagePath)],
+      )
+      .map((p) => (isAbsolute(p) ? pathToFileURL(p).toString() : p));
 
     let error: Error | null = null;
     for (const path of paths) {

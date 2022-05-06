@@ -1,6 +1,6 @@
 {
   "name": "@pota/webpack-scripts",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Base Webpack configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -36,7 +36,7 @@
     "build": "cd .. && npx tsc -p webpack",
     "prepublishOnly": "npm run build"
   },
-  "pota": {
+  "create-pota": {
     "commands": {
       "build": {
         "description": "Builds the app for production."

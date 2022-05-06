@@ -8,12 +8,6 @@ Commands for building Frontend applications using [webpack](https://github.com/w
 
 ## Usage
 
-> Creating a new project with webpack-scripts
-
-```bash
-npm init pota -- --scripts webpack
-```
-
 > Adding it to an existing project
 
 ```bash
