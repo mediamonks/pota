@@ -79,7 +79,7 @@ const PROMPTS: Array<prompts.PromptObject<'name' | 'template' | 'scripts' | 'git
   },
   // query for scripts
   {
-    type: 'select',
+    type: (prev: keyof typeof OFFICIAL_TEMPLATES) => "no-scripts" in OFFICIAL_TEMPLATES[TEMPLATE_VALUES_AS_KEYS[prev]] ? null : 'select',
     name: 'scripts',
     message: 'Select a scripts package:',
     initial: 0,

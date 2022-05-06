@@ -20,6 +20,11 @@ export const OFFICIAL_TEMPLATES = {
     value: '@pota/vanilla-template',
     recommended: [OFFICIAL_SCRIPTS.webpack],
   },
+  next: {
+    value: '@pota/next-template',
+    recommended: [],
+    "no-scripts": true
+  },
   muban: {
     value: '@pota/muban-template',
     recommended: [OFFICIAL_SCRIPTS['muban-webpack']],

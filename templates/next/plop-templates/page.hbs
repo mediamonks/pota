@@ -1,0 +1,13 @@
+import { ReactElement } from 'react';
+
+import { Layout } from '{{pagePath}}components/layout/Layout';
+
+export default function {{pascalCase name}}(): ReactElement {
+  return (
+    <Layout title="{{sentenceCase name}}" description="{{sentenceCase name}} Description">
+      <h1>
+        {{sentenceCase name}}
+      </h1>
+    </Layout>
+  );
+}

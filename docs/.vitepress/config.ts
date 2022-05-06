@@ -45,6 +45,15 @@ const REACT_BASE_COMBINATION_SIDEBAR: DefaultTheme.SideBarConfig = [
   }
 ]
 
+const NEXT_COMBINATION_SIDEBAR: DefaultTheme.SideBarConfig = [
+  ALL_COMBINATIONS_SIDEBAR_ITEM,
+  {
+    text: "next",
+    link: '/combinations/next/',
+  }
+]
+
+
 const SIDEBAR: DefaultTheme.SideBarConfig = [
   {
     text: 'Combinations',
@@ -53,7 +62,8 @@ const SIDEBAR: DefaultTheme.SideBarConfig = [
       { text: 'vanilla', link: '/combinations/vanilla/' },
       { text: 'muban', link: '/combinations/muban/' },
       { text: 'react', link: '/combinations/react/' },
-      { text: 'react-base', link: '/combinations/react-base/' }
+      { text: 'react-base', link: '/combinations/react-base/' },
+      { text: 'next', link: '/combinations/next/' }
     ],
   },
 
@@ -65,6 +75,7 @@ const SIDEBAR: DefaultTheme.SideBarConfig = [
       { text: 'muban', link: '/templates/muban' },
       { text: 'react', link: '/templates/react' },
       { text: 'react-base', link: '/templates/react-base' },
+      { text: 'next', link: '/templates/next' },
     ],
   },
 
@@ -107,6 +118,7 @@ export default defineConfig({
       '/combinations/muban': MUBAN_COMBINATION_SIDEBAR,
       '/combinations/react-base': REACT_BASE_COMBINATION_SIDEBAR,
       '/combinations/react': REACT_COMBINATION_SIDEBAR,
+      '/combinations/next': NEXT_COMBINATION_SIDEBAR,
       '/': SIDEBAR,
     },
   },
