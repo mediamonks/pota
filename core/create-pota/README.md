@@ -65,7 +65,7 @@ npm init pota@latest vanilla
 > example for [vue-skeleton](https://github.com/hjeti/vue-skeleton)
 
 ```bash
-npm init pota@latest -- --template github:hjeti/vue-skeleton --no-scripts
+npm init pota@latest -- --template github:hjeti/vue-skeleton
 ```
 
 ## Contributing

@@ -1,0 +1,13 @@
+diff --git a/node_modules/@storybook/builder-webpack5/dist/cjs/preview/iframe-webpack.config.js b/node_modules/@storybook/builder-webpack5/dist/cjs/preview/iframe-webpack.config.js
+index e055d0c..471698c 100644
+--- a/node_modules/@storybook/builder-webpack5/dist/cjs/preview/iframe-webpack.config.js
++++ b/node_modules/@storybook/builder-webpack5/dist/cjs/preview/iframe-webpack.config.js
+@@ -111,7 +111,7 @@ var _default = async function _default(options) {
+     if (stories.length > 0) {
+       var storyTemplate = await (0, _coreCommon.readTemplate)(_path.default.join(__dirname, 'virtualModuleStory.template.js'));
+ 
+-      var _storiesFilename = _path.default.resolve(_path.default.join(workingDir, `generated-stories-entry.js`));
++      var _storiesFilename = _path.default.resolve(_path.default.join(workingDir, `generated-stories-entry.cjs`));
+ 
+       virtualModuleMapping[_storiesFilename] = (0, _coreCommon.interpolate)(storyTemplate, {
+         frameworkImportPath: frameworkImportPath
