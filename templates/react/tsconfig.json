@@ -1,11 +1,4 @@
 {
-  "ts-node": {
-    "transpileOnly": true,
-    "compilerOptions": {
-      "skipLibCheck": true
-    }
-  },
-
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
