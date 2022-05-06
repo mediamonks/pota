@@ -1,6 +1,6 @@
 {
   "name": "@pota/next-template",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
   },
@@ -17,8 +17,7 @@
     "build": "next build",
     "preview": "next start",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
-    "postinstall": "npx patch-package",
-    "prepare": "husky install",
+    "postinstall": "npx patch-package && husky install",
     "plop": "pota plop",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
