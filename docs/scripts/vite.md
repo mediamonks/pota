@@ -8,12 +8,6 @@ Commands for building Frontend applications using [vite](https://github.com/vite
 
 ## Usage
 
-> Creating a new project with vite-scripts
-
-```bash
-npm init pota -- --scripts vite
-```
-
 > Adding it to an existing project
 
 ```bash

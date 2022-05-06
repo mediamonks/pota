@@ -5,12 +5,6 @@ Commands for building React Frontend applications using
 
 ## Usage
 
-> Creating a new project with react-webpack-scripts
-
-```bash
-npm init pota -- --scripts react-webpack
-```
-
 > Adding it to an existing project
 
 ```bash

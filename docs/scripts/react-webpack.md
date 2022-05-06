@@ -13,12 +13,6 @@ extends **[webpack-scripts](/scripts/webpack)**
 
 ## Usage
 
-> Creating a new project with webpack-scripts
-
-```bash
-npm init pota -- --scripts react-webpack
-```
-
 > Adding it to an existing project
 
 ```bash

@@ -28,6 +28,7 @@ Then follow the prompts.
 | [react](npmjs.com/package/@pota/react-template)           | ![react version](https://img.shields.io/npm/v/@pota/react-template.svg?label=%20)           |
 | [react-base](npmjs.com/package/@pota/react-base-template) | ![react-base version](https://img.shields.io/npm/v/@pota/react-base-template.svg?label=%20) |
 | [muban](npmjs.com/package/@pota/muban-template)           | ![muban version](https://img.shields.io/npm/v/@pota/muban-template.svg?label=%20)           |
+| [next](npmjs.com/package/@pota/next-template)             | ![next version](https://img.shields.io/npm/v/@pota/next-template.svg?label=%20)             |
 
 ### Combinations
 
@@ -35,25 +36,25 @@ Then follow the prompts.
 
 ```bash
 # combination: muban
-# scripts:   @pota/muban-webpack-scripts
+# scripts:   [@pota/muban-webpack-scripts]
 # template:  @pota/muban-template
 
 npm init pota@latest muban
 
 # combination: react
-# scripts:   @pota/react-webpack-scripts
+# scripts:   [@pota/react-webpack-scripts]
 # template:  @pota/react-template
 
 npm init pota@latest react
 
 # combination: react-base
-# scripts:   @pota/react-webpack-scripts
+# scripts:   [@pota/react-webpack-scripts]
 # template:  @pota/react-base-template
 
 npm init pota@latest react-base
 
 # combination: vanilla
-# scripts:   @pota/webpack-scripts
+# scripts:   [@pota/webpack-scripts]
 # template:  @pota/vanilla-template
 
 npm init pota@latest vanilla
