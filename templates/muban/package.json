@@ -23,9 +23,9 @@
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
     "plop": "pota plop",
-    "rsync": "cross-env rsync -avPx dist/site/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete-after",
-    "rsync:mocks": "cross-env rsync -avPx dist/node/* ${npm_package_name}@${npm_package_config_host}:~/node --delete-after",
-    "rsync:storybook": "cross-env rsync -avPx dist/storybook/* ${npm_package_name}@${npm_package_config_host}:~/public/storybook/ --delete-after",
+    "rsync": "rsync -avPx dist/site/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete-after",
+    "rsync:mocks": "rsync -avPx dist/node/* ${npm_package_name}@${npm_package_config_host}:~/node --delete-after",
+    "rsync:storybook": "rsync -avPx dist/storybook/* ${npm_package_name}@${npm_package_config_host}:~/public/storybook/ --delete-after",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook -o ./dist/storybook",
     "storybook:mock-api": "cross-env MOCK_API=true npm run storybook",
@@ -62,7 +62,6 @@
     "@storybook/builder-webpack5": "6.4.9",
     "@storybook/manager-webpack5": "^6.4.9",
     "@types/faker": "^5.5.9",
-    "@types/minimist": "^1.2.2",
     "cross-env": "^7.0.3",
     "eslint-plugin-lit": "^1.6.1",
     "eslint-plugin-lit-a11y": "^2.2.0",
@@ -75,6 +74,9 @@
     "scripts": {
       "builders": [
         "@pota/muban-webpack-scripts"
+      ],
+      "codeGen": [
+        "@pota/plop-scripts"
       ]
     }
   },
