@@ -28,6 +28,6 @@ Want to extend this scripts package?
 
 ### `plop`
 
-> Create a plop component.
+> Create a component using plop.
 
 ## Config Reference [WIP]
