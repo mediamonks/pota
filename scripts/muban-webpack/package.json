@@ -33,7 +33,8 @@
   ],
   "scripts": {
     "build": "cd .. && npx tsc -p muban-webpack",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postinstall": "npm rebuild optipng-bin jpegtran-bin node-sass sharp"
   },
   "create-pota": {
     "commands": {
