@@ -5,7 +5,7 @@
 You can create a new pota project using `npm init`:
 
 ```bash
-npm init pota@latest
+npm init @pota
 ```
 
 Then follow the prompts.
@@ -39,25 +39,25 @@ Then follow the prompts.
 # scripts:   [@pota/muban-webpack-scripts]
 # template:  @pota/muban-template
 
-npm init pota@latest muban
+npm init @pota muban
 
 # combination: react
 # scripts:   [@pota/react-webpack-scripts]
 # template:  @pota/react-template
 
-npm init pota@latest react
+npm init @pota react
 
 # combination: react-base
 # scripts:   [@pota/react-webpack-scripts]
 # template:  @pota/react-base-template
 
-npm init pota@latest react-base
+npm init @pota react-base
 
 # combination: vanilla
 # scripts:   [@pota/webpack-scripts]
 # template:  @pota/vanilla-template
 
-npm init pota@latest vanilla
+npm init @pota vanilla
 ```
 
 ### Custom Templates without scripts
@@ -65,7 +65,7 @@ npm init pota@latest vanilla
 > example for [vue-skeleton](https://github.com/hjeti/vue-skeleton)
 
 ```bash
-npm init pota@latest -- --template github:hjeti/vue-skeleton
+npm init @pota -- --template github:hjeti/vue-skeleton
 ```
 
 ## Contributing
