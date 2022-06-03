@@ -7,5 +7,5 @@ title: Muban Template
 ## Usage
 
 ```bash
-npm init pota -- --template muban
+npm init @pota -- --template muban
 ```

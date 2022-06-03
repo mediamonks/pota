@@ -8,5 +8,5 @@
 ## Usage
 
 ```bash
-npm init pota vanilla
+npm init @pota vanilla
 ```

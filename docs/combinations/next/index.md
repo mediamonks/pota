@@ -7,5 +7,5 @@
 ## Usage
 
 ```bash
-npm init pota next
+npm init @pota next
 ```

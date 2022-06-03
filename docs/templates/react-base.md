@@ -7,5 +7,5 @@ title: React Base Template
 ## Usage
 
 ```bash
-npm init pota -- --template react-base
+npm init @pota -- --template react-base
 ```

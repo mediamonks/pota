@@ -7,5 +7,5 @@ title: React Template
 ## Usage
 
 ```bash
-npm init pota -- --template react
+npm init @pota -- --template react
 ```

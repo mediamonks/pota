@@ -8,5 +8,5 @@
 ## Usage
 
 ```bash
-npm init pota react-base
+npm init @pota react-base
 ```

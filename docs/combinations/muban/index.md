@@ -8,5 +8,5 @@
 ## Usage
 
 ```bash
-npm init pota muban
+npm init @pota muban
 ```

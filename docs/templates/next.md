@@ -7,5 +7,5 @@ title: Next Template
 ## Usage
 
 ```bash
-npm init pota -- --template next
+npm init @pota -- --template next
 ```

@@ -3,7 +3,7 @@
 > Creating a new project
 
 ```bash
-npm init pota
+npm init @pota
 ```
 
 ::: tip

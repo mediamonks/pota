@@ -7,5 +7,5 @@ title: Vanilla Template
 ## Usage
 
 ```bash
-npm init pota -- --template vanilla
+npm init @pota -- --template vanilla
 ```
