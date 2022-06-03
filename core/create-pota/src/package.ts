@@ -153,5 +153,5 @@ export function cleanupPostInstall(postInstall: string) {
       }, [])
       .join(' ');
 
-  return `npm rebuild ${parsedRebuilds}; ${postInstall}`.replace(/[\s]{2,}/g, " ").trim();
+  return `npm rebuild ${parsedRebuilds} --ignore-scripts=false; ${postInstall}`.replace(/[\s]{2,}/g, " ").trim();
 }
