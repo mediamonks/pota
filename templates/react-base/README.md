@@ -2,13 +2,13 @@
 
 ## Setup 🚀
 
-You can create a new project using [`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
+You can create a new project using [`@pota/create`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
 
 ```bash
 npm init @pota -- --template react-base
 ```
 
-> or use the `react-base` combination, for the recommeded setup
+> or use the `react-base` combination, for the recommended setup
 
 ```bash
 npm init @pota react-base

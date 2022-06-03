@@ -3,13 +3,13 @@
 ## Setup 🚀
 
 You can create a new project using
-[`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
+[`@pota/create`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
 
 ```bash
 npm init @pota -- --template next
 ```
 
-> or use the `next` combination, for the recommeded setup
+> or use the `next` combination, for the recommended setup
 
 ```bash
 npm init @pota next

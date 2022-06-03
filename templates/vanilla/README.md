@@ -2,13 +2,13 @@
 
 ## Setup 🚀
 
-You can create a new project using [`create-pota`](../../core/create-pota).
+You can create a new project using [`@pota/create`](../../core/create-pota).
 
 ```bash
 npm init @pota -- --template vanilla
 ```
 
-> or use the `vanilla` combination, for the recommeded setup
+> or use the `vanilla` combination, for the recommended setup
 
 ```bash
 npm init @pota vanilla
