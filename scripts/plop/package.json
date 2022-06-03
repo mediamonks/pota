@@ -34,7 +34,7 @@
   "scripts": {
     "build": "cd .. && npx tsc -p plop",
     "prepublishOnly": "npm run build",
-    "postinstall": "npm rebuild esbuild;"
+    "postinstall": "npm rebuild esbuild"
   },
   "pota": {
     "commands": {
