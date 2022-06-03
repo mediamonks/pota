@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-vite-scripts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Base React Vite configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"

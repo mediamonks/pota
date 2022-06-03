@@ -1,6 +1,6 @@
 {
   "name": "@pota/plop-scripts",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "Pota wrapper around plop to support TypeScript plopfiles",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
