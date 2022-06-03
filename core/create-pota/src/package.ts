@@ -104,7 +104,7 @@ export async function writePackageJson(path: string, pkg: PackageJsonShape) {
 }
 
 /**
- * retrives the package info (npm registry metadata, including package.json)
+ * retrieves the package info (npm registry metadata, including package.json)
  */
 export async function getPackageInfo(
   pkg: string,
@@ -115,4 +115,43 @@ export async function getPackageInfo(
   if (!rawResponse) throw new Error(`could not find ${pkg} ${fields.join(' ')} metadata`);
 
   return JSON.parse(rawResponse);
+}
+
+/**
+ * @description Reconstructs postinstall script, moves all rebuilds to start of postinstall and removes duplicates.
+ * @param postInstall
+ */
+export function cleanupPostInstall(postInstall: string) {
+  // add ; to end to make sure we match all npm rebuilds
+  postInstall = postInstall[postInstall.length - 1] === ';' ? postInstall : `${postInstall};`;
+
+  // find post install rebuilds (matches: "npm rebuild package;" or "npm rebuild package &&"
+  const rebuilds = postInstall.match(/npm rebuild ([\w\s-]+(&&|;))/gi) ?? [];
+
+  if (rebuilds.length === 0) {
+    return postInstall.substring(0, postInstall.length - 1);;
+  }
+
+  // remove rebuilds from post-install
+  rebuilds.forEach((rebuild) => {
+    postInstall = postInstall.replace(rebuild, "");
+  });
+
+  // Make sure or postInstall string doesn't end with && or ;
+  postInstall = postInstall.trim().replace(/&?&?\s?;?$/, "");
+
+  const parsedRebuilds = rebuilds
+       // get unique package names
+      .flatMap((rebuild) => rebuild.replace(/&&|;/gi, '').replace('npm rebuild', '').split(" "))
+      .filter((rebuild) => rebuild.length > 0)
+      // remove duped packages
+      .reduce<Array<string>>((previousValue, currentValue) => {
+        if (previousValue.indexOf(currentValue) === -1) {
+          previousValue.push(currentValue);
+        }
+        return previousValue;
+      }, [])
+      .join(' ');
+
+  return `npm rebuild ${parsedRebuilds}; ${postInstall}`.replace(/[\s]{2,}/g, " ").trim();
 }

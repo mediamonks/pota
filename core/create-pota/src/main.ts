@@ -19,6 +19,7 @@ import {
   TemplatePackageJson,
   writePackageJson,
   IGNORED_PACKAGE_KEYS,
+  cleanupPostInstall,
 } from './package.js';
 import { downloadTemplate } from './downloadTemplate.js';
 import args from './args.js';
@@ -105,6 +106,8 @@ if (isDownloadingTemplate) {
 
 const potaField: Array<string> = [];
 const devDependenciesField: Record<string, string> = {};
+// post-install scripts required by pota scripts
+const scriptsPostInstall: Array<string> = [];
 
 if (Object.keys(scripts).length > 0) {
   SPINNER ??= ora();
@@ -116,6 +119,15 @@ if (Object.keys(scripts).length > 0) {
       if (isFilePackage(pkg)) return;
 
       let version = null;
+      let postInstall = null;
+
+      try {
+          postInstall = (await getPackageInfo(pkg, 'scripts.postinstall')) as string;
+      } catch {}
+      
+      if (postInstall) {
+          scriptsPostInstall.push(postInstall);
+      }
 
       try {
         version = (await getPackageInfo(pkg, 'dist-tags.latest')) as string;
@@ -130,7 +142,7 @@ if (Object.keys(scripts).length > 0) {
   SPINNER.succeed();
 }
 
-// read the download tempate's package.json
+// read the download template's package.json
 const templatePkg = await readPackageJson(projectPath);
 
 // delete keys that we don't care about from the template pkg
@@ -148,6 +160,15 @@ if (Object.entries(devDependenciesField).length > 0) {
 if (potaField.length > 0) {
   templatePkg.pota ??= [];
   templatePkg.pota = [...templatePkg.pota, ...potaField];
+}
+
+// update package template postinstall with pota scripts postinstall requirements
+if (scriptsPostInstall) {
+  const postInstall = cleanupPostInstall(`${scriptsPostInstall.join(';')}; ${templatePkg.scripts!.postinstall ?? ''}`);
+  
+  if (postInstall.length > 0) {
+    templatePkg.scripts!.postinstall = postInstall;
+  }
 }
 
 // write back the final package.json
@@ -212,4 +233,5 @@ console.log('We suggest that you begin by typing:');
 console.log();
 console.log(`    ${cyan('cd')} ${relative(CWD, process.cwd())}`);
 console.log(`    ${cyan('npm install')}`);
+if (templatePkg.scripts?.postinstall) console.log(`    ${cyan(`npm run postinstall`)}`);
 if (suggestedCommand) console.log(`    ${cyan(`npm run ${suggestedCommand}`)}`);

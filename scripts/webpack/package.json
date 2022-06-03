@@ -34,7 +34,8 @@
   ],
   "scripts": {
     "build": "cd .. && npx tsc -p webpack",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postinstall": "npm rebuild optipng-bin jpegtran-bin sharp"
   },
   "create-pota": {
     "commands": {

@@ -1,6 +1,6 @@
 {
   "name": "@pota/react-webpack-scripts",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React related configuration and scripts for Pota",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -33,7 +33,8 @@
   ],
   "scripts": {
     "build": "cd .. && npx tsc -p react-webpack",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postinstall": "npm rebuild optipng-bin jpegtran-bin sharp"
   },
   "create-pota": {
     "commands": {

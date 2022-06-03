@@ -19,6 +19,18 @@ npm init pota react
 During project creation, everything above this comment should _ideally_ be replaced with a `Quick Start` on how to run & build the project, referencing the project title in the heading, instead of the skeleton's.
 -->
 
+## Security 👮‍
+
+### Ignore scripts
+In order to mitigate NPM supply chain attacks by best effort the NPM [ignore-scripts](https://docs.npmjs.com/cli/v8/commands/npm-install#ignore-scripts) setting is enabled by default. This project
+comes with a preconfigured set of dependencies that are allowed to run installation scripts.
+
+After running `npm install` it is required to run `npm run postinstall` to run required installation scripts from dependent packages.
+
+When adding a new dependency that requires an installation script to run make sure to add that package to the project `package.json` in the `postinstall` property.
+
+> Important: After running `npm install` or `npm ci` always run `npm run postinstall` afterwards before running other scripts.
+
 ## Standards 📒
 
 This project follows the
