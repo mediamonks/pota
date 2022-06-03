@@ -5,13 +5,13 @@
 You can create a new project using [`create-pota`](../../core/create-pota).
 
 ```bash
-npx pota --template vanilla
+npm init @pota -- --template vanilla
 ```
 
 > or use the `vanilla` combination, for the recommeded setup
 
 ```bash
-npm init pota vanilla
+npm init @pota vanilla
 ```
 
 ## Standards 📒

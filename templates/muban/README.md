@@ -6,13 +6,13 @@ You can create a new project using
 [`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
 
 ```bash
-npm init pota -- --template muban
+npm init @pota -- --template muban
 ```
 
 > or use the `muban` combination, for the recommeded setup
 
 ```bash
-npm init pota muban
+npm init @pota muban
 ```
 
 ## Standards 📒

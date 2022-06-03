@@ -5,13 +5,13 @@
 You can create a new project using [`create-pota`](https://github.com/mediamonks/pota/tree/main/core/create-pota).
 
 ```bash
-npm init pota -- --template react-base
+npm init @pota -- --template react-base
 ```
 
 > or use the `react-base` combination, for the recommeded setup
 
 ```bash
-npm init pota react-base
+npm init @pota react-base
 ```
 
 ## Standards 📒
