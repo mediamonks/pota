@@ -12,26 +12,26 @@ All of this and more is possible through the `pota` command.
 To get started, we recommend creating a brand new project using [`create-pota`](core/create-pota):
 
 ```bash
-npm init pota@latest
+npm init @pota
 ```
 
 ## Packages
 
-| Package                                              | Type                  | Version                                                                                          |
-| ---------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------ |
-| [create-pota](core/create-pota)                      | [Core](core)          | ![create-pota version](https://img.shields.io/npm/v/create-pota.svg?label=%20)                   |
-| [@pota/cli](core/cli)                                | [Core](core)          | ![cli version](https://img.shields.io/npm/v/@pota/cli.svg?label=%20)                             |
-| [@pota/webpack-scripts](scripts/webpack)             | [Scripts](scripts)    | ![webpack version](https://img.shields.io/npm/v/@pota/webpack-scripts.svg?label=%20)             |
+| Package                                              | Type                  | Version                                                                                     |
+|------------------------------------------------------| --------------------- |---------------------------------------------------------------------------------------------|
+| [@pota/create](core/create-pota)                     | [Core](core)          | ![create-pota version](https://img.shields.io/npm/v/@pota/create.svg?label=%20)             |
+| [@pota/cli](core/cli)                                | [Core](core)          | ![cli version](https://img.shields.io/npm/v/@pota/cli.svg?label=%20)                        |
+| [@pota/webpack-scripts](scripts/webpack)             | [Scripts](scripts)    | ![webpack version](https://img.shields.io/npm/v/@pota/webpack-scripts.svg?label=%20)        |
 | [@pota/react-webpack-scripts](scripts/react-webpack) | [Scripts](scripts)    | ![react-webpack version](https://img.shields.io/npm/v/@pota/react-webpack-scripts.svg?label=%20) |
 | [@pota/muban-webpack-scripts](scripts/muban-webpack) | [Scripts](scripts)    | ![muban-webpack version](https://img.shields.io/npm/v/@pota/muban-webpack-scripts.svg?label=%20) |
-| [@pota/vite-scripts](scripts/vite)                   | [Scripts](scripts)    | ![vite version](https://img.shields.io/npm/v/@pota/vite-scripts.svg?label=%20)                   |
-| [@pota/react-vite-scripts](scripts/vite-react)       | [Scripts](scripts)    | ![react-vite version](https://img.shields.io/npm/v/@pota/react-vite-scripts.svg?label=%20)       |
-| [@pota/plop-scripts](scripts/plop)                   | [Scripts](scripts)    | ![plop version](https://img.shields.io/npm/v/@pota/plop-scripts.svg?label=%20)                   |
-| [@pota/vanilla-template](templates/vanilla)          | [Template](templates) | ![vanilla version](https://img.shields.io/npm/v/@pota/vanilla-template.svg?label=%20)            |
-| [@pota/react-template](templates/react)              | [Template](templates) | ![react version](https://img.shields.io/npm/v/@pota/react-template.svg?label=%20)                |
-| [@pota/react-base-template](templates/react-base)    | [Template](templates) | ![react-base version](https://img.shields.io/npm/v/@pota/react-base-template.svg?label=%20)      |
-| [@pota/muban-template](templates/muban)              | [Template](templates) | ![muban version](https://img.shields.io/npm/v/@pota/muban-template.svg?label=%20)                |
-| [@pota/next-template](templates/next)                | [Template](templates) | ![next version](https://img.shields.io/npm/v/@pota/next-template.svg?label=%20)                  |
+| [@pota/vite-scripts](scripts/vite)                   | [Scripts](scripts)    | ![vite version](https://img.shields.io/npm/v/@pota/vite-scripts.svg?label=%20)              |
+| [@pota/react-vite-scripts](scripts/vite-react)       | [Scripts](scripts)    | ![react-vite version](https://img.shields.io/npm/v/@pota/react-vite-scripts.svg?label=%20)  |
+| [@pota/plop-scripts](scripts/plop)                   | [Scripts](scripts)    | ![plop version](https://img.shields.io/npm/v/@pota/plop-scripts.svg?label=%20)              |
+| [@pota/vanilla-template](templates/vanilla)          | [Template](templates) | ![vanilla version](https://img.shields.io/npm/v/@pota/vanilla-template.svg?label=%20)       |
+| [@pota/react-template](templates/react)              | [Template](templates) | ![react version](https://img.shields.io/npm/v/@pota/react-template.svg?label=%20)           |
+| [@pota/react-base-template](templates/react-base)    | [Template](templates) | ![react-base version](https://img.shields.io/npm/v/@pota/react-base-template.svg?label=%20) |
+| [@pota/muban-template](templates/muban)              | [Template](templates) | ![muban version](https://img.shields.io/npm/v/@pota/muban-template.svg?label=%20)           |
+| [@pota/next-template](templates/next)                | [Template](templates) | ![next version](https://img.shields.io/npm/v/@pota/next-template.svg?label=%20)             |
 
 ## Contributing
 
