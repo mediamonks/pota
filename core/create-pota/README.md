@@ -1,4 +1,4 @@
-# `create-pota` · ![version](https://img.shields.io/npm/v/create-pota.svg?label=%20) ![downloads](https://badgen.now.sh/npm/dm/create-pota)
+# `@pota/create` · ![version](https://img.shields.io/npm/v/@pota/create.svg?label=%20) ![downloads](https://badgen.now.sh/npm/dm/create-pota)
 
 ## Creating a Pota Project
 
@@ -32,7 +32,7 @@ Then follow the prompts.
 
 ### Combinations
 
-`create-pota` also has a few built-in template & scripts combinations for recommended setups:
+`@pota/create` also has a few built-in template & scripts combinations for recommended setups:
 
 ```bash
 # combination: muban
