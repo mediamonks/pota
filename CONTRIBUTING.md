@@ -96,7 +96,7 @@ npm pkg set pota="../../scripts/webpack/lib/index.js"
 
 ## Creating projects from local `templates`
 
-[`create-pota`](core/create-pota) supports project creation from local packages.
+[`@pota/create`](core/create-pota) supports project creation from local packages.
 
 > Example:
 
@@ -104,7 +104,7 @@ npm pkg set pota="../../scripts/webpack/lib/index.js"
 npm init pota -- --template templates/vanilla
 ```
 
-NOTE: [`create-pota`](core/create-pota) currently does not support project creation with local scripts packages.
+NOTE: [`@pota/create`](core/create-pota) currently does not support project creation with local scripts packages.
 However, these can be easily installed after the project is created (see next section). To skip scripts selection you can pass `--no-scripts`.
 
 > Example:

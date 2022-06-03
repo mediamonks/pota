@@ -2,14 +2,14 @@
 
 **Pota** - a collection of tools to support the **creation** and **management** of Node.js projects.
 
-- **Create**: Pota provides you with a set of officially supported and managed [`templates`](templates) and [`scripts`](scripts), which can be composed together into a project using the [`create-pota`](core/create-pota) command. It also allows you to bring your own [`template`](templates) or [`scripts`](scripts), if you already have something that you are comfortable with, but still want to utilize [`create-pota`](core/create-pota).
+- **Create**: Pota provides you with a set of officially supported and managed [`templates`](templates) and [`scripts`](scripts), which can be composed together into a project using the [`@pota/create`](core/create-pota) command. It also allows you to bring your own [`template`](templates) or [`scripts`](scripts), if you already have something that you are comfortable with, but still want to utilize [`create-pota`](core/create-pota).
 - **Manage**: Have you ever wanted to change something about your build tool, customize it or easily add new commands? The [`@pota/cli`](core/cli) package and the [`scripts`](scripts) designed around it provide you with such possibilities.
 
 All of this and more is possible through the `pota` command.
 
 ## Getting Started
 
-To get started, we recommend creating a brand new project using [`create-pota`](core/create-pota):
+To get started, we recommend creating a brand new project using [`@pota/create`](core/create-pota):
 
 ```bash
 npm init @pota
