@@ -25,6 +25,11 @@ export async function plop() {
     compilePlopfile(),
   ] as const);
 
+  process.on('SIGTERM', onExit);
+  process.on('SIGINT', onExit);
+  process.on('exit', onExit);
+  process.on('error', onExit);
+
   const args = process.argv.slice(2);
   const argv = minimist(args);
 
@@ -46,8 +51,3 @@ export async function plop() {
 function onExit() {
   unlinkSync(paths.compiledPlopfile);
 }
-
-process.on('SIGTERM', onExit);
-process.on('SIGINT', onExit);
-process.on('exit', onExit);
-process.on('error', onExit);
