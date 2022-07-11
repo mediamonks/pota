@@ -129,7 +129,7 @@ export function cleanupPostInstall(postInstall: string) {
   const rebuilds = postInstall.match(/npm rebuild ([\w\s-]+(&&|;))/gi) ?? [];
 
   if (rebuilds.length === 0) {
-    return postInstall.substring(0, postInstall.length - 1);;
+    return postInstall.substring(0, postInstall.length - 1);
   }
 
   // remove rebuilds from post-install
@@ -153,5 +153,5 @@ export function cleanupPostInstall(postInstall: string) {
       }, [])
       .join(' ');
 
-  return `npm rebuild ${parsedRebuilds} --ignore-scripts=false; ${postInstall}`.replace(/[\s]{2,}/g, " ").trim();
+  return `npm rebuild ${parsedRebuilds} --ignore-scripts=false && ${postInstall}`.replace(/[\s]{2,}/g, " ").trim();
 }

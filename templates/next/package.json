@@ -17,7 +17,7 @@
     "build": "next build",
     "preview": "next start",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
-    "postinstall": "npm rebuild fsevents optipng-bin mozjpeg; npx patch-package; npx husky install;",
+    "postinstall": "npm rebuild fsevents optipng-bin mozjpeg && npx patch-package && npx husky install;",
     "plop": "pota plop",
     "fix": "run-s fix:* && npm run format",
     "fix:eslint": "npm run lint:eslint -- --fix",
