@@ -120,7 +120,7 @@ async function loadDependencies(
     // depending on the format, multiple variations / locations of the dependency are tried
     const paths = (Array.isArray(path) ? path : [path])
       .flatMap((p) =>
-        // if the path is already resolve, use that
+        // if the path is already resolved, use that
         // otherwise return both the local and the package path.
         // The cwd path is tried first, and if it doesn't exist, the package path is tried after
         isAbsolute(p) ? p : [resolveLocalPath(p, cwd), resolvePackagePath(p, packagePath)],
