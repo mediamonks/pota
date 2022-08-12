@@ -99,8 +99,6 @@ function resolvePackagePath(path: string, packagePath: string) {
 }
 
 /**
- *
- *
  * @param dependencyPaths - A map of dependency names to paths.
  * @param {string} cwd - The current working directory of the process.
  * @param {string} packagePath - The path to the package.json file.
@@ -158,8 +156,7 @@ async function loadDependencies(
  * The action is the implementation / functionality of the command.
  * An action can have dependencies (other files) that are loaded and provided to the action before execution.
  *
- *
- * @param program - sade.Sade - The program object that we're adding the command to.
+ * @param program - sade.Sade - The program object where the command is added to.
  * @param command - The command object that we're applying to the program.
  * @param {string} cwd - The current working directory of the command.
  * @param {string} commandModulePath - The path to the command module.
@@ -187,7 +184,7 @@ function applyAction(
 }
 
 /**
- * Determine if the passed Command is a class or function
+ * Determine if the passed command is a class or function
  *
  * @param {CommandModule} value - CommandModule
  * @returns A boolean value.
@@ -203,7 +200,7 @@ function isNativeClass(value: CommandModule): value is CommandConstructor {
  * Commands can be either classes or functions, and must adhere to a specific interface.
  *
  * Class commands can also be extended to slightly modify their parent's implementation.
- * This is great for reusing common logic, but make slide variations for specific scripts, languages, frameworks,
+ * This is great for reusing common logic, but make slight variations for specific scripts, languages, frameworks,
  * or in projects for project-specific requirements.
  *
  * @param main - sade.Sade - the main sade instance

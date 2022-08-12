@@ -15,7 +15,7 @@ export function resolveModulePath(path: string, root: string): string {
     return isAbsolute(path) ? pathToFileURL(path).toString() : resolve(root, path);
   }
 
-  // If the path does not have an extension, then it's an npm package, so we just return the path
+  // A path without any extension resolves as a npm module
   return path;
 }
 

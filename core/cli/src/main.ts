@@ -22,7 +22,7 @@ const commands = await loadCommands(root, commandModulePaths);
 // the main cli entry point
 const main = sade('pota');
 
-// register the loaded commands (from all scripts) in sade, so they become usable
+// Registers loaded commands (from all scripts) with sade, for availability within the CLI
 for (const [moduleName, commandModule] of Object.entries(commands)) {
   try {
     createCommand(main, root, commandModule);
