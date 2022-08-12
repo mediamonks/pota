@@ -14,7 +14,7 @@ export class ViteConfig<C extends ViteConfigOptions = ViteConfigOptions> {
   constructor(public readonly options: C) {}
 
   public get isDev() {
-    return process.env.NODE_ENV === 'development';
+    return !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
   }
 
   public get isProd() {
