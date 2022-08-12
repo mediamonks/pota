@@ -10,6 +10,7 @@ export function injectEntryTagPlugin(entryPath: string): Plugin {
           {
             tag: 'script',
             attrs: { type: 'module', src: entryPath },
+            injectTo: 'head',
           },
         ];
       },
