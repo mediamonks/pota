@@ -8,7 +8,7 @@ import { Command, CommandConstructor, CommandFunction, CommandModule } from './a
 import { CommandModuleWithPath } from './loadCommands.js';
 
 /**
- * Register the command description to the cli
+ * Register the command description to the CLI
  *
  * @param program
  * @param command
