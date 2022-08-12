@@ -42,7 +42,7 @@ function applyOptions(
 }
 
 /**
- * Register examples from te command to the cli
+ * Register examples from the command to the CLI
  *
  * @param program
  * @param command
