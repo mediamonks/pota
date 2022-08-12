@@ -116,7 +116,7 @@ async function loadDependencies(
   const loadedDependencies: Record<string, unknown> = {};
 
   for (const [dependency, path] of Object.entries(dependencyPaths)) {
-    // resolve the configured paths to ones that can be imported
+    // resolve the configured paths to the ones that can be imported
     // depending on the format, multiple variations / locations of the dependency are tried
     const paths = (Array.isArray(path) ? path : [path])
       .flatMap((p) =>
