@@ -51,7 +51,9 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install npm packages
-        run: npm ci
+        run: |
+          cd ${{ github.event.inputs.package }}
+          npm ci
 
       - name: Setup Git
         run: |
