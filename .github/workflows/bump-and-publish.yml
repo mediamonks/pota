@@ -62,7 +62,7 @@ jobs:
 
       - name: bump version
         run: |
-          echo "1. cd" 
+          echo "1. cd ${{ github.event.inputs.package }}" 
           cd ${{ github.event.inputs.package }}
           
           echo "2. npm version" 
@@ -71,10 +71,10 @@ jobs:
           echo "3. git add"
           git add .
           
-          echo "4. git commit"
+          echo "4. git commit ${{ github.event.inputs.package }} v$(npm pkg get version | tr -d '"')"
           git commit -m "${{ github.event.inputs.package }} v$(npm pkg get version | tr -d '"')"
           
-          echo "5. git tag"
+          echo "5. git tag $(npm pkg get name | tr -d '"')@$(npm pkg get version | tr -d '"')"
           git tag $(npm pkg get name | tr -d '"')@$(npm pkg get version | tr -d '"')
 
       - name: publish
