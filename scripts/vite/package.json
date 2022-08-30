@@ -51,7 +51,7 @@
     }
   },
   "dependencies": {
-    "vite": "^2.8.5"
+    "vite": "^2.9.13"
   },
   "peerDependencies": {
     "@pota/cli": "~2.0.0"
