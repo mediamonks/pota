@@ -51,6 +51,7 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install npm packages
+        if: ${{ !contains(github.event.inputs.package, 'templates/') }}
         run: |
           cd ${{ github.event.inputs.package }}
           npm ci
