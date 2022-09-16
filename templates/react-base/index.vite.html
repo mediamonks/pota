@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<% if (isDevelopment) { %>
+<!-- <head> -->
+<!-- </head> -->
+<% } %>
+<head>
+  <title>React Base App</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="website created using @pota/create" />
+
+  <% if (isDevelopment) { %>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'sha256-7O1MbcSWce5HYI27Ugb0o8Jdpm/ghZg6UP1PeUGTMh4=' 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';">
+  <% } %>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+
+<% if (isDevelopment) { %>
+<!-- Script to enable strict CSP while developing -->
+<script>
+    const [prepend, append] = Array.from(document.getElementsByTagName('html')[0].childNodes).filter((childNode) =>
+        childNode.nodeType === 8 && childNode.textContent.includes('head')
+    );
+
+    const addScripts = (node, type) => {
+        const viteHmrContainer = document.createElement('div');
+        viteHmrContainer.innerHTML = node.textContent;
+
+        Array.from(viteHmrContainer.querySelectorAll('script')).forEach((viteHmrScript) => {
+            const script = document.createElement('script');
+            script.type = viteHmrScript.type || '';
+
+            if (Boolean(viteHmrScript.textContent.trim().length)) {
+                script.textContent = viteHmrScript.textContent;
+            } else {
+                script.src = viteHmrScript.src;
+            }
+
+            document.head[type](script);
+        });
+    }
+
+    addScripts(prepend, 'prepend');
+    addScripts(append, 'append');
+</script>
+<% } %>
+
+<script>!function(){for(var e=document.querySelectorAll('html > head > meta[name="app-script"]'),o=0;o<e.length;o++){var t=e[o].getAttribute("content"),n=document.createElement("script");n.src=t,n.src.substr(0,window.location.origin.length)!==window.location.origin?window.console&&console.error("[ScriptLoader] Cannot load "+t+"."):(document.body.appendChild(n),document.head.removeChild(e[o]))}}();</script>
+
+</body>
+</html>
