@@ -13,7 +13,7 @@
   "author": "frontend.monks",
   "type": "module",
   "scripts": {
-    "build": "pota build && npm run postbuild",
+    "build": "NODE_ENV=production pota build && npm run postbuild",
     "dev": "pota dev",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
     "postinstall": "husky install",
