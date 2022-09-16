@@ -13,7 +13,7 @@
   "author": "frontend.monks",
   "type": "module",
   "scripts": {
-    "build": "pota build",
+    "build": "pota build && npm run postbuild",
     "build-storybook": "build-storybook",
     "dev": "pota dev",
     "postinstall": "npm rebuild fsevents && npx patch-package && npx husky install;",
@@ -26,7 +26,8 @@
     "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
-    "rsync": "rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete"
+    "rsync": "rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete",
+    "postbuild": "ts-node --esm npm-scripts/postBuild.ts"
   },
   "config": {
     "host": "TODO: Add a host name."
