@@ -25,7 +25,7 @@ npm init @pota
 | [@pota/react-webpack-scripts](scripts/react-webpack) | [Scripts](scripts)    | ![react-webpack version](https://img.shields.io/npm/v/@pota/react-webpack-scripts.svg?label=%20) |
 | [@pota/muban-webpack-scripts](scripts/muban-webpack) | [Scripts](scripts)    | ![muban-webpack version](https://img.shields.io/npm/v/@pota/muban-webpack-scripts.svg?label=%20) |
 | [@pota/vite-scripts](scripts/vite)                   | [Scripts](scripts)    | ![vite version](https://img.shields.io/npm/v/@pota/vite-scripts.svg?label=%20)              |
-| [@pota/react-vite-scripts](scripts/vite-react)       | [Scripts](scripts)    | ![react-vite version](https://img.shields.io/npm/v/@pota/react-vite-scripts.svg?label=%20)  |
+| [@pota/react-vite-scripts](scripts/react-vite)       | [Scripts](scripts)    | ![react-vite version](https://img.shields.io/npm/v/@pota/react-vite-scripts.svg?label=%20)  |
 | [@pota/plop-scripts](scripts/plop)                   | [Scripts](scripts)    | ![plop version](https://img.shields.io/npm/v/@pota/plop-scripts.svg?label=%20)              |
 | [@pota/vanilla-template](templates/vanilla)          | [Template](templates) | ![vanilla version](https://img.shields.io/npm/v/@pota/vanilla-template.svg?label=%20)       |
 | [@pota/react-template](templates/react)              | [Template](templates) | ![react version](https://img.shields.io/npm/v/@pota/react-template.svg?label=%20)           |
