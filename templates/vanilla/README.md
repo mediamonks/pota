@@ -33,6 +33,13 @@ When adding a new dependency that requires an installation script to run make su
 
 > Important: After running `npm install` or `npm ci` always run `npm run postinstall` afterwards before running other scripts.
 
+### Content Security Policy ([CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP))
+
+This application has been build with a [strict content security policy](https://csp.withgoogle.com/docs/strict-csp.html). To enforce this policy
+add the following CSP header to the request response.
+
+`Content-Security-Policy: script-src 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';`
+
 ### Pota Scripts [TODO]
 
 <br />
