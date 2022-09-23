@@ -14,7 +14,7 @@
   "type": "module",
   "scripts": {
     "dev": "pota dev",
-    "build": "pota build",
+    "build": "NODE_ENV=production pota build && npm run postbuild",
     "postinstall": "npx patch-package",
     "typecheck": "tsc --project tsconfig.json --noEmit --noUnusedLocals",
     "fix": "run-s fix:* && npm run format",
@@ -22,7 +22,8 @@
     "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx --cache --cache-location node_modules/.cache/.eslintcache",
-    "rsync": "rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete"
+    "rsync": "rsync -avPx dist/* ${npm_package_name}@${npm_package_config_host}:~/public/ --delete",
+    "postbuild": "ts-node --esm npm-scripts/postBuild.ts"
   },
   "config": {
     "host": "TODO: Add a host name."
@@ -48,6 +49,7 @@
     "lint-staged": "^12.3.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.5.2"
   },
   "create-pota": {
