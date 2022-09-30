@@ -13,7 +13,7 @@ import { readFile, writeFile } from 'fs/promises';
   // Match webpack exports
   let parsed = contents.replace(/<script[\w\s="]* src="[\w\d-\/]*static\/.*\/?[\w\d\.-]*\.js"><\/script>/ig,'');
   // Match vite (rollup exports)
-  parsed = contents.replace(
+  parsed = parsed.replace(
     /<script([\w\s="]*) src="([\w\d-\/]*assets\/.*\/?[\w\d\.-]*\.js)"><\/script>/ig,
     '<meta name="app-script" content="$2" />');
 
