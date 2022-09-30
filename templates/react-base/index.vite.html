@@ -12,9 +12,7 @@
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="website created using @pota/create" />
 
-  <% if (isDevelopment) { %>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'sha256-7O1MbcSWce5HYI27Ugb0o8Jdpm/ghZg6UP1PeUGTMh4=' 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';">
-  <% } %>
+  <meta http-equiv="Content-Security-Policy" content="script-src <% if (isDevelopment) { %>'sha256-7O1MbcSWce5HYI27Ugb0o8Jdpm/ghZg6UP1PeUGTMh4='<% } %> 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';">
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
