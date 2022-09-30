@@ -40,6 +40,8 @@ add the following CSP header to the request response.
 
 `Content-Security-Policy: script-src 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';`
 
+**Note:** When Vite is used as bundler remove the `index.html` and rename `index.vite.html` to `index.html` for vite compatibility.
+
 ### Pota Scripts [TODO]
 
 <br />
