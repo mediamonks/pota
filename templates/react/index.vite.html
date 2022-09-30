@@ -12,9 +12,7 @@
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="website created using @pota/create" />
 
-  <% if (isDevelopment) { %>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'sha256-7O1MbcSWce5HYI27Ugb0o8Jdpm/ghZg6UP1PeUGTMh4=' 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';">
-  <% } %>
+  <meta http-equiv="Content-Security-Policy" content="script-src <% if (isDevelopment) { %>'sha256-7O1MbcSWce5HYI27Ugb0o8Jdpm/ghZg6UP1PeUGTMh4='<% } %> 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';">
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -50,7 +48,9 @@
 </script>
 <% } %>
 
+<!-- @formatter:off -->
+<!-- prettier-ignore -->
 <script>!function(){for(var e=document.querySelectorAll('html > head > meta[name="app-script"]'),o=0;o<e.length;o++){var t=e[o].getAttribute("content"),n=document.createElement("script");n.src=t,n.src.substr(0,window.location.origin.length)!==window.location.origin?window.console&&console.error("[ScriptLoader] Cannot load "+t+"."):(document.body.appendChild(n),document.head.removeChild(e[o]))}}();</script>
-
+<!-- @formatter:on -->
 </body>
 </html>
