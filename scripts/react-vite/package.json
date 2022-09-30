@@ -57,8 +57,5 @@
   },
   "peerDependencies": {
     "@pota/cli": "~2.0.0"
-  },
-  "devDependencies": {
-    "vite-plugin-html": "^3.2.0"
   }
 }

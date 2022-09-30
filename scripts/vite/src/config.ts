@@ -4,6 +4,7 @@ import type { BuildOptions, DevOptions, CommonOptions, PreviewOptions } from './
 
 import { paths } from './paths.js';
 import { injectEntryTagPlugin } from './plugins/inject-entry-tag-plugin.js';
+import { createHtmlPlugin } from 'vite-plugin-html';
 
 export type ViteConfigOptions = CommonOptions &
   Partial<BuildOptions> &
@@ -26,7 +27,16 @@ export class ViteConfig<C extends ViteConfigOptions = ViteConfigOptions> {
   }
 
   public async plugins(): Promise<Array<PluginOption>> {
-    return [injectEntryTagPlugin(this.entry)];
+    return [
+      ...createHtmlPlugin({
+        inject: {
+          data: {
+            isDevelopment: this.isDev,
+          },
+        }
+      }),
+      injectEntryTagPlugin(this.entry),
+    ];
   }
 
   public async final(): Promise<UserConfig> {

@@ -1,7 +1,6 @@
 import { ViteConfig, ViteConfigOptions } from '@pota/vite-scripts/config';
 import formatJsBabelPlugin from 'babel-plugin-formatjs';
 import { defineConfig, UserConfig } from 'vite';
-import { createHtmlPlugin } from 'vite-plugin-html';
 
 import { paths } from './paths.js';
 
@@ -31,13 +30,6 @@ export class ReactViteConfig extends ViteConfig {
       ...(await super.plugins()),
       ...viteReact({
         babel: this.babelConfig,
-      }),
-      ...createHtmlPlugin({
-        inject: {
-          data: {
-            isDevelopment: super.isDev,
-          },
-        }
       })
     ];
   }
