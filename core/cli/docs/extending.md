@@ -59,6 +59,8 @@ So we import that, and extend it while creating a new class for our project spec
 
 There are different methods that can be overridden, but the final configuration is retrieved from the `final`, so
 that's the "fallback" place to add your config if it doesn't fit in any of the other methods.
+For example, if you would like to change something for the `devServer`, you need to override the `finalDevServer` 
+method.
 
 In here we merge the `super` config with our own additions.
 
@@ -66,15 +68,23 @@ In here we merge the `super` config with our own additions.
 import { ReactWebpackConfig } from '@pota/react-webpack-scripts/config';
 
 class ProjectWebpackConfig extends ReactWebpackConfig {
-  async mubanConfig() {
+  async final() {
     const superConfig = await super.final();
     return {
       ...superConfig,
-      server: {
-        ...superConfig.server,
-        proxy: {
-          '/api': 'https://example.com/api/',
-        },
+      resolve: {
+        ...superConfig.resolve,
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      }
+    };
+  }
+
+  async finalDevServer() {
+    const superConfig = await super.finalDevServer();
+    return {
+      ...superConfig,
+      proxy: {
+        '/api': 'https://example.com/api/',
       },
     };
   }
@@ -95,6 +105,8 @@ So we import that, and extend it while creating a new class for our project spec
 There are different methods that can be overridden, but the final configuration for the main webpack build
 is retrieved from the `mubanConfig`, so that's the "fallback" place to add your config if it doesn't fit in any of the
 other methods.
+For example, if you would like to change something for the `devServer`, you need to override the `finalDevServer`
+method.
 
 In there, we merge the `super` config with our own additions.
 
@@ -103,14 +115,22 @@ import { MubanWebpackConfig } from '@pota/muban-webpack-scripts/config';
 
 class ProjectWebpackConfig extends MubanWebpackConfig {
   async mubanConfig() {
-    const superConfig = await super.final();
+    const superConfig = await super.mubanConfig();
     return {
       ...superConfig,
-      server: {
-        ...superConfig.server,
-        proxy: {
-          '/api': 'https://example.com/api/',
-        },
+      resolve: {
+        ...superConfig.resolve,
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      }
+    };
+  }
+
+  async finalDevServer() {
+    const superConfig = await super.finalDevServer();
+    return {
+      ...superConfig,
+      proxy: {
+        '/api': 'https://example.com/api/',
       },
     };
   }
