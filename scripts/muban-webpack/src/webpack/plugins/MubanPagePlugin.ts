@@ -128,13 +128,13 @@ export default class MubanPagePlugin implements WebpackPluginInstance {
 
     const htmlTemplate = await this.getHtmlTemplate();
 
-    return Object.entries(pages)
-      .map(([page, m]) => {
+    return (await Promise.all(Object.entries(pages)
+      .map(async ([page, m]) => {
         const asset = `${page}.html`;
 
         try {
           let pageTemplate = replaceTemplateVars(htmlTemplate, {
-            content: appTemplate(m.data?.() ?? {}),
+            content: await appTemplate(m.data?.() ?? {}),
             publicPath,
           });
 
@@ -160,7 +160,7 @@ export default class MubanPagePlugin implements WebpackPluginInstance {
           console.error(error);
           return null;
         }
-      })
+      })))
       .filter(Boolean);
   }
 
