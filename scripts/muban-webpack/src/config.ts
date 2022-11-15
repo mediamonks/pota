@@ -155,7 +155,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
           this.mediaRule,
           // `null-loader` will make sure to ignore any accidental imports to e.g. `.css` files
           {
-            exclude: [/\.(js|mjs|ts)$/, /\.html$/, /\.json$/],
+            exclude: [/\.(js|mjs|cjs|ts)$/, /\.html$/, /\.json$/],
             use: 'null-loader',
           },
         ],
