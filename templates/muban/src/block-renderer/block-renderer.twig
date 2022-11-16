@@ -1,0 +1,13 @@
+<div data-component="block-renderer">
+  {% set includeMap = {
+    'toggle-expand': '../components/atoms/toggle-expand/toggle-expand.twig',
+    'image-test': '../components/image-test/image-test.twig',
+    'video-test': '../components/video-test/video-test.twig'
+  } %}
+  {% for block in blocks %}
+    {% set includeKey = block.name %}
+    {% if includeMap[includeKey] %}
+      {% include includeMap[includeKey] with block.props %}
+    {% endif %}
+  {% endfor %}
+</div>

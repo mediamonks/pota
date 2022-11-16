@@ -8,6 +8,11 @@ export default {
   argTypes: {
     isExpanded: { control: 'boolean' },
   },
+  parameters: {
+    server: {
+      id: 'atoms/toggle-expand',
+    },
+  },
 };
 
 export const Default: Story<ToggleExpandProps> = {

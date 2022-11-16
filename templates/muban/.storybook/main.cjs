@@ -29,15 +29,18 @@ module.exports = {
       },
       module: {
         ...config.module,
-        rules: mubanConfig.module.rules.map((rule) =>
-          // storybook needs the standard `style-loader`
-          [String(CSS_TEST), String(SCSS_TEST)].includes(String(rule.test))
-            ? {
-                ...rule,
-                use: rule.use.map((use) => (use === miniCssExtractLoader ? 'style-loader' : use)),
-              }
-            : rule
-        ),
+        rules: [
+          ...config.module.rules,
+          ...mubanConfig.module.rules.map((rule) =>
+            // storybook needs the standard `style-loader`
+            [String(CSS_TEST), String(SCSS_TEST)].includes(String(rule.test))
+              ? {
+                  ...rule,
+                  use: rule.use.map((use) => (use === miniCssExtractLoader ? 'style-loader' : use)),
+                }
+              : rule
+          ),
+        ],
       },
       plugins: [...config.plugins, findPlugin(mubanConfig, 'DefinePlugin')],
     };
