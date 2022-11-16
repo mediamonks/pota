@@ -1,0 +1,10 @@
+<div data-component="app">
+  {% set includeMap = {
+    'default-layout': 'layouts/default/default-layout.twig',
+    'custom-layout': 'layouts/custom/custom-layout.twig'
+  } %}
+  {% set includeKey = layout.name %}
+  {% if includeMap[includeKey] %}
+    {% include includeMap[includeKey] with layout.props %}
+  {% endif %}
+</div>
