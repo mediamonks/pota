@@ -265,7 +265,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
             from: paths.pagesPublic,
             toType: 'dir',
             globOptions: {
-              ignore: ['**/.*', resolve(paths.pagesPublic, 'index.html'), resolve(paths.pagesPublic, 'index.twig')],
+              ignore: ['**/.*', resolve(paths.pagesPublic, 'index.html')],
             },
           },
         ],
