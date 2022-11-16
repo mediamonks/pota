@@ -48,7 +48,7 @@ module.exports = async (router) => {
       );
 
       // Add filters or functions to the Twig Environment
-      require('../scripts/twig/twig-extensions.cjs').addExtensions(env);
+      require('../config/twig/twig-extensions.cjs').addExtensions(env);
 
       const componentName = basename(req.path);
       const dirName = dirname(req.path).substring(1);
