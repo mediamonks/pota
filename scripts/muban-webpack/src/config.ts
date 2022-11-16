@@ -1,6 +1,10 @@
 import { readdir } from 'fs/promises';
+import { readFileSync } from 'fs';
 import { basename, extname, join, resolve } from 'path';
 import { createRequire } from 'module';
+
+const packageJsonConfig = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), { encoding: 'utf8' }))?.config ?? {};
+const ENABLE_TWIG_SUPPORT = packageJsonConfig['twig-support'] === true;
 
 import { isString } from 'isntnt';
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
@@ -279,7 +283,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
       mode: 'development', // we do not care about the size of the output, it just needs to be built fast
       devtool: false, // source maps will not be used
 
-      entry: { pages: resolve(paths.pagesSource, '_main.ts') },
+      entry: { pages: resolve(paths.pagesSource, ENABLE_TWIG_SUPPORT ? '_main.twig.ts' : '_main.ts') },
 
       cache: this.options.cache && {
         ...(typeof superConfig.cache !== 'boolean' ? superConfig.cache : {}),
