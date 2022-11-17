@@ -32,7 +32,7 @@ export default function plopfile(plop: NodePlopAPI): void {
           { name: 'Atom', value: 'atoms' },
           { name: 'Molecule', value: 'molecules' },
           { name: 'Organism', value: 'organisms' },
-          { name: 'Block', value: 'blocks' },
+          { name: 'Block / CMS Component', value: 'blocks' },
           { name: 'No specific type', value: 'none' },
         ],
       },
@@ -96,6 +96,17 @@ export default function plopfile(plop: NodePlopAPI): void {
       ];
 
       if (data.isCmsComponent) {
+        // twig template
+        actions.push({
+          data,
+          type: 'append',
+          path: 'src/block-renderer/block-renderer.twig',
+          pattern: /( set includeMap = \{)/gi,
+          template: `    '{{dashCase componentName}}': '../components/{{dashCase componentName}}/{{dashCase componentName}}.twig',`,
+          abortOnFail: false,
+        });
+
+        // ts template
         actions.push({
           data,
           type: 'append',
@@ -112,6 +123,7 @@ export default function plopfile(plop: NodePlopAPI): void {
           template: `  '{{dashCase componentName}}': {{camelCase componentName}}Template,`,
         });
 
+        // component code
         actions.push({
           data,
           type: 'append',

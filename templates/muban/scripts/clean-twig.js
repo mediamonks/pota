@@ -11,7 +11,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 // remove files
 console.log('\nRemoving twig files from project...')
 shell.rm('-rf', './config/twig')
-shell.rm('-f', './src/**/*.twig', './src/pages/_main.twig.ts', '')
+shell.rm('-f', './src/**/*.twig', './src/pages/_main.twig.ts', './plop-templates/component/*.twig.hbs')
 console.log('Removal completed!')
 
 // remove imports to twigEnvironment
