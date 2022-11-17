@@ -20,11 +20,11 @@ const MUBAN_COMBINATION_SIDEBAR: DefaultTheme.SideBarConfig = [
     text: "muban",
     link: '/combinations/muban/',
     children: [
-      { text: 'Assets', link: '/combinations/muban/assets' },
-      { text: 'Components', link: '/combinations/muban/components' },
+      { text: 'Scripts', link: '/combinations/muban/scripts' },
       { text: 'Folder Structure', link: '/combinations/muban/folder_structure' },
       { text: 'Pages', link: '/combinations/muban/pages' },
-      { text: 'Scripts', link: '/combinations/muban/scripts' },
+      { text: 'Components', link: '/combinations/muban/components' },
+      { text: 'Assets', link: '/combinations/muban/assets' },
     ]
   }
 ]
