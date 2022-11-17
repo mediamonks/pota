@@ -1,0 +1,15 @@
+{{#if isCmsComponent}}
+{% set blockSpacingTop = blockSpacingTop ?? 'normal' %}
+{% set blockSpacingBottom = blockSpacingBottom ?? 'normal' %}
+{{/if}}
+
+<{{#if isCmsComponent}}section{{^}}div{{/if}}
+  \{{ objectToDataAttributes({ component: '{{dashCase componentName}}', ref: ref }) }}
+  {{#if isCmsComponent}}
+  id="\{{id}}"
+  data-block-spacing-top="\{{blockSpacingTop}}"
+  data-block-spacing-bottom="\{{blockSpacingBottom}}"
+  {{/if}}
+>
+  I'm the <strong>{{dashCase componentName}}</strong> component.
+</{{#if isCmsComponent}}section{{^}}div{{/if}}>
