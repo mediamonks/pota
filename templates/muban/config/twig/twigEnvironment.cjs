@@ -1,4 +1,4 @@
-const { addExtensions } = require('./config/twig/twig-extensions.cjs');
+const { addExtensions } = require('./twig-extensions.cjs');
 
 const { TwingEnvironment, TwingLoaderRelativeFilesystem } = require('twing');
 
