@@ -260,6 +260,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
     return [
       createFindPlugin(plugins)('DefinePlugin')!,
       new MubanPagePlugin({ template: resolve(paths.pagesPublic, 'index.html') }),
+      !this.isDev && new EmitTwigMainPlugin(),
       new CopyPlugin({
         patterns: [
           {
@@ -269,9 +270,20 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
               ignore: ['**/.*', resolve(paths.pagesPublic, 'index.html')],
             },
           },
+          {
+            from: '**/*.twig',
+            context: join(paths.source, 'components'),
+            to: join(paths.twigOutputDir, 'templates'),
+            noErrorOnMissing: true,
+          },
+          {
+            from: join(paths.user, 'config', 'twig'),
+            to: join(paths.twigOutputDir, 'extensions'),
+            noErrorOnMissing: true,
+          },
         ],
       }),
-    ];
+    ].filter((plugin): plugin is Exclude<typeof plugin, false> => Boolean(plugin));;
   }
 
   async pagesConfig(): Promise<Configuration> {
@@ -328,7 +340,6 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
         ],
       }),
       !this.isDev && new EmitMockMainPlugin(),
-      !this.isDev && new EmitTwigMainPlugin(),
       !this.isDev && new CopyEmittedAssetsPlugin(/^static\//, paths.mocksOutputDir),
     ].filter((plugin): plugin is Exclude<typeof plugin, false> => Boolean(plugin));
   }

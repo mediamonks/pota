@@ -8,6 +8,7 @@ export const paths = {
   ...webpackPaths,
   mocksDir: resolve(webpackPaths.user, 'mocks'),
   mocksOutputDir: resolve(webpackPaths.user, 'dist', 'node'),
+  twigOutputDir: resolve(webpackPaths.user, 'dist', 'node'),
   pagesSource: join(webpackPaths.source, 'pages'),
   pagesPublic: join(webpackPaths.source, 'pages', 'public'),
 };
