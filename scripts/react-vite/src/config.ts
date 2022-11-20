@@ -30,7 +30,7 @@ export class ReactViteConfig extends ViteConfig {
       ...(await super.plugins()),
       ...viteReact({
         babel: this.babelConfig,
-      }),
+      })
     ];
   }
 

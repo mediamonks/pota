@@ -101,7 +101,7 @@ npm pkg set pota="../../scripts/webpack/lib/index.js"
 > Example:
 
 ```bash
-npm init pota -- --template templates/vanilla
+npm init @pota -- --template templates/vanilla
 ```
 
 NOTE: [`@pota/create`](core/create-pota) currently does not support project creation with local scripts packages.
@@ -110,7 +110,7 @@ However, these can be easily installed after the project is created (see next se
 > Example:
 
 ```bash
-npm init pota -- --template templates/vanilla --no-scripts
+npm init @pota -- --template templates/vanilla --no-scripts
 ```
 
 ## Known Issues

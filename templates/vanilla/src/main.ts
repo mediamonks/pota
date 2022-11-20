@@ -1,12 +1,12 @@
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-document.body.innerHTML = `
-  <div>
-    <p>
-    Edit <code>src/main.ts</code> and save to reload.
-    </p>
-  </div>
-`;
+
+// eslint-disable-next-line unicorn/prefer-query-selector, @typescript-eslint/no-non-null-assertion
+const rootNode = document.getElementById('root')!;
+const app = document.createElement('p');
+app.textContent = 'Edit src/main.ts and save to reload.';
+
+rootNode.appendChild(app);
 
 // declaring an empty export to satisfy TypeScript's enabled `isolatedModules` flag
 export {};

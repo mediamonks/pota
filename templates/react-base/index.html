@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>React Base App</title>
 
@@ -8,11 +7,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="website created using @pota/create" />
-</head>
 
+  <meta http-equiv="Content-Security-Policy" content="script-src 'sha256-yyNoIT+kJT1MVsxspvZSCNjvwqqNKH1g+O3BVXpWOvg=' 'strict-dynamic' https: 'unsafe-inline'; object-src 'none'; base-uri 'none';">
+
+  <% for (var chunk in htmlWebpackPlugin.files.js) { %>
+  <meta name="app-script" content="<%= htmlWebpackPlugin.files.js[chunk]%>" />
+  <% } %>
+
+  <% if(process.env.NODE_ENV === 'development') { %>
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="manifest" href="/assets/manifest.json">
+
+  <!-- workaround to omit automatic asset injection. Injected assets: </head> -->
+  <% } %>
+</head>
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-</body>
 
+  <!-- @formatter:off -->
+  <!-- prettier-ignore -->
+  <script>!function(){for(var e=document.querySelectorAll('html > head > meta[name="app-script"]'),o=0;o<e.length;o++){var t=e[o].getAttribute("content"),n=document.createElement("script");n.src=t,n.src.substr(0,window.location.origin.length)!==window.location.origin?window.console&&console.error("[ScriptLoader] Cannot load "+t+"."):(document.body.appendChild(n),document.head.removeChild(e[o]))}}();</script>
+  <!-- @formatter:on -->
+</body>
 </html>
