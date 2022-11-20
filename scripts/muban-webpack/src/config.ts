@@ -26,6 +26,7 @@ import type {
 import { paths } from './paths.js';
 import MubanPagePlugin from './webpack/plugins/MubanPagePlugin.js';
 import EmitMockMainPlugin from './webpack/plugins/EmitMockMainPlugin.js';
+import EmitTwigMainPlugin from './webpack/plugins/EmitTwigMainPlugin.js';
 import CopyEmittedAssetsPlugin from './webpack/plugins/CopyEmittedAssetsPlugin.js';
 
 const require = createRequire(import.meta.url);
@@ -327,6 +328,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
         ],
       }),
       !this.isDev && new EmitMockMainPlugin(),
+      !this.isDev && new EmitTwigMainPlugin(),
       !this.isDev && new CopyEmittedAssetsPlugin(/^static\//, paths.mocksOutputDir),
     ].filter((plugin): plugin is Exclude<typeof plugin, false> => Boolean(plugin));
   }
