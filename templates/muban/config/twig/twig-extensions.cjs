@@ -1,4 +1,3 @@
-const { TwingFunction } = require('twing');
 const { objectToDataAttributes } = require('./attributes.cjs');
 const { renderAttributes } = require('./html.cjs');
 
@@ -16,7 +15,7 @@ const { renderAttributes } = require('./html.cjs');
  *   escape the output.
  * @param env The Twig Environment
  */
-exports.addExtensions = (env) => {
+exports.addExtensions = (env, { TwingFunction }) => {
   env.addFunction(new TwingFunction(
     'objectToDataAttributes',
     (dataAttributes) => Promise.resolve(renderAttributes(objectToDataAttributes(Object.fromEntries(dataAttributes)))),

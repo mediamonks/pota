@@ -1,6 +1,10 @@
+const path = require('path');
+
 const CSS_TEST = /\.css$/;
 const SCSS_TEST = /\.(scss|sass)$/;
 
+const packageJsonConfig = (require(path.resolve(__dirname, '..', 'package.json'))?.config ?? {});
+const TWIG_SUPPORT = packageJsonConfig['twig-support'] === true;
 const ENABLE_MOCK_API_MIDDLEWARE = process.env.MOCK_API === 'true';
 
 function findPlugin(config, name) {
@@ -18,6 +22,12 @@ module.exports = {
     const mubanConfig = await (await getConfig()).mubanConfig();
 
     const miniCssExtractLoader = findPlugin(mubanConfig, 'MiniCssExtractPlugin').constructor.loader;
+
+    const definePlugin = findPlugin(mubanConfig, 'DefinePlugin');
+    definePlugin.definitions['process.env'] = {
+      ...definePlugin.definitions['process.env'],
+      TWIG_SUPPORT: TWIG_SUPPORT
+    }
 
     return {
       ...config,
@@ -42,7 +52,7 @@ module.exports = {
           ),
         ],
       },
-      plugins: [...config.plugins, findPlugin(mubanConfig, 'DefinePlugin')],
+      plugins: [...config.plugins, definePlugin],
     };
   },
   async managerWebpack(config) {
