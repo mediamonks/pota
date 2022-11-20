@@ -57,6 +57,7 @@
     "@muban/eslint-config": "^1.0.0-alpha.6",
     "@muban/storybook": "^7.0.0-alpha.21",
     "@pota/muban-webpack-scripts": "^1.1.3",
+    "@pota/twig-server": "^1.0.1",
     "@storybook/addon-actions": "6.5.13",
     "@storybook/addon-essentials": "6.5.13",
     "@storybook/addon-links": "6.5.13",

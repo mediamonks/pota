@@ -7,7 +7,7 @@ const { kebabCase } = require('lodash');
  * @param prefix What to prepend to the source object keys
  * @returns {*} The newly created object with modified object keys
  */
-export function objectToAttributes(source, prefix) {
+function objectToAttributes(source, prefix) {
   return Object.entries(source)
     .filter(([, value]) => Boolean(value))
     .reduce(
@@ -16,6 +16,11 @@ export function objectToAttributes(source, prefix) {
     );
 }
 
-export function objectToDataAttributes(source) {
+function objectToDataAttributes(source) {
   return objectToAttributes(source, 'data-');
+}
+
+module.exports = {
+  objectToAttributes,
+  objectToDataAttributes,
 }
