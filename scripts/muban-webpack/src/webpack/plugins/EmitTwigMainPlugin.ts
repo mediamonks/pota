@@ -7,7 +7,7 @@ export default class EmitTwigMainPlugin implements WebpackPluginInstance {
     return `
 import { execSync } from "child_process";
 
-execSync('npx @pota/twig-server -u -s /twig-socket', { stdio: [0, 1, 2] });
+execSync('npx @pota/twig-server -u -s /twig-socket -e ./extensions/twig-extensions.cjs', { stdio: [0, 1, 2] });
   `;
   }
 
@@ -19,7 +19,7 @@ execSync('npx @pota/twig-server -u -s /twig-socket', { stdio: [0, 1, 2] });
       compilation.hooks.processAssets.tap(
         { name: NS, stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL },
         (assets) => {
-          assets['twig.mjs'] = new sources.RawSource(this.source);
+          assets['../node/twig.mjs'] = new sources.RawSource(this.source);
         },
       );
     });
