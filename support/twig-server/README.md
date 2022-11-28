@@ -112,3 +112,77 @@ Examples:
   twig-server -d ./templates            Specify a folder where the template files are located.
   twig-server -e ./twig-extensions.cjs  Provide a file to enhance the Twig Environment.
 ```
+
+## Template Rendering
+
+To render a twig template, the server needs to know two things;
+
+1. what template to render
+2. what data to pass to the template
+
+All this information should exist in the request, and there are multiple ways to pass this.
+Currently we're not support all thinkable use cases, but can expand if the currently supported options
+give issues.
+
+### Template ID
+
+This server currently supports one method of getting the component path/id from there request, using the url pathname.
+
+It expects the component filename and folder name to be the same.
+
+```
+# request
+GET /component-templates/atoms/button
+
+# will load from disk
+/templates/atoms/button/button.twig
+
+```
+
+### Template Data
+
+This server currently supports two methods of pulling data from there request, and using that to render the template:
+
+* from individual query parameters
+* from the `templateData` query parameter as a encoded JSON string
+
+The benefit of the latter option is that it supports actual booleans and numbers, and makes nesting `arrays` and 
+`objects` easier.
+
+### Individual query parameters
+
+```
+# example
+/component-templates/atoms/button?copy=Hello+World&ref=cta&active=true
+```
+
+Will use parameters
+```json
+{
+  "copy": "Hello World",
+  "ref": "cta",
+  "active": "true"
+}
+```
+
+> **Note** that the `active` `boolean` is actually a `string`, since everything is a string in the URL.
+
+### templateData JSON
+
+To have more control over the structure and the types of your template data, a nicer way to pass this is to use JSON.
+The server checks for the `templateData` query parameter, and if that's a string, it parses the JSON, and uses that 
+to render the template.
+
+```
+# example
+/component-templates/atoms/button?templateData={"copy":"Hello World","ref":"cta","active":true}
+```
+
+Will use parameters
+```json
+{
+  "copy": "Hello World",
+  "ref": "cta",
+  "active": true
+}
+```

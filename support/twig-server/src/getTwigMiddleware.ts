@@ -58,7 +58,8 @@ export function getTwigMiddleware(
     const dirName = dirname(req.path).substring(1);
 
     try {
-      const result = await env.render(join(absTemplatePath, dirName, componentName, `${componentName}.twig`), req.query);
+      const templateData = 'templateData' in req.query && typeof req.query.templateData === 'string' ? JSON.parse(req.query.templateData) : req.query;
+      const result = await env.render(join(absTemplatePath, dirName, componentName, `${componentName}.twig`), templateData);
 
       res.send(result);
     } catch (e: any) {
