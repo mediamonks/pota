@@ -31,6 +31,7 @@ createServer({
   socketPath: path.resolve(new URL('.', import.meta.url).pathname, './twig-socket'),
   templateDir: path.resolve(new URL('.', import.meta.url).pathname, '../templates'), 
   extensionPath: path.resolve(new URL('.', import.meta.url).pathname, './twig-extensions.cjs'),
+  cors: true,
 });
 ```
 
@@ -65,6 +66,7 @@ Server options:
 * `socketPath?: string [./socket]` - Where to create the unix socket.
 * `host?: string [localhost]` - What port to use.
 * `port?: number [9003]` - What host to use.
+* `cors?: boolean [false]` -  Whether to enable cors for the created server, so it accepts requests from other origins.
 
 Middleware options:
 * `templateDir?: string [./templates]` - Where the twig template files can be found.
@@ -95,6 +97,7 @@ Server options:
   -p, --port         The port that will be used to run the server, passed to `app.listen`       [number] [default: 9003]
   -u, --unix-socket  Whether to use a unix socket to start the server instead of the default `host:port`.      [boolean]
   -s, --socket-path  Where to create the unix socket. Only needed when `unix-socket` is true.                   [string]
+  -c, --cors         Whether to enable cors for the created server, so it accepts requests from other origins. [boolean]
 
 Middleware options:
   -d, --template-dir    Where the twig template files can be found.                    [string] [default: "./templates"]
@@ -111,7 +114,7 @@ Examples:
   twig-server -m component-template     Make all template routes available on the "component-template/" path.
   twig-server -d ./templates            Specify a folder where the template files are located.
   twig-server -e ./twig-extensions.cjs  Provide a file to enhance the Twig Environment.
-```
+  twig-server -c                        Enable cors when starting the server.```
 
 ## Template Rendering
 
