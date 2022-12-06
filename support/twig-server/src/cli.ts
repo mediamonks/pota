@@ -29,6 +29,7 @@ yargs(hideBin(process.argv))
   .example('$0 -m component-template', 'Make all template routes available on the "component-template/" path.')
   .example('$0 -d ./templates', 'Specify a folder where the template files are located.')
   .example('$0 -e ./twig-extensions.cjs', 'Provide a file to enhance the Twig Environment.')
+  .example('$0 -c', 'Enable cors when starting the server.')
   .option('m', {
     alias: 'mount-path',
     default: DEFAULT_SERVER_OPTIONS.mountPath,
@@ -80,7 +81,14 @@ yargs(hideBin(process.argv))
     type: 'string',
     nargs: 1,
   })
-  .group(['mount-path', 'host', 'port', 'unix-socket', 'socket-path'], 'Server options:')
+  .option('c', {
+    alias: 'cors',
+    default: undefined,
+    describe:
+      'Whether to enable cors for the created server, so it accepts requests from other origins.',
+    type: 'boolean',
+  })
+  .group(['mount-path', 'host', 'port', 'unix-socket', 'socket-path', 'cors'], 'Server options:')
   .group(['template-dir', 'extension-path'], 'Middleware options:')
   .help()
   .epilogue(
