@@ -1,10 +1,14 @@
 import fs from 'fs';
+import path from 'path';
 import type { Express } from 'express';
 import express from 'express';
 import cors from 'cors';
 
 import { resolve } from 'path';
 import { getTwigMiddleware, TemplateOptions } from './getTwigMiddleware.js';
+
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 export type ServerOptions = TemplateOptions & {
   mountPath?: string;
@@ -35,6 +39,15 @@ export function createServer(serverOptions: ServerOptions = {}): Express {
     ) as ServerOptions),
   };
 
+  const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8')) ?? {};
+  console.log(`Starting twig-server version ${version}.
+
+With options:
+- Template dir: ${templateDir}
+- Extension path: ${middlewareOptions.extensionPath ?? 'not set'}
+- Cors enabled: ${corsEnabled}
+`)
+
   // remove trailing /
   const mountPath = middlewareOptions.mountPath.replace(/\/$/, '');
 
@@ -56,14 +69,14 @@ export function createServer(serverOptions: ServerOptions = {}): Express {
     }
 
     app.listen(socketPath, () => {
-      console.info(`http://unix:${socketPath}`);
+      console.info(`Running on http://unix:${socketPath}`);
 
       // give nginx permission to use this
       fs.chmodSync(socketPath, 0o666);
     });
   } else {
     app.listen(port, host, () => {
-      console.info(`http://${host}:${port}${mountPath || '/'}`);
+      console.info(`Running on http://${host}:${port}${mountPath || '/'}`);
     });
   }
 
