@@ -1,6 +1,6 @@
 import '../src/styles/main.scss';
 
-const DEFAULT_ALLOW_SERVER_RENDERING = process.env.TWIG_SUPPORT;
+const DEFAULT_SERVER_RENDERING = process.env.TWIG_SUPPORT;
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -12,24 +12,19 @@ export const parameters = {
   },
   server: {
     url: `http://localhost:6006/component-templates`,
-    // customFetchStoryHtml,
+    // fetchStoryHtml,
   },
 };
 
 // add global var to control server rendering
 export const globalTypes = {
-  serverRendering: {
-    name: 'Server',
-    description: 'Server Rendering',
-    defaultValue: DEFAULT_ALLOW_SERVER_RENDERING ? 'allowed' : 'disabled',
+  renderMode: {
+    name: 'Render Mode',
+    description: 'Render template on the server or client',
+    defaultValue: DEFAULT_SERVER_RENDERING ? 'server' : 'client',
     toolbar: {
       icon: 'transfer',
-      // Array of plain string values or MenuItem shape (see below)
-      items: ['allowed', 'disabled'],
-      title: 'Server',
-      // Property that specifies if the name of the item will be displayed
-      // showName: true,
-      // Change title based on selected value
+      items: ['client', 'server'],
       dynamicTitle: true,
     },
   },
