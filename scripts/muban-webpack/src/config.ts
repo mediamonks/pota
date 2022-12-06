@@ -57,6 +57,7 @@ class Recursive {
 export interface MubanWebpackConfigOptions extends WebpackConfigOptions {
   preview: boolean;
   'mock-api': boolean;
+  storybook: boolean;
 }
 
 function makeCssRuleCompatible(rule: RuleSetRule) {
@@ -260,7 +261,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
     return [
       createFindPlugin(plugins)('DefinePlugin')!,
       new MubanPagePlugin({ template: resolve(paths.pagesPublic, 'index.html') }),
-      !this.isDev && new EmitTwigMainPlugin(),
+      !this.isDev && new EmitTwigMainPlugin({ requiredPackages: ['lodash', 'clsx'].concat(packageJsonConfig['twig-server-packages'] ?? [])}),
       new CopyPlugin({
         patterns: [
           {
@@ -403,8 +404,8 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
   public async final() {
     return Promise.all(
       [
-        this.mubanConfig(),
-        (this.options.preview || this.isDev) && this.pagesConfig(),
+        !this.options.storybook && this.mubanConfig(),
+        (this.options.preview || this.options.storybook || this.isDev) && this.pagesConfig(),
         this.options['mock-api'] && this.monckConfig(),
       ].filter((config): config is Promise<Configuration> => config !== false),
     );
