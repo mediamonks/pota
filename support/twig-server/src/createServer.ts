@@ -1,6 +1,8 @@
 import fs from 'fs';
 import type { Express } from 'express';
 import express from 'express';
+import cors from 'cors';
+
 import { resolve } from 'path';
 import { getTwigMiddleware, TemplateOptions } from './getTwigMiddleware.js';
 
@@ -11,6 +13,7 @@ export type ServerOptions = TemplateOptions & {
   host?: string;
   port?: number;
   templateDir?: string;
+  cors?: boolean;
 };
 
 export const DEFAULT_SERVER_OPTIONS: Required<Omit<ServerOptions, 'ignore' | 'extensionPath'>> = {
@@ -20,10 +23,11 @@ export const DEFAULT_SERVER_OPTIONS: Required<Omit<ServerOptions, 'ignore' | 'ex
   useUnixSocket: false,
   socketPath: resolve(process.cwd(), './socket'),
   templateDir: './templates',
+  cors: false,
 };
 
 export function createServer(serverOptions: ServerOptions = {}): Express {
-  const { templateDir, socketPath, useUnixSocket, host, port, ...middlewareOptions } = {
+  const { templateDir, socketPath, useUnixSocket, host, port, cors: corsEnabled, ...middlewareOptions } = {
     ...DEFAULT_SERVER_OPTIONS,
     // clear out undefined value to not override the default options
     ...(Object.fromEntries(
@@ -35,6 +39,11 @@ export function createServer(serverOptions: ServerOptions = {}): Express {
   const mountPath = middlewareOptions.mountPath.replace(/\/$/, '');
 
   const app = express();
+
+  if (corsEnabled) {
+    app.use(cors())
+  }
+
   app.use(mountPath, getTwigMiddleware(templateDir, { ...middlewareOptions }));
 
   // return 404 response to unmatched routes under the mount path
