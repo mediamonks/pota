@@ -34,7 +34,7 @@
   "config": {
     "host": "TODO: Add a host name.",
     "twig-support ": false,
-    "twig-server-packages": ["test@1.2.3"]
+    "twig-server-packages": []
   },
   "browserslist": [
     "last 2 versions",
@@ -44,6 +44,7 @@
   "dependencies": {
     "@mediamonks/monck": "^1.0.6",
     "@mediamonks/muban-transition-component": "^1.0.0",
+    "@mediamonks/scss-utils": "^2.1.5",
     "@muban/muban": "^1.0.0-alpha.32",
     "@muban/template": "^1.0.0-alpha.3",
     "clsx": "^1.1.1",
