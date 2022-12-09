@@ -71,11 +71,6 @@ function makeCssRuleCompatible(rule: RuleSetRule) {
               ...use,
               options: {
                 ...(isString(use.options) ? {} : use.options),
-                // TODO: this is terribly inefficient, since we're creating a single .css file there should be a better way to add global styles
-                additionalData: `
-                  @import "~seng-scss";
-                  @import "@/styles/_global.scss";
-                  `,
                 sassOptions: {
                   importer: jsonImporter(),
                 },
