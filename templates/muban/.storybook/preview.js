@@ -22,7 +22,18 @@ export const globalTypes = {
     defaultValue: DEFAULT_SERVER_RENDERING ? 'server' : 'client',
     toolbar: {
       icon: 'transfer',
-      items: ['client', 'server'],
+      items: [
+        {
+          title: 'Render on the client',
+          left: '🖥',
+          value: 'client',
+        },
+        {
+          title: 'Render on the server',
+          left: '🌎',
+          value: 'server',
+        },
+      ],
       dynamicTitle: true,
     },
   },
