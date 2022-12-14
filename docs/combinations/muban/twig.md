@@ -28,7 +28,7 @@ Edit your `package.json` file to set `config.twig-support` to `true`.
 {
   ...
   "config": {  
-	"twig-support": true
+    "twig-support": true
   },
   ...
 }
@@ -40,7 +40,7 @@ With this enabled, it starts executing the twig code paths, and your typescript 
 
 The `muban-webpack-scripts` package has built-in support for twig templates, by enabling a few small additions.
 
-## twing
+## Twing
 
 It uses [Twing](https://www.npmjs.com/package/twing), a node.js package that aligns with the official Twig specification, allowing us to write templates in twig, but still make use of javascript-based build tooling.
 
@@ -48,11 +48,11 @@ Twing works by setting up a _Twig Environment_, that defines how files are loade
 
 The `muban-webpack-scripts` packages has its own `twigEnvironment.js` file, but most likely you want to have your own in your project to add custom filters and functions.
 
-## twing-loader
+## Twing-loader
 
 It enables the [twing-laoder](https://www.npmjs.com/package/twing-loader) when rendering pages, so your `app.twig` and all other templates are correctly processed.
 
-## pota config
+## Pota config
 
 Our project contains a default `pota.config.js` to configure our Twig Environment. It does so by overriding the `twigEnvironmentPath` getter:
 
@@ -67,7 +67,7 @@ class ProjectWebpackConfig extends MubanWebpackConfig {
 
 > The pota configuration is used in the `dev` and `build` commands.
 
-## storybook middleware
+## Storybook middleware
 
 In `.storybook/middleware.js` – that allows you to enhance the express node.js server that servces storybook itself – there is a route that can render templates "on the server".
 
@@ -77,7 +77,7 @@ There it renders the component twig file, and returns the HTML to display in sto
 
 The storybook middleware also creates a Twig Environment, and enhances it with the same extensions as is done in the `twigEnvironment.cjs` that is used in the pota config.
 
-## extending twig
+## Extending twig
 
 The `config/twig/twig-extensions.cjs` contains a `addExtensions` function to allow extending the passed environment. You can use the `env.addFilter` and `env.addFunction`, and pass the configuration and logic.
 
@@ -89,8 +89,39 @@ Some things to note:
 * If you're outputting "raw html", you need to mark it as safe so it doesn't get escaped.
 * Any custom filter or function you're adding must also be created in PHP, so make sure to add proper documentation and/or tests.
 
-## pages bundle
+## Pages bundle
 
 When using typescript, the `src/pages/_main.ts` is used to export the `App.template.ts` (the application starting point) and all the page data files.
 
 A similar file exists for twig, called `src/pages/_main.twig.ts` that exports the `app.twig` and all the same page data files, but additionally requires all twig templates in the projects to make them available for inclusion in other templates.
+
+## Twig rendering on a preview server for Storybook
+
+When deploying a storybook build to a preview server, it still needs a way to render the twig templates. If you choose
+to connect to an existing server that can render twig templates, you don't have to do anything. But otherwise you 
+would need to run a node.js server that can render the templates.
+
+As part of the `storybook:build` npm script, the file to run this node server is created in the `dist/node` folder, 
+along with all the twig templates and custom helpers you added. Then you can run the `rsync:node` to rsync it to 
+your preview server.
+
+On the server you have to start the node server by starting `node twig.mjs`. It will automatically install the required
+packages, and start the twig server with the correct configuration options.
+
+The `twig-server-packages` in the `package.json` `config` section can be used to specify what packages need to be 
+installed to run the twig server. By default we already install `lodash` and `clsx`, since they are used by our 
+included twig helpers. If you add any custom helpers that need something from a node module, you need to specify those
+manually.
+
+```json
+// package.json
+
+{
+  ...
+  "config": {
+    "twig-support ": false,
+    "twig-server-packages": ["@mediamonks/package-name@^1.4.3"]
+  },
+  ...
+}
+```
