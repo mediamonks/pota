@@ -53,13 +53,13 @@
     "isntnt": "^1.5.2",
     "node-sass-json-importer": "^4.3.0",
     "null-loader": "^4.0.1",
-    "require-from-string": "^2.0.2"
+    "require-from-string": "^2.0.2",
+    "twing": "^5.1.0",
+    "twing-loader": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.10",
-    "@types/require-from-string": "^1.2.1",
-    "twing": "^5.1.0",
-    "twing-loader": "^4.0.0"
+    "@types/require-from-string": "^1.2.1"
   },
   "peerDependencies": {
     "@mediamonks/monck": "^1.0.6",
