@@ -3,7 +3,9 @@ import { readFileSync } from 'fs';
 import { basename, extname, join, resolve } from 'path';
 import { createRequire } from 'module';
 
-const packageJsonConfig = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), { encoding: 'utf8' }))?.config ?? {};
+const packageJsonConfig =
+  JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), { encoding: 'utf8' }))?.config ??
+  {};
 const ENABLE_TWIG_SUPPORT = packageJsonConfig['twig-support'] === true;
 
 import { isString } from 'isntnt';
@@ -150,7 +152,8 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
   }
 
   public get twigEnvironmentPath() {
-    return require.resolve('../twigEnvironment.cjs')
+    console.log('twigEnvironmentPath', require.resolve('../twigEnvironment.cjs'));
+    return require.resolve('../twigEnvironment.cjs');
   }
 
   public get nodeTargetRules() {
@@ -164,9 +167,9 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
                 loader: 'twing-loader',
                 options: {
                   environmentModulePath: this.twigEnvironmentPath,
-                }
-              }
-            ]
+                },
+              },
+            ],
           },
           this.jsRule,
           this.tsRule,
@@ -256,7 +259,12 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
     return [
       createFindPlugin(plugins)('DefinePlugin')!,
       new MubanPagePlugin({ template: resolve(paths.pagesPublic, 'index.html') }),
-      !this.isDev && new EmitTwigMainPlugin({ requiredPackages: ['lodash', 'clsx'].concat(packageJsonConfig['twig-server-packages'] ?? [])}),
+      !this.isDev &&
+        new EmitTwigMainPlugin({
+          requiredPackages: ['lodash', 'clsx'].concat(
+            packageJsonConfig['twig-server-packages'] ?? [],
+          ),
+        }),
       new CopyPlugin({
         patterns: [
           {
@@ -279,7 +287,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
           },
         ],
       }),
-    ].filter((plugin): plugin is Exclude<typeof plugin, false> => Boolean(plugin));;
+    ].filter((plugin): plugin is Exclude<typeof plugin, false> => Boolean(plugin));
   }
 
   async pagesConfig(): Promise<Configuration> {
@@ -292,7 +300,9 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
       mode: 'development', // we do not care about the size of the output, it just needs to be built fast
       devtool: false, // source maps will not be used
 
-      entry: { pages: resolve(paths.pagesSource, ENABLE_TWIG_SUPPORT ? '_main.twig.ts' : '_main.ts') },
+      entry: {
+        pages: resolve(paths.pagesSource, ENABLE_TWIG_SUPPORT ? '_main.twig.ts' : '_main.ts'),
+      },
 
       cache: this.options.cache && {
         ...(typeof superConfig.cache !== 'boolean' ? superConfig.cache : {}),
