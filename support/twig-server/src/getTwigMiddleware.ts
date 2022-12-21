@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from 'express-serve-static-core';
-import { existsSync } from 'fs';
 import { basename, dirname, join, resolve } from 'path';
 import { DEFAULT_SERVER_OPTIONS } from './createServer.js';
+import type { TemplateDirConfig, TemplateOptions } from './types.js';
+import { normalizeTemplateDirs } from './utils/normalizeTemplateDirs.js';
 
 const exampleCodeExport = `export default {
   title: 'MyComponent',
@@ -26,17 +27,15 @@ const exampleCodeComponent = `export const Default: Story<MyComponentProps> = {
   },
 };`;
 
-export type TemplateOptions = {
-  extensionPath?: string;
-};
-
 export function getTwigMiddleware(
-  templateDir: string | Array<string> = DEFAULT_SERVER_OPTIONS.templateDir,
+  templateDir: TemplateDirConfig = DEFAULT_SERVER_OPTIONS.templateDir,
   options: TemplateOptions = {},
 ) {
-  const absTemplatePaths = (Array.isArray(templateDir) ? templateDir : [templateDir]).map((dir) =>
+  const normalizedDirs = normalizeTemplateDirs(templateDir);
+  const absTemplatePaths = normalizedDirs.map(([dir, ns]) => [
     resolve(process.cwd(), dir),
-  );
+    ns,
+  ]) as Array<[string, string?]>;
 
   const absExtensionPath = resolve(process.cwd(), options.extensionPath ?? './');
 
@@ -44,8 +43,14 @@ export function getTwigMiddleware(
     // Explicitly create a new Twig environment on each request,
     // otherwise it'll cache all the templates
     const twingExport = await import('twing');
-    const { TwingEnvironment, TwingLoaderRelativeFilesystem } = twingExport;
-    const env = new TwingEnvironment(new TwingLoaderRelativeFilesystem(), {
+    const { TwingEnvironment, TwingLoaderFilesystem } = twingExport;
+
+    const loader = new TwingLoaderFilesystem();
+    absTemplatePaths.forEach((options) => {
+      loader.addPath(...options);
+    });
+
+    const env = new TwingEnvironment(loader, {
       cache: false,
       auto_reload: true,
     });
@@ -64,12 +69,8 @@ export function getTwigMiddleware(
           ? JSON.parse(req.query.templateData)
           : req.query;
 
-      const componentTemplatePaths = absTemplatePaths.map((path) =>
-        join(path, dirName, componentName, `${componentName}.twig`),
-      );
-
       const result = await env.render(
-        componentTemplatePaths.find(existsSync) ?? componentTemplatePaths[0],
+        join(dirName, componentName, `${componentName}.html.twig`),
         templateData,
       );
       res.send(result);

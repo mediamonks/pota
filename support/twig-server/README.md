@@ -30,7 +30,12 @@ createServer({
   port: '9003',
   useUnixSocket: false,
   socketPath: path.resolve(new URL('.', import.meta.url).pathname, './twig-socket'),
-  templateDir: path.resolve(new URL('.', import.meta.url).pathname, '../templates'),
+  templateDir: [
+    path.resolve(new URL('.', import.meta.url).pathname, '../templates'),
+    {
+      admin: path.resolve(new URL('.', import.meta.url).pathname, '../admin-templates'),
+    },
+  ],
   extensionPath: path.resolve(new URL('.', import.meta.url).pathname, './twig-extensions.cjs'),
   cors: true,
 });
@@ -78,7 +83,8 @@ Server options:
 Middleware options:
 
 - `templateDir?: string [./templates]` - Folder where the twig template files can be found, can pass
-  multiple, it tries them in order.
+  multiple, it tries them in order. Passing `name=path` as an argument configures it as Twig
+  namespace for your template includes.
 - `extensionPath?: string` - A path to a file that exports an `addExtensions` function to enhance
   the Twig Environment.
 
@@ -109,7 +115,8 @@ Server options:
   -c, --cors         Whether to enable cors for the created server, so it accepts requests from other origins. [boolean]
 
 Middleware options:
-  -d, --template-dir    Folder where the twig template files can be found, can pass multiple, it tries them in order.
+  -d, --template-dir    Folder where the twig template files can be found, can pass multiple, it tries them in order. Pa
+                        ssing name=path as an argument configures it as Twig namespace for your template includes.
                                                                                         [array] [default: "./templates"]
   -e, --extension-path  A path to a file that exports an `addExtensions` function to enhance the Twig Environment.
                                                                                                                 [string]
@@ -171,18 +178,19 @@ The benefit of the latter option is that it supports actual booleans and numbers
 
 # example
 
+```
 /component-templates/atoms/button?copy=Hello+World&ref=cta&active=true
-
-````
+```
 
 Will use parameters
+
 ```json
 {
   "copy": "Hello World",
   "ref": "cta",
   "active": "true"
 }
-````
+```
 
 > **Note** that the `active` `boolean` is actually a `string`, since everything is a string in the
 > URL.

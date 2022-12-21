@@ -1,11 +1,11 @@
 <div {{ objectToDataAttributes({ component: 'toggle-expand', ref: ref, isExpanded: isExpanded }) }}>
-  <p>{% include '../cf-a2-icon/cf-a2-icon.twig' with { name: 'checkmark' } %}</p>
+  <p>{% include 'atoms/cf-a2-icon/cf-a2-icon.html.twig' with { name: 'checkmark' } %}</p>
   <p>
     B Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque consequatur cum laboriosam
     voluptate voluptatibus. Alias aut autem eligendi perspiciatis provident quae quisquam sapiente
     sequi, vero voluptatibus. Dolores dolorum exercitationem voluptate.
   </p>
-  <p>{% include '../button/button.twig' with { label: 'Expand', ref: 'expand-button' } %}</p>
+  <p>{% include 'atoms/button/button.html.twig' with { label: 'Expand', ref: 'expand-button' } %}</p>
   <p data-ref="expand-content">
     Lorem ipsum <strong>dolor</strong> sit <em>amet</em>, consectetur adipisicing elit. Distinctio
     error incidunt necessitatibus repellendus sint. A, deleniti ducimus ex facere ipsam libero

@@ -1,6 +1,7 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { createServer, DEFAULT_SERVER_OPTIONS } from './createServer.js';
+import { parseCliTemplateParams } from './utils/parseCliTemplateParams.js';
 
 yargs(hideBin(process.argv))
   .usage('Usage: $0 [options]')
@@ -19,6 +20,7 @@ yargs(hideBin(process.argv))
     (argv) => {
       createServer({
         ...argv,
+        templateDir: parseCliTemplateParams(argv.templateDir),
         useUnixSocket: argv.unixSocket,
       });
     },
@@ -74,7 +76,7 @@ yargs(hideBin(process.argv))
     alias: 'template-dir',
     default: DEFAULT_SERVER_OPTIONS.templateDir,
     describe:
-      'Folder where the twig template files can be found, can pass multiple, it tries them in order.',
+      'Folder where the twig template files can be found, can pass multiple, it tries them in order. Passing name=path as an argument configures it as Twig namespace for your template includes',
     type: 'array',
   })
   .option('e', {
