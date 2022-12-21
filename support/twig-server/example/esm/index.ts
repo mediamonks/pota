@@ -5,5 +5,8 @@ import { createServer } from '../../src/index';
 createServer({
   templateDir: path.resolve(new URL('.', import.meta.url).pathname, '../templates'),
   useUnixSocket: process.env.NODE_ENV === 'production',
-  extensionPath: path.resolve(new URL('.', import.meta.url).pathname, '../extensions/twig-extensions.cjs'),
+  extensionPath: path.resolve(
+    new URL('.', import.meta.url).pathname,
+    '../extensions/twig-extensions.cjs',
+  ),
 });

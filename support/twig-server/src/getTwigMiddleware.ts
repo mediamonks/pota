@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express-serve-static-core';
+import { existsSync } from 'fs';
 import { basename, dirname, join, resolve } from 'path';
 import { DEFAULT_SERVER_OPTIONS } from './createServer.js';
 
@@ -23,17 +24,20 @@ const exampleCodeComponent = `export const Default: Story<MyComponentProps> = {
       id: 'atoms/my-component',
     },
   },
-};`
+};`;
 
 export type TemplateOptions = {
   extensionPath?: string;
 };
 
 export function getTwigMiddleware(
-  templateDir: string = DEFAULT_SERVER_OPTIONS.templateDir,
+  templateDir: string | Array<string> = DEFAULT_SERVER_OPTIONS.templateDir,
   options: TemplateOptions = {},
 ) {
-  const absTemplatePath = resolve(process.cwd(), templateDir);
+  const absTemplatePaths = (Array.isArray(templateDir) ? templateDir : [templateDir]).map((dir) =>
+    resolve(process.cwd(), dir),
+  );
+
   const absExtensionPath = resolve(process.cwd(), options.extensionPath ?? './');
 
   return async function twigMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -41,13 +45,10 @@ export function getTwigMiddleware(
     // otherwise it'll cache all the templates
     const twingExport = await import('twing');
     const { TwingEnvironment, TwingLoaderRelativeFilesystem } = twingExport;
-    const env = new TwingEnvironment(
-      new TwingLoaderRelativeFilesystem(),
-      {
-        cache: false,
-        auto_reload: true,
-      }
-    );
+    const env = new TwingEnvironment(new TwingLoaderRelativeFilesystem(), {
+      cache: false,
+      auto_reload: true,
+    });
 
     // Add filters or functions to the Twig Environment
     if (options.extensionPath) {
@@ -58,15 +59,27 @@ export function getTwigMiddleware(
     const dirName = dirname(req.path).substring(1);
 
     try {
-      const templateData = 'templateData' in req.query && typeof req.query.templateData === 'string' ? JSON.parse(req.query.templateData) : req.query;
-      const result = await env.render(join(absTemplatePath, dirName, componentName, `${componentName}.twig`), templateData);
+      const templateData =
+        'templateData' in req.query && typeof req.query.templateData === 'string'
+          ? JSON.parse(req.query.templateData)
+          : req.query;
 
+      const componentTemplatePaths = absTemplatePaths.map((path) =>
+        join(path, dirName, componentName, `${componentName}.twig`),
+      );
+
+      const result = await env.render(
+        componentTemplatePaths.find(existsSync) ?? componentTemplatePaths[0],
+        templateData,
+      );
       res.send(result);
     } catch (e: any) {
       if (e.message.includes('Unable to find template')) {
         const msg = `
             <h2>Could not find template "${componentName}"</h2>
-            <p>Looking for <b><code>${req.path}</code></b> resolved at <code><b>${/"([^"]+)"/gi.exec(e.message)?.[1]}</b></code></p>
+            <p>Looking for <b><code>${req.path}</code></b> resolved at <code><b>${
+          /"([^"]+)"/gi.exec(e.message)?.[1]
+        }</b></code></p>
             <p>Please look at your story parameters to make sure it includes the path to the component folder, like:</p>
             <pre><code>${exampleCodeExport}</code></pre>
             <p>Or for individual stories:</p>

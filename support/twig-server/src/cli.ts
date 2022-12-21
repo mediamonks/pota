@@ -10,7 +10,7 @@ yargs(hideBin(process.argv))
     port: number;
     unixSocket: boolean;
     socketPath: string;
-    templateDir: string;
+    templateDir: Array<string>;
     extensionPath: string;
   }>(
     ['$0', 'server'],
@@ -26,7 +26,10 @@ yargs(hideBin(process.argv))
   .example('$0', 'Start a server on default host and port.')
   .example('$0 -h localhost -p 9002', 'Start a server on a specific host and port')
   .example('$0 -u -s ./twig-socket', 'Start a server connected to the socket at that location')
-  .example('$0 -m component-template', 'Make all template routes available on the "component-template/" path.')
+  .example(
+    '$0 -m component-template',
+    'Make all template routes available on the "component-template/" path.',
+  )
   .example('$0 -d ./templates', 'Specify a folder where the template files are located.')
   .example('$0 -e ./twig-extensions.cjs', 'Provide a file to enhance the Twig Environment.')
   .example('$0 -c', 'Enable cors when starting the server.')
@@ -70,14 +73,15 @@ yargs(hideBin(process.argv))
   .option('d', {
     alias: 'template-dir',
     default: DEFAULT_SERVER_OPTIONS.templateDir,
-    describe: 'Where the twig template files can be found.',
-    type: 'string',
-    nargs: 1,
+    describe:
+      'Folder where the twig template files can be found, can pass multiple, it tries them in order.',
+    type: 'array',
   })
   .option('e', {
     alias: 'extension-path',
     default: undefined,
-    describe: 'A path to a file that exports an `addExtensions` function to enhance the Twig Environment.',
+    describe:
+      'A path to a file that exports an `addExtensions` function to enhance the Twig Environment.',
     type: 'string',
     nargs: 1,
   })
