@@ -1,6 +1,6 @@
 {
   "name": "@pota/twig-server",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "A Node.js server to render twig templates, supporting the muban-template",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
