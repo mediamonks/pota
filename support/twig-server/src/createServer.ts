@@ -5,20 +5,11 @@ import express from 'express';
 import cors from 'cors';
 
 import { resolve } from 'path';
-import { getTwigMiddleware, TemplateOptions } from './getTwigMiddleware.js';
+import { getTwigMiddleware } from './getTwigMiddleware.js';
 
 import * as url from 'url';
+import type { ServerOptions } from './types.js';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-
-export type ServerOptions = TemplateOptions & {
-  mountPath?: string;
-  useUnixSocket?: boolean;
-  socketPath?: string;
-  host?: string;
-  port?: number;
-  templateDir?: string | Array<string>;
-  cors?: boolean;
-};
 
 export const DEFAULT_SERVER_OPTIONS: Required<Omit<ServerOptions, 'ignore' | 'extensionPath'>> = {
   mountPath: '/component-templates',
@@ -52,7 +43,7 @@ export function createServer(serverOptions: ServerOptions = {}): Express {
   console.log(`Starting twig-server version ${version}.
 
 With options:
-- Template dir(s): ${templateDir}
+- Template dir(s): ${JSON.stringify(templateDir, null, 2)}
 - Extension path: ${middlewareOptions.extensionPath ?? 'not set'}
 - Cors enabled: ${corsEnabled}
 `);

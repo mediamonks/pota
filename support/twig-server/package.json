@@ -1,6 +1,6 @@
 {
   "name": "@pota/twig-server",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A Node.js server to render twig templates, supporting the muban-template",
   "bugs": {
     "url": "https://github.com/mediamonks/pota/issues"
@@ -27,11 +27,13 @@
   },
   "scripts": {
     "dev": "nodemon --ext ts --exec 'tsm' example/esm/index.ts",
+    "dev:multi": "nodemon --ext ts --exec 'tsm' example/esm/multi.ts",
     "dev:cjs": "nodemon --ext ts --exec 'tsm' example/cjs/index.cjs",
     "dev:cli": "tsc -p tsconfig.build.json --watch",
     "build": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build",
-    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn"
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn",
+    "test": "NODE_NO_WARNINGS=1 NODE_OPTIONS=--experimental-vm-modules jest ./src/"
   },
   "prettier": "@mediamonks/prettier-config",
   "dependencies": {
@@ -53,8 +55,12 @@
   },
   "devDependencies": {
     "@mediamonks/prettier-config": "^1.0.1",
+    "@types/jest": "^29.2.4",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
+    "ts-jest": "^29.0.3",
     "tsm": "^2.2.1",
     "typescript": "^4.9.3"
   },
