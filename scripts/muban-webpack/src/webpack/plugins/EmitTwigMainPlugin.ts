@@ -4,7 +4,7 @@ const NS = 'EmitTwigMainPlugin';
 
 type PluginOptions = {
   requiredPackages?: Array<string>;
-}
+};
 
 export default class EmitTwigMainPlugin implements WebpackPluginInstance {
   public constructor(private options: PluginOptions = {}) {}
@@ -16,7 +16,11 @@ export default class EmitTwigMainPlugin implements WebpackPluginInstance {
     return `
 import { execSync } from "child_process";
 
-${packagesToInstall.length > 0 ? `execSync('npm init --yes && npm i ${packagesToInstall}', { stdio: [0, 1, 2] });` : ''}
+${
+  packagesToInstall.length > 0
+    ? `execSync('npm init --yes && GIT_SSH_COMMAND="ssh" npm i --no-fund --no-audit ${packagesToInstall}', { stdio: [0, 1, 2] });`
+    : ''
+}
 
 execSync('npx --yes @pota/twig-server -c -u -s ./twig-socket -e ./extensions/twig-extensions.cjs', { stdio: [0, 1, 2] });
   `;
