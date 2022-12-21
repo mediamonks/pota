@@ -16,7 +16,7 @@ export type ServerOptions = TemplateOptions & {
   socketPath?: string;
   host?: string;
   port?: number;
-  templateDir?: string;
+  templateDir?: string | Array<string>;
   cors?: boolean;
 };
 
@@ -31,7 +31,15 @@ export const DEFAULT_SERVER_OPTIONS: Required<Omit<ServerOptions, 'ignore' | 'ex
 };
 
 export function createServer(serverOptions: ServerOptions = {}): Express {
-  const { templateDir, socketPath, useUnixSocket, host, port, cors: corsEnabled, ...middlewareOptions } = {
+  const {
+    templateDir,
+    socketPath,
+    useUnixSocket,
+    host,
+    port,
+    cors: corsEnabled,
+    ...middlewareOptions
+  } = {
     ...DEFAULT_SERVER_OPTIONS,
     // clear out undefined value to not override the default options
     ...(Object.fromEntries(
@@ -39,14 +47,15 @@ export function createServer(serverOptions: ServerOptions = {}): Express {
     ) as ServerOptions),
   };
 
-  const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8')) ?? {};
+  const { version } =
+    JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8')) ?? {};
   console.log(`Starting twig-server version ${version}.
 
 With options:
-- Template dir: ${templateDir}
+- Template dir(s): ${templateDir}
 - Extension path: ${middlewareOptions.extensionPath ?? 'not set'}
 - Cors enabled: ${corsEnabled}
-`)
+`);
 
   // remove trailing /
   const mountPath = middlewareOptions.mountPath.replace(/\/$/, '');
@@ -54,7 +63,7 @@ With options:
   const app = express();
 
   if (corsEnabled) {
-    app.use(cors())
+    app.use(cors());
   }
 
   app.use(mountPath, getTwigMiddleware(templateDir, { ...middlewareOptions }));

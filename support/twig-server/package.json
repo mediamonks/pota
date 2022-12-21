@@ -30,8 +30,10 @@
     "dev:cjs": "nodemon --ext ts --exec 'tsm' example/cjs/index.cjs",
     "dev:cli": "tsc -p tsconfig.build.json --watch",
     "build": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,scss,md,json}\" --write --loglevel warn"
   },
+  "prettier": "@mediamonks/prettier-config",
   "dependencies": {
     "@types/body-parser": "1.19.0",
     "@types/cors": "^2.8.13",
@@ -50,6 +52,7 @@
     "yargs": "^17.3.1"
   },
   "devDependencies": {
+    "@mediamonks/prettier-config": "^1.0.1",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "tsm": "^2.2.1",
