@@ -45,15 +45,23 @@
       "dev": {
         "description": "Starts the development server.",
         "suggest": true
+      },
+      "copy-twig": {
+        "description": "Copy twig files to the dist folder."
       }
     }
   },
   "dependencies": {
     "@pota/webpack-scripts": "~1.0.3",
+    "@types/cpx": "^1.5.2",
+    "@types/shelljs": "^0.8.11",
+    "cpx": "^1.5.0",
     "isntnt": "^1.5.2",
     "node-sass-json-importer": "^4.3.0",
     "null-loader": "^4.0.1",
+    "recursive-copy": "^2.0.14",
     "require-from-string": "^2.0.2",
+    "shelljs": "^0.8.5",
     "twing": "^5.1.0",
     "twing-loader": "^4.0.0"
   },

@@ -28,7 +28,6 @@ import type {
 import { paths } from './paths.js';
 import MubanPagePlugin from './webpack/plugins/MubanPagePlugin.js';
 import EmitMockMainPlugin from './webpack/plugins/EmitMockMainPlugin.js';
-import EmitTwigMainPlugin from './webpack/plugins/EmitTwigMainPlugin.js';
 import CopyEmittedAssetsPlugin from './webpack/plugins/CopyEmittedAssetsPlugin.js';
 
 const require = createRequire(import.meta.url);
@@ -259,12 +258,6 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
     return [
       createFindPlugin(plugins)('DefinePlugin')!,
       new MubanPagePlugin({ template: resolve(paths.pagesPublic, 'index.html') }),
-      !this.isDev &&
-        new EmitTwigMainPlugin({
-          requiredPackages: ['lodash', 'clsx'].concat(
-            packageJsonConfig['twig-server-packages'] ?? [],
-          ),
-        }),
       new CopyPlugin({
         patterns: [
           {
@@ -273,17 +266,6 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
             globOptions: {
               ignore: ['**/.*', resolve(paths.pagesPublic, 'index.html')],
             },
-          },
-          {
-            from: '**/*.twig',
-            context: join(paths.source, 'components'),
-            to: join(paths.twigOutputDir, 'templates'),
-            noErrorOnMissing: true,
-          },
-          {
-            from: join(paths.user, 'config', 'twig'),
-            to: join(paths.twigOutputDir, 'extensions'),
-            noErrorOnMissing: true,
           },
         ],
       }),
@@ -409,8 +391,8 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
   public async final() {
     return Promise.all(
       [
-        !this.options.storybook && this.mubanConfig(),
-        (this.options.preview || this.options.storybook || this.isDev) && this.pagesConfig(),
+        this.mubanConfig(),
+        (this.options.preview || this.isDev) && this.pagesConfig(),
         this.options['mock-api'] && this.monckConfig(),
       ].filter((config): config is Promise<Configuration> => config !== false),
     );
