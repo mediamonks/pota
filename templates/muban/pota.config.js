@@ -9,7 +9,7 @@ class ProjectWebpackConfig extends MubanWebpackConfig {
   // and you want to add custom filters or functions to the Twig Environment that is used in
   // the webpack loaders
   get twigEnvironmentPath() {
-    return require.resolve('./config/twig/twigEnvironment.cjs')
+    return require.resolve('./config/twig/twigEnvironment.cjs');
   }
 }
 
