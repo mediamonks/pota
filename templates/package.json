@@ -1,5 +1,10 @@
 {
   "name": "@pota/templates",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@types/shelljs": "^0.8.11",
+    "shelljs": "^0.8.5",
+    "yargs": "^17.6.2"
+  }
 }
