@@ -82,7 +82,7 @@ export class CopyTwig implements Command<CopyTwigOptions> {
   options() {
     return {
       'include-server': {
-        description: 'Included the configuration files for running the Twig Server',
+        description: 'Includes the configuration files for running the Twig Server',
         default: false,
       },
     };
