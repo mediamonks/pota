@@ -2,6 +2,11 @@
   "name": "@pota/templates",
   "private": true,
   "type": "module",
+  "scripts": {
+    "modify:muban:dev": "node ./template-scripts/muban.js --dev",
+    "modify:muban:dev-local": "node ./template-scripts/muban.js --dev --local",
+    "modify:muban:revert": "node ./template-scripts/muban.js --revert"
+  },
   "dependencies": {
     "@types/shelljs": "^0.8.11",
     "shelljs": "^0.8.5",

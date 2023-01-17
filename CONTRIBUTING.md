@@ -92,6 +92,19 @@ npm install @pota/cli
 npm pkg set pota="../../scripts/webpack/lib/index.js"
 ```
 
+### Helper scripts
+
+Starting with the muban template, there is a helper script that can be used to quickly update the `package.json`
+with the changes described above, or to revert them back to their pristine state.
+
+- `"modify:muban:dev": "node ./template-scripts/muban.js --dev"`
+- `"modify:muban:dev-local": "node ./template-scripts/muban.js --dev --local"`
+- `"modify:muban:revert": "node ./template-scripts/muban.js --revert"`
+
+These npm scripts can be called from with in the `templates` folder.
+
+````bash
+
 > NOTE: if you want to work on the local cli package, then replace the second step with `npm install ../../core/cli`
 
 ## Creating projects from local `templates`
@@ -102,7 +115,7 @@ npm pkg set pota="../../scripts/webpack/lib/index.js"
 
 ```bash
 npm init pota -- --template templates/vanilla
-```
+````
 
 NOTE: [`@pota/create`](core/create-pota) currently does not support project creation with local scripts packages.
 However, these can be easily installed after the project is created (see next section). To skip scripts selection you can pass `--no-scripts`.
