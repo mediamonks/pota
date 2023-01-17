@@ -13,7 +13,7 @@
   "author": "frontend.monks",
   "type": "module",
   "scripts": {
-    "build": "npm run clean && pota build --output=dist/site && pota copy-twig",
+    "build": "npm run clean && pota copy-twig && pota build --output=dist/site",
     "build:preview": "npm run clean && pota build --output=dist/site --preview",
     "dev": "pota dev --port 9000",
     "fix": "run-s fix:* && npm run format",

@@ -47,7 +47,7 @@ Same as `npm run storybook`, but with the mock API bundling and middleware enabl
 Creates a distribution build that outputs the JavaScript, CSS and bundled asset files. Used in CI to
 deploy to your production websites.
 
-### `npm run build -- --preview`
+### `npm run build:preview`
 
 Generates a full preview package including generated HTML files to upload to a preview server that's
 not connected to any backend.
@@ -74,7 +74,7 @@ Make a deployable storybook build to showcase your components to others.
 
 ### previewing the build
 
-Sometimes you want to test the build output `npm run build -- --preview` to locally debug
+Sometimes you want to test the build output `npm run build:preview` to locally debug
 minification & optimizations applied by webpack in production mode. Instead of shipping a custom
 server or a dependency to support this, we are recommending to utilize existing packages through
 `npx`:
