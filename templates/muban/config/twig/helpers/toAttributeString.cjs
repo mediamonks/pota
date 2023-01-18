@@ -17,7 +17,7 @@ function toAttributeString(data, prefix = '') {
 
   return Object.entries(standardizedData)
     .filter(([, value]) => value !== null && value !== undefined)
-    .map(([key, value]) => `${prefix + kebabCase(key)}="${value}"`)
+    .map(([key, value]) => `${prefix}${kebabCase(key)}="${value}"`)
     .join(' ');
 }
 
