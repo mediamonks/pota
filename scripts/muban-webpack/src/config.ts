@@ -324,6 +324,7 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
             globOptions: {
               ignore: ['**/.*', '**/*.js', '**/*.ts'],
             },
+            noErrorOnMissing: true,
           },
         ],
       }),
