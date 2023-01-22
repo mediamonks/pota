@@ -16,7 +16,9 @@ export type AppTemplateProps = {
 };
 
 export function appTemplate({ layout }: AppTemplateProps): string {
-  return html`<div data-component="app">
-    ${renderLazyComponentTemplate(componentMap, { component: layout })}
-  </div>`;
+  return html`
+    <div data-component="app">
+      ${renderLazyComponentTemplate(componentMap, { component: layout })}
+    </div>
+  `;
 }

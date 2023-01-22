@@ -1,10 +1,8 @@
 import type { Ref } from '@muban/muban';
 import { defineComponent, ref, propType, computed, bind } from '@muban/muban';
 import { isBoolean, optional } from 'isntnt';
-
-import { CfA2Icon } from '../cf-a2-icon/CfA2Icon';
-
 import data from '../../../assets/json/test.json';
+import { CfA2Icon } from '../cf-a2-icon/CfA2Icon';
 
 import './toggle-expand.scss';
 
@@ -21,7 +19,8 @@ export const useToggle = (
   return [state, toggle] as const;
 };
 
-const getButtonLabel = (isExpanded: boolean) => (isExpanded ? 'read less...' : 'read more...');
+const getButtonLabel = (isExpanded: boolean): string =>
+  isExpanded ? 'read less...' : 'read more...';
 
 export const ToggleExpand = defineComponent({
   name: 'toggle-expand',
@@ -38,7 +37,12 @@ export const ToggleExpand = defineComponent({
     const expandButtonLabel = computed(() => getButtonLabel(isExpanded.value));
 
     return [
-      bind(refs.expandButton, { text: expandButtonLabel, click: () => toggleExpanded() }),
+      bind(refs.expandButton, {
+        text: expandButtonLabel,
+        click: () => {
+          toggleExpanded();
+        },
+      }),
       bind(refs.self, {
         css: { isExpanded },
       }),
