@@ -14,7 +14,8 @@ export type ButtonTemplateProps = {
       class="btn btn-primary"
     >
       ${label}
-    </button>`;
+    </button>
+  `;
 
   export const meta = {
     template: buttonTemplate,

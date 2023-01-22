@@ -1,5 +1,5 @@
-import type { NodePlopAPI } from 'plop';
 import type { Actions } from 'node-plop';
+import type { NodePlopAPI } from 'plop';
 
 const types = {
   atoms: 'atoms',
@@ -48,7 +48,7 @@ export default function plopfile(plop: NodePlopAPI): void {
         message: 'What is the id of your component?',
         when: ({ type }) => type !== types.none,
         validate: (value) =>
-          value.length === 0 || !value.match(/^[0-9]+[a-z0-9]?$/)
+          value.length === 0 || !/^\d+[\da-z]?$/u.test(value)
             ? 'This value needs follow the [number][variant] pattern (for example: 1 or 2a).'
             : true,
       },
@@ -78,7 +78,7 @@ export default function plopfile(plop: NodePlopAPI): void {
         name,
         id = '',
       } = userData as Record<string, string>;
-      const directory = type !== types.none ? `${type}/` : ``;
+      const directory = type === types.none ? `` : `${type}/`;
       const data = {
         isUnknownComponent: type === types.none,
         isCmsComponent: type === types.blocks,
@@ -97,42 +97,42 @@ export default function plopfile(plop: NodePlopAPI): void {
 
       if (data.isCmsComponent) {
         // twig template
-        actions.push({
-          data,
-          type: 'append',
-          path: 'src/block-renderer/block-renderer.twig',
-          pattern: /( set includeMap = \{)/gi,
-          template: `    '{{dashCase componentName}}': '../components/{{dashCase componentName}}/{{dashCase componentName}}.twig',`,
-          abortOnFail: false,
-        });
+        actions.push(
+          {
+            data,
+            type: 'append',
+            path: 'src/block-renderer/block-renderer.twig',
+            pattern: / set includemap = \{/giu,
+            template: `    '{{dashCase componentName}}': '../components/{{dashCase componentName}}/{{dashCase componentName}}.twig',`,
+            abortOnFail: false,
+          },
 
-        // ts template
-        actions.push({
-          data,
-          type: 'append',
-          path: 'src/block-renderer/BlockRenderer.maps.ts',
-          pattern: /(\/\* PLOP_INJECT_TEMPLATE_IMPORT \*\/)/gi,
-          template: `import { {{camelCase componentName}}Template } from '@/components/{{type}}/{{dashCase componentName}}/{{pascalCase componentName}}.template';`,
-        });
+          // ts template
+          {
+            data,
+            type: 'append',
+            path: 'src/block-renderer/BlockRenderer.maps.ts',
+            pattern: /\/\* plop_inject_template_import \*\//giu,
+            template: `import { {{camelCase componentName}}Template } from '@/components/{{type}}/{{dashCase componentName}}/{{pascalCase componentName}}.template';`,
+          },
+          {
+            data,
+            type: 'append',
+            path: 'src/block-renderer/BlockRenderer.maps.ts',
+            pattern: /\/\* plop_inject_template \*\//giu,
+            template: `  '{{dashCase componentName}}': {{camelCase componentName}}Template,`,
+          },
 
-        actions.push({
-          data,
-          type: 'append',
-          path: 'src/block-renderer/BlockRenderer.maps.ts',
-          pattern: /(\/\* PLOP_INJECT_TEMPLATE \*\/)/gi,
-          template: `  '{{dashCase componentName}}': {{camelCase componentName}}Template,`,
-        });
-
-        // component code
-        actions.push({
-          data,
-          type: 'append',
-          path: 'src/block-renderer/BlockRenderer.components.ts',
-          pattern: /(\/\* PLOP_INJECT_COMPONENT \*\/)/gi,
-          template: `    lazy('{{dashCase componentName}}', () => import('@/components/{{type}}/{{dashCase componentName}}/{{pascalCase componentName}}'),),`,
-        });
+          // component code
+          {
+            data,
+            type: 'append',
+            path: 'src/block-renderer/BlockRenderer.components.ts',
+            pattern: /\/\* plop_inject_component \*\//giu,
+            template: `    lazy('{{dashCase componentName}}', () => import('@/components/{{type}}/{{dashCase componentName}}/{{pascalCase componentName}}'),),`,
+          },
+        );
       }
-
       return actions;
     },
   });

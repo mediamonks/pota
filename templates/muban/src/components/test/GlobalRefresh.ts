@@ -12,6 +12,8 @@ export const Tooltip = defineComponent({
     return [];
   },
 });
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const Child = defineComponent({
   name: 'child',
   refs: {
@@ -32,8 +34,8 @@ export const GlobalRefresh = defineComponent({
   },
   setup({ refs }) {
     const updatedContent = ref(
-      refs.child.component?.props.content?.replace(
-        /##([a-z\d]+)##/gi,
+      refs.child.component?.props.content.replaceAll(
+        /##(?<content>[\da-z]+)##/giu,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         (_, content) => `<span data-component="tooltip"><strong>${content}</strong></span>`,
       ) ?? '',
@@ -44,10 +46,12 @@ export const GlobalRefresh = defineComponent({
 });
 
 export function globalRefreshTemplate(): string {
-  return html` <div data-component="global-refresh">
-    <div data-component="child">
-      <h1>Test</h1>
-      <div data-ref="content">Foo ##tooltip1## bar ##tooltip2##.</div>
+  return html`
+    <div data-component="global-refresh">
+      <div data-component="child">
+        <h1>Test</h1>
+        <div data-ref="content">Foo ##tooltip1## bar ##tooltip2##.</div>
+      </div>
     </div>
-  </div>`;
+  `;
 }

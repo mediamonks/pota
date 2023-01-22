@@ -1,6 +1,6 @@
 import { createDecoratorComponent } from '@muban/storybook';
-import { html } from '@muban/template';
 import type { Story } from '@muban/storybook';
+import { html } from '@muban/template';
 import { GlobalRefresh, globalRefreshTemplate, Tooltip } from './GlobalRefresh';
 
 export default {

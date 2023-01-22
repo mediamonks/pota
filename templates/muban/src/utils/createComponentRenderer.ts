@@ -10,6 +10,7 @@ export function renderLazyComponentTemplate(
   componentMap: Record<string, ComponentTemplate>,
   { component, components }: ComponentRendererTemplateProps,
 ): string | Array<string> {
-  const renderList = (components || []).concat(component || []);
-  return html`${renderList.map((c) => componentMap[c.name]?.(c.props) || '')}`;
+  // eslint-disable-next-line unicorn/prefer-spread
+  const renderList = (components ?? []).concat(component ?? []);
+  return html`${renderList.map((c) => componentMap[c.name](c.props) || '')}`;
 }

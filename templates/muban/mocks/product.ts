@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import path from 'path';
-import { existsSync } from 'fs';
-
+/* eslint-disable @typescript-eslint/naming-convention,unicorn/prefer-module */
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import type { RequestConfig } from '@mediamonks/monck';
 
 export default {
