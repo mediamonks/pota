@@ -60,14 +60,16 @@ export function getTwigMiddleware(
       (await import(absExtensionPath)).addExtensions(env, twingExport);
     }
 
-    const componentName = basename(req.path);
-    const dirName = dirname(req.path).substring(1);
+    const templateId = req.body?.templateId ?? req.query.templateId ?? req.path.substring(1);
+    const componentName = basename(templateId);
+    const dirName = dirname(templateId);
 
     try {
       const templateData =
-        'templateData' in req.query && typeof req.query.templateData === 'string'
+        req.body?.templateData ??
+        ('templateData' in req.query && typeof req.query.templateData === 'string'
           ? JSON.parse(req.query.templateData)
-          : req.query;
+          : req.query);
 
       const result = await env.render(
         join(dirName, componentName, `${componentName}.html.twig`),

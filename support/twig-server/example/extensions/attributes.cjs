@@ -9,7 +9,7 @@ const { kebabCase } = require('lodash');
  */
 function objectToAttributes(source, prefix) {
   return Object.entries(source)
-    .filter(([, value]) => Boolean(value))
+    .filter(([, value]) => value !== undefined && value !== null)
     .reduce(
       (attributes, [key, value]) => ({ ...attributes, [prefix + kebabCase(key)]: value }),
       {},
