@@ -102,7 +102,7 @@ Middleware options:
 
 ## CLI usage
 
-````
+```
 Usage: twig-server [options]
 
 Server options:
@@ -131,7 +131,8 @@ Examples:
   twig-server -m component-template     Make all template routes available on the "component-template/" path.
   twig-server -d ./templates            Specify a folder where the template files are located.
   twig-server -e ./twig-extensions.cjs  Provide a file to enhance the Twig Environment.
-  twig-server -c                        Enable cors when starting the server.```
+  twig-server -c                        Enable cors when starting the server.
+```
 
 ## Template Rendering
 
@@ -141,44 +142,81 @@ To render a twig template, the server needs to know two things;
 2. what data to pass to the template
 
 All this information should exist in the request, and there are multiple ways to pass this.
-Currently we're not support all thinkable use cases, but can expand if the currently supported options
-give issues.
+Currently we're not support all thinkable use cases, but can expand if the currently supported
+options give issues.
 
 ### Template ID
 
-This server currently supports one method of getting the component path/id from there request, using the url pathname.
-
 It expects the component filename and folder name to be the same.
 
-````
+The templateId `atoms/button` will be resolved to `/templates/atoms/button/button.twig`.
 
+This server supports three methods of getting the template id. In all examples `component-templates`
+is the `mountPath` option.
+
+#### 1. path from there request url
+
+```
 # request
 
 GET /component-templates/atoms/button
+```
 
+```
 # will load from disk
 
 /templates/atoms/button/button.twig
+```
 
+#### 2. the "templateId" in the query string
+
+```
+# request
+
+GET /component-templates?templateId=atoms/button
+```
+
+```
+# will load from disk
+
+/templates/atoms/button/button.twig
+```
+
+#### 3. the "templateId" in the json body
+
+```
+# request
+
+POST /component-templates
+
+{
+  "templateId": "atoms/button"
+}
+```
+
+```
+# will load from disk
+
+/templates/atoms/button/button.twig
 ```
 
 ### Template Data
 
-This server currently supports two methods of pulling data from there request, and using that to render the template:
+This server supports three methods of pulling data from there request, and using that to render the
+template:
 
-* from individual query parameters
-* from the `templateData` query parameter as a encoded JSON string
+- from individual query parameters
+- from the `templateData` query parameter as a encoded JSON string
+- from the `templateData` JSON body in a `POST` request
 
-The benefit of the latter option is that it supports actual booleans and numbers, and makes nesting `arrays` and
-`objects` easier.
+The benefit of the latter options is that it supports actual booleans and numbers, and makes nesting
+`arrays` and `objects` easier.
 
-### Individual query parameters
+#### 1. Individual query parameters
 
 ```
-
 # example
 
-```
 /component-templates/atoms/button?copy=Hello+World&ref=cta&active=true
 ```
 
@@ -195,7 +233,7 @@ Will use parameters
 > **Note** that the `active` `boolean` is actually a `string`, since everything is a string in the
 > URL.
 
-### templateData JSON
+#### 2. templateData query parameter as JSON
 
 To have more control over the structure and the types of your template data, a nicer way to pass
 this is to use JSON. The server checks for the `templateData` query parameter, and if that's a
@@ -203,7 +241,35 @@ string, it parses the JSON, and uses that to render the template.
 
 ```
 # example
-/component-templates/atoms/button?templateData={"copy":"Hello World","ref":"cta","active":true}
+
+/component-templates?templateId=atoms/button&templateData={"copy":"Hello World","ref":"cta","active":true}
+```
+
+Will use parameters
+
+```json
+{
+  "copy": "Hello World",
+  "ref": "cta",
+  "active": true
+}
+```
+
+#### 3. templateData json body in a POST request
+
+Especially when the data is too much to comfortably put in the URL, it's better to use the `POST`.
+
+```
+POST /component-templates
+
+{
+  "templateId": "atoms/button",
+  "templateData": {
+    "copy": "Hello World",
+    "ref": "cta",
+    "active": true
+  }
+}
 ```
 
 Will use parameters
