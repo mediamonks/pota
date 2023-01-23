@@ -5,6 +5,7 @@ import express from 'express';
 import cors from 'cors';
 
 import { resolve } from 'path';
+import qs from 'qs';
 import { getTwigMiddleware } from './getTwigMiddleware.js';
 
 import * as url from 'url';
@@ -52,6 +53,7 @@ With options:
   const mountPath = middlewareOptions.mountPath.replace(/\/$/, '');
 
   const app = express();
+  app.set('query parser', (path: string) => qs.parse(path, { depth: 10 }));
 
   if (corsEnabled) {
     app.use(cors());
