@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import type { NextFunction, Request, Response } from 'express-serve-static-core';
 import { basename, dirname, join, resolve } from 'path';
 import { DEFAULT_SERVER_OPTIONS } from './createServer.js';
@@ -27,6 +28,14 @@ const exampleCodeComponent = `export const Default: Story<MyComponentProps> = {
   },
 };`;
 
+async function parseBody(req: Request, res: Response) {
+  return new Promise<void>((resolve) => {
+    bodyParser.json()(req, res, () => {
+      resolve();
+    });
+  });
+}
+
 export function getTwigMiddleware(
   templateDir: TemplateDirConfig = DEFAULT_SERVER_OPTIONS.templateDir,
   options: TemplateOptions = {},
@@ -40,6 +49,8 @@ export function getTwigMiddleware(
   const absExtensionPath = resolve(process.cwd(), options.extensionPath ?? './');
 
   return async function twigMiddleware(req: Request, res: Response, next: NextFunction) {
+    await parseBody(req, res);
+
     // Explicitly create a new Twig environment on each request,
     // otherwise it'll cache all the templates
     const twingExport = await import('twing');
