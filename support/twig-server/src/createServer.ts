@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
 import type { Express } from 'express';
@@ -55,7 +54,6 @@ With options:
 
   const app = express();
   app.set('query parser', (path: string) => qs.parse(path, { depth: 10 }));
-  app.use(bodyParser.json());
 
   if (corsEnabled) {
     app.use(cors());
