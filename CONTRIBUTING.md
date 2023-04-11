@@ -101,9 +101,7 @@ with the changes described above, or to revert them back to their pristine state
 - `"modify:muban:dev-local": "node ./template-scripts/muban.js --dev --local"`
 - `"modify:muban:revert": "node ./template-scripts/muban.js --revert"`
 
-These npm scripts can be called from with in the `templates` folder.
-
-````bash
+These npm scripts can be called from within the `templates` folder.
 
 > NOTE: if you want to work on the local cli package, then replace the second step with `npm install ../../core/cli`
 
@@ -111,16 +109,16 @@ These npm scripts can be called from with in the `templates` folder.
 
 [`@pota/create`](core/create-pota) supports project creation from local packages.
 
-> Example:
+Example:
 
 ```bash
 npm init pota -- --template templates/vanilla
-````
+```
 
-NOTE: [`@pota/create`](core/create-pota) currently does not support project creation with local scripts packages.
-However, these can be easily installed after the project is created (see next section). To skip scripts selection you can pass `--no-scripts`.
+> NOTE: [`@pota/create`](core/create-pota) currently does not support project creation with local scripts packages.
+> However, these can be easily installed after the project is created (see next section). To skip scripts selection you can pass `--no-scripts`.
 
-> Example:
+Example:
 
 ```bash
 npm init pota -- --template templates/vanilla --no-scripts
