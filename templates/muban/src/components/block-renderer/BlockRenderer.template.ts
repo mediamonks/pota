@@ -1,9 +1,9 @@
 import type { TemplateMap } from '@muban/template';
 import { html } from '@muban/template';
-import { toggleExpandTemplate } from '../components/atoms/toggle-expand/ToggleExpand.template';
-import { imageTestTemplate } from '../components/image-test/ImageTest.template';
-import { videoTestTemplate } from '../components/video-test/VideoTest.template';
-import { renderLazyComponentTemplate } from '../utils/createComponentRenderer';
+import { renderLazyComponentTemplate } from '../../utils/createComponentRenderer';
+import { toggleExpandTemplate } from '../atoms/toggle-expand/ToggleExpand.template';
+import { imageTestTemplate } from '../image-test/ImageTest.template';
+import { videoTestTemplate } from '../video-test/VideoTest.template';
 
 const componentMap = {
   /* eslint-disable @typescript-eslint/naming-convention */

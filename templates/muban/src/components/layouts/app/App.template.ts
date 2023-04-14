@@ -1,8 +1,8 @@
 import type { TemplateMap } from '@muban/template';
 import { html } from '@muban/template';
-import { customLayoutTemplate } from './layouts/custom/CustomLayout.template';
-import { defaultLayoutTemplate } from './layouts/default/DefaultLayout.template';
-import { renderLazyComponentTemplate } from './utils/createComponentRenderer';
+import { renderLazyComponentTemplate } from '../../../utils/createComponentRenderer';
+import { customLayoutTemplate } from '../custom/CustomLayout.template';
+import { defaultLayoutTemplate } from '../default/DefaultLayout.template';
 
 const componentMap = {
   /* eslint-disable @typescript-eslint/naming-convention */
