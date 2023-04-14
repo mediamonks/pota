@@ -151,7 +151,6 @@ export class MubanWebpackConfig extends WebpackConfig<MubanWebpackConfigOptions>
   }
 
   public get twigEnvironmentPath() {
-    console.log('twigEnvironmentPath', require.resolve('../twigEnvironment.cjs'));
     return require.resolve('../twigEnvironment.cjs');
   }
 

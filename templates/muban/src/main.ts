@@ -1,6 +1,6 @@
 import { createApp } from '@muban/muban';
-import { App } from './App';
 import { CfA2Icon } from './components/atoms/cf-a2-icon/CfA2Icon';
+import { App } from './components/layouts/app/App';
 
 import './styles/main.scss';
 

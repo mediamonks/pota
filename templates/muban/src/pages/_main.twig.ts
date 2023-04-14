@@ -1,8 +1,8 @@
-/* eslint-disable unicorn/prefer-module */
-export { default as appTemplate } from '../app.twig';
+/* eslint-disable unicorn/prefer-module,require-unicode-regexp, prefer-named-capture-group */
+export { default as appTemplate } from '../components/layouts/app/app.html.twig';
 
 // twig templates
-const twigContext = require.context('..', true, /.*\.twig$/u);
+const twigContext = require.context('../components', true, /(.*)\.html.twig$/);
 
 for (const filename of twigContext.keys()) {
   twigContext(filename);
@@ -16,5 +16,5 @@ export const pages = Object.fromEntries(
   context
     .keys()
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    .map((filename) => [/\/.*\.ts/giu.exec(filename)![1] as string, context(filename)]),
+    .map((filename) => [/\/(.*)\.ts/gi.exec(filename)![1] as string, context(filename)]),
 );

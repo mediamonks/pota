@@ -128,40 +128,42 @@ export default class MubanPagePlugin implements WebpackPluginInstance {
 
     const htmlTemplate = await this.getHtmlTemplate();
 
-    return (await Promise.all(Object.entries(pages)
-      .map(async ([page, m]) => {
-        const asset = `${page}.html`;
+    return (
+      await Promise.all(
+        Object.entries(pages).map(async ([page, m]) => {
+          const assetName = `${page}.html`;
 
-        try {
-          let pageTemplate = replaceTemplateVars(htmlTemplate, {
-            content: await appTemplate(m.data?.() ?? {}),
-            publicPath,
-          });
+          try {
+            let pageTemplate = replaceTemplateVars(htmlTemplate, {
+              content: await appTemplate(m.data?.() ?? {}),
+              publicPath,
+            });
 
-          if ('title' in m && isString(m.title)) {
-            pageTemplate = replaceTemplateTitle(pageTemplate, m.title);
+            if ('title' in m && isString(m.title)) {
+              pageTemplate = replaceTemplateTitle(pageTemplate, m.title);
+            }
+
+            const newHeadTags = [];
+
+            if ('meta' in m && isFunction(m.meta)) {
+              newHeadTags.push(...convertObjectsToTags(m.meta(), 'meta'));
+            }
+            if ('link' in m && isFunction(m.link)) {
+              newHeadTags.push(...convertObjectsToTags(m.link(), 'link'));
+            }
+
+            if (newHeadTags.length > 0) pageTemplate = insertHeadTags(pageTemplate, newHeadTags);
+
+            return [assetName, new RawSource(pageTemplate)];
+          } catch (error) {
+            console.log();
+            console.error(`Error occurred processing "${assetName}":`);
+            console.error(error);
+            return null;
           }
-
-          const newHeadTags = [];
-
-          if ('meta' in m && isFunction(m.meta)) {
-            newHeadTags.push(...convertObjectsToTags(m.meta(), 'meta'));
-          }
-          if ('link' in m && isFunction(m.link)) {
-            newHeadTags.push(...convertObjectsToTags(m.link(), 'link'));
-          }
-
-          if (newHeadTags.length > 0) pageTemplate = insertHeadTags(pageTemplate, newHeadTags);
-
-          return [asset, new RawSource(pageTemplate)];
-        } catch (error) {
-          console.log();
-          console.error(`Error occurred processing "${asset}":`);
-          console.error(error);
-          return null;
-        }
-      })))
-      .filter(Boolean);
+        }),
+      )
+    ).filter(Boolean);
   }
 
   private getContextModule(source: string): {
@@ -179,7 +181,8 @@ export default class MubanPagePlugin implements WebpackPluginInstance {
     const fallback = { pages: {}, appTemplate: () => '' };
 
     try {
-      return { ...fallback, ...requireFromString(source) };
+      const result = requireFromString(source);
+      return { ...fallback, ...result };
     } catch (error) {
       console.error(error);
 
