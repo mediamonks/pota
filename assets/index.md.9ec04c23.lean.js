@@ -1,0 +1,1 @@
+import{_ as t,c as a,o,a as e}from"./app.0975428b.js";const u='{"title":"Getting Started with Pota","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","lastUpdated":1654249028000}',s={},n=e("",5),i=[n];function r(c,p,d,l,h,_){return o(),a("div",null,i)}var g=t(s,[["render",r]]);export{u as __pageData,g as default};
