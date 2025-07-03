@@ -87,6 +87,8 @@ Middleware options:
   namespace for your template includes.
 - `extensionPath?: string` - A path to a file that exports an `addExtensions` function to enhance
   the Twig Environment.
+- `flattenPath?: boolean [false]` - Flatten the path of the template files to search in folders with
+  other names than the template id.
 
   ```js
   // the 2nd parameters exposes the 'twing' import,
@@ -120,6 +122,8 @@ Middleware options:
                                                                                         [array] [default: "./templates"]
   -e, --extension-path  A path to a file that exports an `addExtensions` function to enhance the Twig Environment.
                                                                                                                 [string]
+  -f, --flatten-path    Flatten the path of the template files to search in folders with other names than the template i
+                        d.                                                                                     [boolean]
 
 Options:
       --help  Show help                                                                                        [boolean]
@@ -147,9 +151,9 @@ options give issues.
 
 ### Template ID
 
-It expects the component filename and folder name to be the same.
-
-The templateId `atoms/button` will be resolved to `/templates/atoms/button/button.twig`.
+If `flattenPath` is set to `false` (default), it expects the component filename and folder name to be the same, so
+the templateId `atoms/button` will be resolved to `/templates/atoms/button/button.html.twig`. Otherwise it will
+resolve to `/templates/atoms/button.html.twig`.
 
 This server supports three methods of getting the template id. In all examples `component-templates`
 is the `mountPath` option.
@@ -165,7 +169,8 @@ GET /component-templates/atoms/button
 ```
 # will load from disk
 
-/templates/atoms/button/button.twig
+/templates/atoms/button/button.html.twig    # flattenPath = false (default)
+/templates/atoms/button.html.twig           # flattenPath = true
 ```
 
 #### 2. the "templateId" in the query string
@@ -179,7 +184,8 @@ GET /component-templates?templateId=atoms/button
 ```
 # will load from disk
 
-/templates/atoms/button/button.twig
+/templates/atoms/button/button.html.twig    # flattenPath = false (default)
+/templates/atoms/button.html.twig           # flattenPath = true
 ```
 
 #### 3. the "templateId" in the json body
@@ -197,7 +203,8 @@ POST /component-templates
 ```
 # will load from disk
 
-/templates/atoms/button/button.twig
+/templates/atoms/button/button.html.twig    # flattenPath = false (default)
+/templates/atoms/button.html.twig           # flattenPath = true
 ```
 
 ### Template Data
