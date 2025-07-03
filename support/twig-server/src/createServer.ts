@@ -20,6 +20,7 @@ export const DEFAULT_SERVER_OPTIONS: Required<Omit<ServerOptions, 'ignore' | 'ex
   socketPath: resolve(process.cwd(), './socket'),
   templateDir: './templates',
   cors: false,
+  flattenPath: false,
 };
 
 export function createServer(serverOptions: ServerOptions = {}): Express {

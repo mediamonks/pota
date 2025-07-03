@@ -73,7 +73,9 @@ export function getTwigMiddleware(
 
     const templateId = req.body?.templateId ?? req.query.templateId ?? req.path.substring(1);
     const componentName = basename(templateId);
-    const dirName = dirname(templateId);
+    const templatePath = options.flattenPath
+      ? join(dirname(templateId), `${componentName}.html.twig`)
+      : join(dirname(templateId), componentName, `${componentName}.html.twig`);
 
     try {
       const templateData =
@@ -82,10 +84,7 @@ export function getTwigMiddleware(
           ? JSON.parse(req.query.templateData)
           : req.query);
 
-      const result = await env.render(
-        join(dirName, componentName, `${componentName}.html.twig`),
-        templateData,
-      );
+      const result = await env.render(templatePath, templateData);
       res.send(result);
     } catch (e: any) {
       if (e.message.includes('Unable to find template')) {

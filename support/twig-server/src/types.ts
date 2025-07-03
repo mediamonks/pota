@@ -1,5 +1,6 @@
 export type TemplateOptions = {
   extensionPath?: string;
+  flattenPath?: boolean;
 };
 
 export type TemplateDirConfig =
