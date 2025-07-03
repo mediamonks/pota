@@ -28,6 +28,7 @@
   "scripts": {
     "dev": "nodemon --ext ts --exec 'tsm' example/esm/index.ts",
     "dev:multi": "nodemon --ext ts --exec 'tsm' example/esm/multi.ts",
+    "dev:flat": "nodemon --ext ts --exec 'tsm' example/esm/flat.ts",
     "dev:cjs": "nodemon --ext ts --exec 'tsm' example/cjs/index.cjs",
     "dev:cli": "tsc -p tsconfig.build.json --watch",
     "build": "tsc -p tsconfig.build.json",

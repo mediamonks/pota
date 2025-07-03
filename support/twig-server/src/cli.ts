@@ -13,6 +13,7 @@ yargs(hideBin(process.argv))
     socketPath: string;
     templateDir: Array<string>;
     extensionPath: string;
+    flattenPath: boolean;
   }>(
     ['$0', 'server'],
     'Start a twig render server',
@@ -94,8 +95,15 @@ yargs(hideBin(process.argv))
       'Whether to enable cors for the created server, so it accepts requests from other origins.',
     type: 'boolean',
   })
+  .option('f', {
+    alias: 'flatten-path',
+    default: DEFAULT_SERVER_OPTIONS.flattenPath,
+    describe:
+      'Flatten the path of the template files to search in folders with other names than the template id.',
+    type: 'boolean',
+  })
   .group(['mount-path', 'host', 'port', 'unix-socket', 'socket-path', 'cors'], 'Server options:')
-  .group(['template-dir', 'extension-path'], 'Middleware options:')
+  .group(['template-dir', 'extension-path', 'flatten-path'], 'Middleware options:')
   .help()
   .epilogue(
     'For more information about the parameters, please visit https://github.com/mediamonks/pota',
